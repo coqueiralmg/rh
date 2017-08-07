@@ -18,38 +18,29 @@ class SystemController extends AppController
 
     public function login()
     {
-        if($this->request->session()->check('Usuario'))
-        {
-            if(!$this->request->session()->read('UsuarioSuspeito'))
-            {
+        if ($this->request->session()->check('Usuario')) {
+            if (!$this->request->session()->read('UsuarioSuspeito')) {
                 $idUsuario = $this->request->session()->read('UsuarioID');
                 $t_usuario = TableRegistry::get('Usuario');
 
                 $query = $t_usuario->find('all', [
-                    'contain' => ['GrupoUsuario', 'Pessoa'],
+                    'contain' => ['GrupoUsuario'],
                     'conditions' => [
                         'usuario.id' => $idUsuario
                     ]
                 ]);
 
-                if($query->count() > 0)
-                {
+                if ($query->count() > 0) {
                     $usuario = $query->first();
                     $this->validarLogin($usuario);
-                }
-                else
-                {
+                } else {
                     $this->atualizarTentativas('Os dados estão inválidos');
                 }
-            }
-            else
-            {
+            } else {
                 $this->request->session()->destroy();
                 $this->redirectLogin("Efetue o login no sistema.", false);
             }
-        }
-        else
-        {
+        } else {
             $login = $this->obterLoginCookie();
             $this->viewBuilder()->layout('guest');
             $this->configurarTentativas();
@@ -61,22 +52,18 @@ class SystemController extends AppController
 
     public function logon()
     {
-        if($this->request->is('post'))
-        {
+        if ($this->request->is('post')) {
             $login = $this->request->data['usuario'];
             $senha = $this->request->data['senha'];
 
-            if($login == '' || $senha == '')
-            {
+            if ($login == '' || $senha == '') {
                 $this->redirectLogin('É obrigatório informar o login e a senha.');
-            }
-            else
-            {
+            } else {
                 $this->Cookie->write('login_user', $login);
                 $t_usuario = TableRegistry::get('Usuario');
 
                 $query = $t_usuario->find('all', [
-                    'contain' => ['GrupoUsuario', 'Pessoa'],
+                    'contain' => ['GrupoUsuario'],
                     'conditions' => [
                         'usuario.usuario' => $login
                     ]
@@ -84,13 +71,10 @@ class SystemController extends AppController
                     'usuario.email' => $login
                 ]);
 
-                if($query->count() > 0)
-                {
+                if ($query->count() > 0) {
                     $usuario = $query->first();
                     $this->validarLogin($usuario, $senha);
-                }
-                else
-                {
+                } else {
                     $this->atualizarTentativas('Os dados estão inválidos');
                 }
             }
@@ -109,8 +93,7 @@ class SystemController extends AppController
 
         $this->Auditoria->registrar($auditoria);
 
-        if($this->request->session()->read('UsuarioSuspeito'))
-        {
+        if ($this->request->session()->read('UsuarioSuspeito')) {
             $this->Monitoria->monitorar($auditoria);
         }
 
@@ -120,8 +103,7 @@ class SystemController extends AppController
 
     public function password()
     {
-        if($this->request->is('post'))
-        {
+        if ($this->request->is('post')) {
             $idUsuario = $this->request->data['idUsuario'];
             $senha = $this->request->data['senha'];
 
@@ -142,9 +124,7 @@ class SystemController extends AppController
             $this->Auditoria->registrar($auditoria);
 
             $this->redirectLogin('Sua senha foi alterada com sucesso.', false);
-        }
-        else
-        {
+        } else {
             $usuario = $this->request->session()->read('Usuario');
             
             $this->viewBuilder()->layout('guest');
@@ -156,33 +136,12 @@ class SystemController extends AppController
     public function board()
     {
         $this->controlAuth();
-        $this->carregarDadosSistema();
+        //$this->carregarDadosSistema();
 
-        $t_licitacoes = TableRegistry::get('Licitacao');
-        $t_publicacoes = TableRegistry::get('Publicacao');
-        $t_noticias = TableRegistry::get('Noticia');
-
-        $noticias = $t_noticias->find('all', [
-            'contain' => ['Post' => ['Usuario' => ['Pessoa']]],
-            'order' => ['Post.datapostagem' => 'DESC'], 
-            'limit' => 3
-        ]);
-
-        $licitacoes = $t_licitacoes->find('all', [
-            'order' => ['Licitacao.id' => 'DESC'],
-            'limit' => 5
-        ]);
-
-        $publicacoes = $t_publicacoes->find('all', [
-            'order' => ['Publicacao.id' => 'DESC'],
-            'limit' => 5
-        ]);
+        
 
         $this->set('title', 'Painel Principal');
         $this->set('icon', 'dashboard');
-        $this->set('noticias', $noticias);
-        $this->set('licitacoes', $licitacoes);
-        $this->set('publicacoes', $publicacoes);
     }
 
     public function fail(string $mensagem)
@@ -215,7 +174,9 @@ class SystemController extends AppController
             'usuario.email' => $login
         ]);
 
-        if($query->count() > 0) $usuario = $query->first(); 
+        if ($query->count() > 0) {
+            $usuario = $query->first();
+        }
 
         $auditoria = [
             'ocorrencia' => 3,
@@ -234,15 +195,13 @@ class SystemController extends AppController
     public function suspend(int $idUsuario)
     {
         $t_usuario = TableRegistry::get('Usuario');
-        $t_pessoa = TableRegistry::get('Pessoa');
         
         $usuario = $t_usuario->get($idUsuario);
-        $pessoa = $t_pessoa->get($usuario->pessoa);
 
         $usuario->suspenso = true;
 
         $t_usuario->save($usuario);
-        $this->Monitoria->alertarContaSuspensa($pessoa->nome, $usuario->email, true);
+        $this->Monitoria->alertarContaSuspensa($usuario->nome, $usuario->email, true);
 
         $auditoria = [
             'ocorrencia' => 4,
@@ -271,8 +230,7 @@ class SystemController extends AppController
 
     protected function configurarTentativas()
     {
-        if(!$this->request->session()->check('LoginAttemps'))
-        {
+        if (!$this->request->session()->check('LoginAttemps')) {
             $this->request->session()->write('LoginAttemps', 0);
         }
     }
@@ -284,8 +242,7 @@ class SystemController extends AppController
         $limite = Configure::read('security.login.maxAttemps');
         $this->request->session()->write('LoginAttemps', $tentativa + 1);
 
-        if($tentativa >= $aviso && $tentativa < $limite)
-        {
+        if ($tentativa >= $aviso && $tentativa < $limite) {
             $auditoria = [
                 'ocorrencia' => 6,
                 'descricao' => 'O usuário tem tentado acessar o sistema por ' . $aviso . ' ou mais vezes.',
@@ -296,9 +253,7 @@ class SystemController extends AppController
             
             $this->Monitoria->alertarTentativasIntermitentes();
             $this->redirectLogin('Você tentou o acesso ' . $tentativa . ' vezes. Caso você tente ' . $limite . ' vezes sem sucesso, você será bloqueado.');
-        }
-        elseif($tentativa >= $limite)
-        {
+        } elseif ($tentativa >= $limite) {
             $auditoria = [
                 'ocorrencia' => 7,
                 'descricao' => 'O usuário foi bloqueado pelo sistema automaticamente, por muitas tentativas de acesso sem sucesso.',
@@ -310,9 +265,7 @@ class SystemController extends AppController
             $this->Monitoria->alertarUsuarioBloqueado();
             $this->bloquearAcesso();
             $this->redirectLogin('O acesso ao sistema encontra-se bloqueado.');
-        }
-        else
-        {
+        } else {
             $this->redirectLogin($mensagem);
         }
     }
@@ -323,7 +276,6 @@ class SystemController extends AppController
         $t_usuario = TableRegistry::get('Usuario');
 
         $query = $t_usuario->find('all', [
-            'contain' => ['Pessoa'],
             'conditions' => [
                 'usuario.usuario' => $login
             ]
@@ -331,15 +283,13 @@ class SystemController extends AppController
             'usuario.email' => $login
         ]);
 
-        if($query->count() > 0)
-        {
+        if ($query->count() > 0) {
             $resultado = $query->all();
 
-            foreach($resultado as $usuario)
-            {
+            foreach ($resultado as $usuario) {
                 $usuario->suspenso = true;
                 $t_usuario->save($usuario);
-                $this->Monitoria->alertarContaSuspensa($usuario->pessoa->nome, $usuario->email);
+                $this->Monitoria->alertarContaSuspensa($usuario->nome, $usuario->email);
             }
         }
 
@@ -350,8 +300,7 @@ class SystemController extends AppController
     {
         $login = "";
 
-        if($this->Cookie->check('login_user'))
-        {
+        if ($this->Cookie->check('login_user')) {
             $login = $this->Cookie->read('login_user');
         }
         
@@ -360,35 +309,29 @@ class SystemController extends AppController
 
     protected function validarLogin($usuario, $senha = '')
     {
-        if(!$usuario->ativo)
-        {
+        if (!$usuario->ativo) {
             $this->redirectLogin("O usuário encontra-se inativo para o sistema.");
             return;
         }
 
-        if($usuario->suspenso)
-        {
+        if ($usuario->suspenso) {
             $this->redirectLogin("O usuário encontra-se suspenso no sistema. Favor entrar em contato com o administrador do sistema.");
             return;
         }
 
-        if(!$usuario->grupoUsuario->ativo)
-        {
+        if (!$usuario->grupoUsuario->ativo) {
             $this->redirectLogin("O usuário encontra-se em um grupo de usuário inativo.");
             return;
         }
 
-        if($senha != '')
-        {
-            if($usuario->senha != sha1($senha))
-            {
+        if ($senha != '') {
+            if ($usuario->senha != sha1($senha)) {
                 $this->atualizarTentativas('A senha informada é inválida.');
                 return;
             }
-        } 
+        }
 
-        if($usuario->verificar)
-        {
+        if ($usuario->verificar) {
             $this->request->session()->write('Usuario', $usuario);
 
             $this->Flash->success('Por favor, troque a senha.');
@@ -396,12 +339,11 @@ class SystemController extends AppController
             return;
         }
 
-        if($senha != '')
-        {
+        if ($senha != '') {
             $this->request->session()->write('Usuario', $usuario);
             $this->request->session()->write('UsuarioID', $usuario->id);
             $this->request->session()->write('UsuarioNick', $usuario->usuario);
-            $this->request->session()->write('UsuarioNome', $usuario->pessoa->nome);
+            $this->request->session()->write('UsuarioNome', $usuario->nome);
             $this->request->session()->write('UsuarioEmail', $usuario->email);
         }
 
@@ -414,28 +356,16 @@ class SystemController extends AppController
         $this->Auditoria->registrar($auditoria);
         $this->request->session()->write('UsuarioEntrada', date("Y-m-d H:i:s"));
 
-        if($senha != '')
-        {
+        if ($senha != '') {
             $tentativa = $this->request->session()->read('LoginAttemps');
 
-            if($tentativa >= Configure::read('security.login.warningAttemp'))
-            {
+            if ($tentativa >= Configure::read('security.login.warningAttemp')) {
                 $this->request->session()->write('UsuarioSuspeito', true);
                 $this->Monitoria->monitorar($auditoria);
-            }
-            else
-            {
+            } else {
                 $this->request->session()->write('UsuarioSuspeito', false);
             }
         }
-
-        $t_logs = TableRegistry::get('Log');
-        $log = $t_logs->newEntity();
-
-        $log->usuario = $usuario->id;
-        $log->data = date("Y-m-d H:i:s");
-
-        $t_logs->save($log);
 
         $this->redirect(['controller' => 'system', 'action' => 'board']);
     }
