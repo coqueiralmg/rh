@@ -15,7 +15,7 @@ function excluirUsuario(id, nome) {
             confirmButtonText: 'Sim',
             cancelButtonText: 'Não'
         }).then(function (result) {
-            window.location = '/admin/usuarios/delete/' + id + '?auditoria=' + result;
+            window.location = '/rh/usuarios/delete/' + id + '?auditoria=' + result;
         });
     }
 }

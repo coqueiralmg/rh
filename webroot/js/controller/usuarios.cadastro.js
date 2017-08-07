@@ -18,16 +18,9 @@ function validar() {
 
     if ($("#nome").val() === "") {
         mensagem += "<li> O nome do usuário é obrigatório.</li>";
-        $("label[for='pessoa-nome']").css("color", "red");
+        $("label[for='nome']").css("color", "red");
     } else {
-        $("label[for='pessoa-nome']").css("color", "#aaa");
-    }
-
-    if ($("#data_nascimento").val() === "") {
-        mensagem += "<li> É obrigatório informa a data de nascimento.</li>";
-        $("label[for='pessoa-datanascimento']").css("color", "red");
-    } else {
-        $("label[for='pessoa-datanascimento']").css("color", "#aaa");
+        $("label[for='nome']").css("color", "#aaa");
     }
 
     if ($("#email").val() === "") {

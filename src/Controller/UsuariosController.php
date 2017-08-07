@@ -23,7 +23,7 @@ class UsuariosController extends AppController
         $condicoes = array();
         $data = array();
 
-        if(count($this->request->getQueryParams()) > 0)
+        if (count($this->request->getQueryParams()) > 0) 
         {
             $nome = $this->request->query('nome');
             $usuario = $this->request->query('usuario');
@@ -35,12 +35,12 @@ class UsuariosController extends AppController
             $condicoes['Usuario.usuario LIKE'] = '%' . $usuario . '%';
             $condicoes['Usuario.email LIKE'] = '%' . $email . '%';
 
-            if($grupo != "")
+            if ($grupo != "") 
             {
                 $condicoes['Usuario.grupo'] = $grupo;
             }
 
-            if($mostrar != 'T')
+            if ($mostrar != 'T') 
             {
                 $condicoes["Usuario.ativo"] = ($mostrar == "A") ? "1" : "0";
             }
@@ -97,7 +97,7 @@ class UsuariosController extends AppController
         
         $condicoes = array();
         
-        if(count($this->request->getQueryParams()) > 0)
+        if (count($this->request->getQueryParams()) > 0) 
         {
             $nome = $this->request->query('nome');
             $usuario = $this->request->query('usuario');
@@ -109,12 +109,12 @@ class UsuariosController extends AppController
             $condicoes['Usuario.usuario LIKE'] = '%' . $usuario . '%';
             $condicoes['Usuario.email LIKE'] = '%' . $email . '%';
 
-            if($grupo != "")
+            if ($grupo != "") 
             {
                 $condicoes['Usuario.grupo'] = $grupo;
             }
 
-            if($mostrar != 'T')
+            if ($mostrar != 'T') 
             {
                 $condicoes["Usuario.ativo"] = ($mostrar == "A") ? "1" : "0";
             }
@@ -128,7 +128,7 @@ class UsuariosController extends AppController
             $this->request->data = $data;
         }
 
-        $usuarios = $t_usuarios->find('all', [ 
+        $usuarios = $t_usuarios->find('all', [
             'contain' => ['GrupoUsuario'],
             'conditions' => $condicoes
         ]);
@@ -143,8 +143,7 @@ class UsuariosController extends AppController
 
         $this->Auditoria->registrar($auditoria);
 
-        if($this->request->session()->read('UsuarioSuspeito'))
-        {
+        if ($this->request->session()->read('UsuarioSuspeito')) {
             $this->Monitoria->monitorar($auditoria);
         }
 
@@ -165,7 +164,7 @@ class UsuariosController extends AppController
         $t_usuarios = TableRegistry::get('Usuario');
         $pivot = $t_usuarios->get($id);
 
-        if($pivot->suspenso)
+        if ($pivot->suspenso) 
         {
              $this->Flash->greatWarning('Este usuário encontra-se suspenso para acessar ao sistema. Para que ele volte a acessar o sistema, clique no botão liberar.');
         }
@@ -189,15 +188,13 @@ class UsuariosController extends AppController
             ]
         ]);
 
-        if($id > 0)
+        if ($id > 0) 
         {
-            $usuario = $t_usuarios->get($id, ['contain' => ['Pessoa']]);
-            
-            $usuario->pessoa->dataNascimento = $this->Format->formatDateView($usuario->pessoa->dataNascimento);
+            $usuario = $t_usuarios->get($id);
 
             $this->set('usuario', $usuario);
-        }
-        else
+        } 
+        else 
         {
             $this->set('usuario', null);
         }
@@ -210,22 +207,17 @@ class UsuariosController extends AppController
 
     public function save(int $id)
     {
-        if ($this->request->is('post'))
-        {
+        if ($this->request->is('post')) {
             $this->insert();
-        }
-        else if($this->request->is('put'))
-        {
+        } elseif ($this->request->is('put')) {
             $this->update($id);
         }
     }
 
     public function delete(int $id)
     {
-        try
-        {
+        try {
             $usuarios = TableRegistry::get('Usuario');
-            $log = TableRegistry::get('Log');
 
             $exclui_auditoria = $this->request->query('auditoria');
 
@@ -235,19 +227,14 @@ class UsuariosController extends AppController
 
             $qa = $this->Auditoria->quantidade($id);
 
-            if($qa > 0)
-            {
-                if($exclui_auditoria)
-                {
+            if ($qa > 0) {
+                if ($exclui_auditoria) {
                     $this->Auditoria->limpar($id);
-                }
-                else
-                {
+                } else {
                     throw new Exception('Este usuário não pode ser excluído, porque tem o registro de auditoria. Verifique a tabela de auditoria antes de excluir definitivamente ou deixe-o inativo.');
                 }
             }
 
-            $log->deleteAll(['usuario' => $id]);
             $usuarios->delete($marcado);
 
             $this->Flash->greatSuccess('O usuário ' . $nome . ' foi excluído com sucesso!');
@@ -261,15 +248,12 @@ class UsuariosController extends AppController
 
             $this->Auditoria->registrar($auditoria);
 
-            if($this->request->session()->read('UsuarioSuspeito'))
-            {
+            if ($this->request->session()->read('UsuarioSuspeito')) {
                 $this->Monitoria->monitorar($auditoria);
             }
 
             $this->redirect(['controller' => 'usuarios', 'action' => 'index']);
-        }
-        catch(Exception $ex)
-        {
+        } catch (Exception $ex) {
             $this->Flash->exception('Ocorreu um erro no sistema ao excluir o usuário', [
                 'params' => [
                     'details' => $ex->getMessage()
@@ -292,6 +276,22 @@ class UsuariosController extends AppController
         $usuarios->save($usuario);
 
         $this->Flash->greatSuccess('Liberado com sucesso o acesso do usuário ao sistema. Recomendamos deixar que o usuário troque sua senha no próximo acesso.');
+
+        $propriedades = $usuario->getOriginalValues();
+
+        $auditoria = [
+            'ocorrencia' => 20,
+            'descricao' => 'O administrador do sistema liberou um determinado usuário para o acesso ao sistema, a qual estava suspenso.',
+            'dado_adicional' => json_encode(['usuario_liberado' => $id, 'dados_usuario' => $propriedades]),
+            'usuario' => $this->request->session()->read('UsuarioID')
+        ];
+
+        $this->Auditoria->registrar($auditoria);
+
+        if ($this->request->session()->read('UsuarioSuspeito')) {
+            $this->Monitoria->monitorar($auditoria);
+        }
+
         $this->redirect(['controller' => 'usuarios', 'action' => 'cadastro', $id]);
     }
 
@@ -299,13 +299,12 @@ class UsuariosController extends AppController
     {
         $usuarios = TableRegistry::get('Usuario');
 
-        $entity = $usuarios->newEntity($this->request->data(), ['associated' => ['Pessoa']]);
+        $entity = $usuarios->newEntity($this->request->data());
         
         $entity->senha = sha1($entity->senha);
-        $entity->pessoa->dataNascimento = $this->Format->formatDateDB($entity->pessoa->dataNascimento);
         $entity->suspenso = false;
 
-        try
+        try 
         {
             $qtd = $usuarios->find('all', [
                 'conditions' => [
@@ -313,8 +312,7 @@ class UsuariosController extends AppController
                 ]
             ])->count();
 
-            if($qtd > 0)
-            {
+            if ($qtd > 0) {
                 throw new Exception("Existe um usuário com o login escolhido.");
             }
 
@@ -332,14 +330,13 @@ class UsuariosController extends AppController
 
             $this->Auditoria->registrar($auditoria);
 
-            if($this->request->session()->read('UsuarioSuspeito'))
-            {
+            if ($this->request->session()->read('UsuarioSuspeito')) {
                 $this->Monitoria->monitorar($auditoria);
             }
 
             $this->redirect(['controller' => 'usuarios', 'action' => 'cadastro', $entity->id]);
-        }
-        catch(Exception $ex)
+        } 
+        catch (Exception $ex) 
         {
             $this->Flash->exception('Ocorreu um erro no sistema ao salvar o usuário', [
                 'params' => [
@@ -354,23 +351,21 @@ class UsuariosController extends AppController
     protected function update(int $id)
     {
         $usuarios = TableRegistry::get('Usuario');
-        $entity = $usuarios->get($id, ['contain' => ['Pessoa']]);
+        $entity = $usuarios->get($id);
         $senha_antiga = $entity->senha;
 
         $usuarios->patchEntity($entity, $this->request->data());
 
-        $entity->pessoa->dataNascimento = $this->Format->formatDateDB($entity->pessoa->dataNascimento);
-
-        if($entity->mudasenha == 'true')
+        if ($entity->mudasenha == 'true') 
         {
             $entity->senha = sha1($entity->senha);
         }
-        else
+        else 
         {
             $entity->senha = $senha_antiga;
         }
 
-        try
+        try 
         {
             $propriedades = $this->Auditoria->changedOriginalFields($entity);
             $modificadas = $this->Auditoria->changedFields($entity, $propriedades);
@@ -387,14 +382,13 @@ class UsuariosController extends AppController
 
             $this->Auditoria->registrar($auditoria);
 
-            if($this->request->session()->read('UsuarioSuspeito'))
-            {
+            if ($this->request->session()->read('UsuarioSuspeito')) {
                 $this->Monitoria->monitorar($auditoria);
             }
 
             $this->redirect(['controller' => 'usuarios', 'action' => 'cadastro', $id]);
-        }
-        catch(Exception $ex)
+        } 
+        catch (Exception $ex) 
         {
             $this->Flash->exception('Ocorreu um erro no sistema ao salvar o usuário', [
                 'params' => [
