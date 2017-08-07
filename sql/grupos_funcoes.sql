@@ -1,0 +1,13 @@
+INSERT INTO `coqueiralmg`.`grupos_funcoes` (`nome`, `ordem`) VALUES ('Usuarios', '1');
+INSERT INTO `coqueiralmg`.`grupos_funcoes` (`nome`, `ordem`) VALUES ('Grupo de Usuários', '2');
+INSERT INTO `coqueiralmg`.`grupos_funcoes` (`nome`, `ordem`) VALUES ('Firewall', '3');
+INSERT INTO `coqueiralmg`.`grupos_funcoes` (`nome`, `ordem`) VALUES ('Secretarias', '4');
+INSERT INTO `coqueiralmg`.`grupos_funcoes` (`nome`, `ordem`) VALUES ('Banners', '5');
+INSERT INTO `coqueiralmg`.`grupos_funcoes` (`nome`, `ordem`) VALUES ('Publicações', '6');
+INSERT INTO `coqueiralmg`.`grupos_funcoes` (`nome`, `ordem`) VALUES ('Licitações', '7');
+INSERT INTO `coqueiralmg`.`grupos_funcoes` (`nome`, `ordem`) VALUES ('Notícias', '8');
+INSERT INTO `coqueiralmg`.`grupos_funcoes` (`nome`, `ordem`) VALUES ('Legislação', '9');
+INSERT INTO `coqueiralmg`.`grupos_funcoes` (`nome`, `ordem`) VALUES ('Categorias de Legislação', '10');
+INSERT INTO `coqueiralmg`.`grupos_funcoes` (`nome`, `ordem`) VALUES ('Páginas', '11');
+INSERT INTO `coqueiralmg`.`grupos_funcoes` (`nome`, `ordem`) VALUES ('Controles da Home', '12');
+INSERT INTO `coqueiralmg`.`grupos_funcoes` (`nome`, `ordem`) VALUES ('Auditoria', '13');

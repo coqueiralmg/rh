@@ -1,0 +1,26 @@
+{
+    "name": "cakephp/i18n",
+    "description": "CakePHP Internationalization library with support for messages translation and dates and numbers localization",
+    "license": "MIT",
+    "authors": [
+        {
+        "name": "CakePHP Community",
+        "homepage": "https://cakephp.org"
+    }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Cake\\I18n\\": "."
+        },
+        "files": ["functions.php"]
+    },
+    "require": {
+        "cakephp/core": "~3.0",
+        "ext-intl": "*",
+        "cakephp/chronos": "*",
+        "aura/intl": "^3.0.0"
+    },
+    "suggest": {
+        "cakephp/cache": "Require this if you want automatic caching of translators"
+    }
+}
