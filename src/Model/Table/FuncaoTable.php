@@ -12,8 +12,8 @@ class FuncaoTable extends BaseTable
 
         $this->belongsToMany('GrupoUsuario', [
             'joinTable' => 'funcao_grupo',
-            'foreignKey' => 'funcoes_id',
-            'targetForeignKey' => 'grupos_id',
+            'foreignKey' => 'funcao_id',
+            'targetForeignKey' => 'grupo_id',
             'propertyName' => 'grupos'
         ]);
     }

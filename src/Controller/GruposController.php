@@ -156,8 +156,8 @@ class GruposController extends AppController
                 throw new Exception('Este grupo de usuário não pode ser excluído, porque existem usuários associados a este grupo. Verifique os usuários associados a ele ou deixe o mesmo grupo inativo.');
             }
 
-            $conn->delete('funcoes_grupos', [
-                'grupos_id' => $id
+            $conn->delete('funcao_grupo', [
+                'grupo_id' => $id
             ]);
 
             $t_grupos->delete($marcado);
@@ -316,8 +316,8 @@ class GruposController extends AppController
                 $f_antigas[$func->chave] = $func->nome;
             }
 
-            $conn->delete('funcoes_grupos', [
-                'grupos_id' => $id_grupo
+            $conn->delete('funcao_grupo', [
+                'grupo_id' => $id_grupo
             ]);
         }
 
@@ -334,9 +334,9 @@ class GruposController extends AppController
 
                 $id_funcao = $funcao->id;
 
-                $conn->insert('funcoes_grupos', [
-                    'funcoes_id' => $id_funcao,
-                    'grupos_id' => $id_grupo
+                $conn->insert('funcao_grupo', [
+                    'funcao_id' => $id_funcao,
+                    'grupo_id' => $id_grupo
                 ]);
 
                 $f_novas[$chave] = $funcao->nome;

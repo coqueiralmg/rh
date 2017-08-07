@@ -12,7 +12,7 @@ function excluirGrupoUsuario(id, nome) {
             confirmButtonText: 'Sim',
             cancelButtonText: 'Não'
         }).then(function () {
-            window.location = '/admin/grupos/delete/' + id;
+            window.location = '/rh/grupos/delete/' + id;
         });
     }
 }

@@ -34,12 +34,12 @@
                             <div class="row">
                                 <div id="funcoes" class="col-md-12">
                                     <legend>Funções</legend>
-                                    <?php foreach ($grupos_funcoes as $grupo): ?>
+                                    <?php foreach ($grupos_funcoes as $grupo) : ?>
                                         <div class="col-md-3">
                                             <div class="form-group form-group-min">
                                                 <label><?=$grupo->nome?></label> <br/>
-                                                <?php foreach ($funcoes as $funcao): ?>
-                                                    <?php if($funcao->grupo == $grupo->id):?>
+                                                <?php foreach ($funcoes as $funcao) : ?>
+                                                    <?php if ($funcao->grupo == $grupo->id) :?>
                                                         <div class="togglebutton">
                                                             <label>
                                                                 <?= $this->Form->checkbox('chk_' . $funcao->chave, [
@@ -69,11 +69,6 @@
                                         <div class="togglebutton">
                                             <label>
                                                 <?= $this->Form->checkbox("ativo") ?> Ativo
-                                            </label>
-                                        </div>
-                                        <div class="togglebutton">
-                                            <label>
-                                                <?= $this->Form->checkbox("integrado") ?> Permitir integração com outros sistemas da prefeitura
                                             </label>
                                         </div>
                                         <div class="togglebutton">

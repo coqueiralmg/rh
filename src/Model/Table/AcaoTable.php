@@ -6,7 +6,7 @@ class AcaoTable extends BaseTable
 {
     public function initialize(array $config)
     {
-        $this->table('acoes');
+        $this->table('acao');
         $this->primaryKey('id');
     }
 }
