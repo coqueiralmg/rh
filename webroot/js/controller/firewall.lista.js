@@ -9,6 +9,6 @@ function excluirRegistro(id, ip) {
         confirmButtonText: 'Sim',
         cancelButtonText: 'Não'
     }).then(function () {
-        window.location = '/admin/firewall/delete/' + id;
+        window.location = '/rh/firewall/delete/' + id;
     });
 }

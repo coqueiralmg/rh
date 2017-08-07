@@ -14,7 +14,7 @@
                                 ],
                                 "role" => "form"]);
                             ?>
-                             <?=$this->element('message', [
+                                <?=$this->element('message', [
                                 'name' => 'cadastro_erro',
                                 'type' => 'error',
                                 'message' => 'Ocorreu um erro ao salvar o registro do firewall',
@@ -33,7 +33,7 @@
                                 <div class="col-md-2">
                                     
                                 </div>
-                                <?php if($firewall != null): ?>
+                                <?php if ($firewall != null) : ?>
                                 <div class="col-md-2">
                                     <div class="form-group label-control">
                                         <label>Data do Cadastro</label>
@@ -62,11 +62,6 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Outras Opções</label> <br/>
-                                        <div class="togglebutton">
-                                            <label>
-                                                <?= $this->Form->checkbox("site") ?>Aplicável também ao site
-                                            </label>
-                                        </div>
                                         <div class="togglebutton">
                                             <label>
                                                 <?= $this->Form->checkbox("ativo") ?> Ativo
