@@ -9,8 +9,8 @@ return[
         ]
     ],
     'system' => [
-        'name'=> 'Painel de Controle | Prefeitura Municipal de Coqueiral',
-        'shortName' => 'Prefeitura de Coqueiral',
+        'name'=> 'Recursos Humanos | Prefeitura Municipal de Coqueiral',
+        'shortName' => 'RH Prefeitura de Coqueiral',
         'version' => '1.0',
         'fullVersion' => '1.0.0',
         'yearRelease' => '2017'
