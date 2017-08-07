@@ -27,7 +27,9 @@
                             </div>
                             <div class="form-group form-button">
                                 <button type="submit" class="btn btn-fill btn-success pull-right">Buscar<div class="ripple-container"></div></button>
+                                <?php if ($this->Membership->handleRole("adicionar_ips_firewall")) : ?>
                                     <a href="<?= $this->Url->build(['controller' => 'Firewall', 'action' => 'add']) ?>" class="btn btn-warning btn-default pull-right">Novo<div class="ripple-container"></div></a>
+                                <?php endif; ?>
                                 <a href="<?= $this->Url->build(['controller' => 'Firewall', 'action' => 'imprimir', '?' => $data]) ?>" target="_blank" class="btn btn-fill btn-default pull-right">Imprimir<div class="ripple-container"></div></a>
                             </div>
                         <?php echo $this->Form->end(); ?>
@@ -57,10 +59,14 @@
                                             <td><?= $item->whitelist ?></td>
                                             <td><?= $item->ativado ?></td>
                                             <td class="td-actions text-right">
+                                                <?php if ($this->Membership->handleRole("editar_ips_firewall")) : ?>
                                                     <a href="<?= $this->Url->build(['controller' => 'Firewall', 'action' => 'edit', $item->id]) ?>" class="btn btn-primary btn-round">
                                                         <i class="material-icons">edit</i>
                                                     </a>
+                                                <?php endif; ?>
+                                                <?php if ($this->Membership->handleRole("excluir_ips_firewall")) : ?>
                                                     <button type="button" onclick="excluirRegistro(<?= $item->id ?>, '<?= $item->ip ?>')" class="btn btn-danger btn-round"><i class="material-icons">close</i></button>
+                                                <?php endif; ?>
                                             </td>
                                         </tr>
                                     <?php endforeach; ?>

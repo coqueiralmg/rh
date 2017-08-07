@@ -27,7 +27,7 @@ class MembershipHelper extends Helper
         }
 
         if (!$this->isFunction($function)) {
-            //throw new InternalErrorException("O método de validação de componentes, está chamando uma função inválida.");
+            throw new InternalErrorException("O método de validação de componentes, está chamando uma função inválida.");
         }
 
         $user_functions = $this->request->session()->check('USER_FUNCTIONS') ? $this->request->session()->read('USER_FUNCTIONS') : $this->getFunctionsUser($userID);
@@ -197,18 +197,11 @@ class MembershipHelper extends Helper
         return [
             ['chave' => 'painel', 'active' => true],
             ['chave' => 'usuarios', 'active' => $this->handleRole('listar_usuarios')],
-            ['chave' => 'grupo_usuarios', 'active' => $this->handleRole('listar_grupos_usuario')],
+            ['chave' => 'grupo_usuarios', 'active' => $this->handleRole('listar_grupos_usuarios')],
             ['chave' => 'firewall', 'active' => $this->handleRole('listar_ips_firewall')],
-            ['chave' => 'publicacoes', 'active' => $this->handleRole('listar_publicacoes')],
-            ['chave' => 'licitacoes', 'active' => $this->handleRole('listar_licitacoes')],
-            ['chave' => 'noticias', 'active' => $this->handleRole('listar_noticias')],
-            ['chave' => 'legislacao', 'active' => $this->handleRole('listar_legislacao')],
-            ['chave' => 'categorias_legislacao', 'active' => $this->handleRole('listar_categorias_legislacao')],
-            ['chave' => 'secretarias', 'active' => $this->handleRole('listar_secretarias')],
-            ['chave' => 'paginas', 'active' => $this->handleRole('listar_paginas')],
-            ['chave' => 'banners', 'active' => $this->handleRole('listar_banners')],
-            ['chave' => 'controles', 'active' => $this->handleRole('listar_controles_home')],
-            ['chave' => 'auditoria', 'active' => $this->handleRole('listar_auditoria')]
+            ['chave' => 'funcionarios', 'active' => $this->handleRole('listar_funcionarios')],
+            ['chave' => 'atestados', 'active' => $this->handleRole('listar_atestados')],
+            ['chave' => 'medicos', 'active' => $this->handleRole('listar_medicos')]
         ];
     }
 }

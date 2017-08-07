@@ -13,7 +13,9 @@
                 <div class="card">
                     <div class="card-content">
                         <?= $this->Flash->render() ?>
+                        <?php if ($this->Membership->handleRole("adicionar_grupos_usuarios")) : ?>
                             <a href="<?= $this->Url->build(['controller' => 'Grupos', 'action' => 'add']) ?>" class="btn btn-fill btn-warning pull-right">Novo<div class="ripple-container"></div></a>
+                        <?php endif; ?>
                         <a href="<?= $this->Url->build(['controller' => 'Grupos', 'action' => 'imprimir']) ?>" target="_blank" class="btn btn-fill btn-default pull-right">Imprimir<div class="ripple-container"></div></a>
                     </div>
                 </div>
@@ -36,10 +38,14 @@
                                         <td><?= $grupo->nome ?></td>
                                         <td><?= $grupo->ativado ?></td>
                                         <td class="td-actions text-right">
+                                            <?php if ($this->Membership->handleRole("editar_grupo_usuario")) : ?>
                                                 <a href="<?= $this->Url->build(['controller' => 'Grupos', 'action' => 'edit', $grupo->id]) ?>" class="btn btn-primary btn-round">
                                                     <i class="material-icons">edit</i>
                                                 </a>
+                                            <?php endif; ?>
+                                            <?php if ($this->Membership->handleRole("excluir_grupo_usuario")) : ?>
                                                 <button type="button" onclick="excluirGrupoUsuario(<?= $grupo->id ?>, '<?= $grupo->nome ?>')" class="btn btn-danger btn-round"><i class="material-icons">close</i></button>
+                                            <?php endif; ?>
                                         </td>
                                     </tr>   
                                 <?php endforeach; ?>

@@ -37,43 +37,54 @@
                     </a>
                 </li>
             <?php endif; ?>
+            <?php if ($this->Membership->handleMenu("usuarios")) : ?>
                 <li class="<?= $this->Menu->activeMenu(['controller' => 'usuarios']) ?>">
                     <a href="<?= $this->Url->build('/usuarios') ?>">
                         <i class="material-icons">person</i>
                         <p>Usuários</p>
                     </a>
                 </li>
+            <?php endif; ?>
+            <?php if ($this->Membership->handleMenu("grupo_usuarios")) : ?>
                 <li class="<?= $this->Menu->activeMenu(['controller' => 'grupos']) ?>">
                     <a href="<?= $this->Url->build('/grupos') ?>">
                         <i class="material-icons">group_work</i>
                         <p>Grupo de Usuários</p>
                     </a>
                 </li>
+            <?php endif; ?>
+            <?php if ($this->Membership->handleMenu("firewall")) : ?>
                 <li class="<?= $this->Menu->activeMenu(['controller' => 'firewall']) ?>">
                     <a href="<?= $this->Url->build(['controller' => 'firewall', 'action' => 'index']) ?>">
                         <i class="material-icons">security</i>
                         <p>Firewall</p>
                     </a>
                 </li>
+            <?php endif; ?>
+            <?php if ($this->Membership->handleMenu("funcionarios")) : ?>
                 <li class="<?= $this->Menu->activeMenu(['controller' => 'funcionarios']) ?>">
                     <a href="<?= $this->Url->build('/funcionarios') ?>">
                         <i class="material-icons">work</i>
                         <p>Funcionários</p>
                     </a>
                 </li>
+            <?php endif; ?>
+            <?php if ($this->Membership->handleMenu("atestados")) : ?>
                 <li class="<?= $this->Menu->activeMenu(['controller' => 'atestados']) ?>">
                     <a href="<?= $this->Url->build('/atestados') ?>">
                         <i class="material-icons">local_hospital</i>
                         <p>Atestados</p>
                     </a>
                 </li>
+            <?php endif; ?>
+            <?php if ($this->Membership->handleMenu("medicos")) : ?>
                  <li class="<?= $this->Menu->activeMenu(['controller' => 'atestados']) ?>">
                     <a href="<?= $this->Url->build('/atestados') ?>">
                         <i class="material-icons">face</i>
                         <p>Médicos</p>
                     </a>
                 </li>
-                
+            <?php endif; ?>
         </ul>
     </div>
 </div>
