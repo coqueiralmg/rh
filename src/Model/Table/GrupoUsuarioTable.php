@@ -11,9 +11,9 @@ class GrupoUsuarioTable extends BaseTable
         $this->entityClass('GrupoUsuario');
 
          $this->belongsToMany('Funcao', [
-            'joinTable' => 'funcoes_grupos',
-            'foreignKey' => 'grupos_id',
-            'targetForeignKey' => 'funcoes_id',
+            'joinTable' => 'funcao_grupo',
+            'foreignKey' => 'grupo_id',
+            'targetForeignKey' => 'funcao_id',
             'propertyName' => 'funcoes'
          ]);
     }
