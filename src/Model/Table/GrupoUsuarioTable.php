@@ -6,7 +6,7 @@ class GrupoUsuarioTable extends BaseTable
 {
     public function initialize(array $config)
     {
-        $this->table('grupos');
+        $this->table('grupo');
         $this->primaryKey('id');
         $this->entityClass('GrupoUsuario');
 
@@ -15,6 +15,6 @@ class GrupoUsuarioTable extends BaseTable
             'foreignKey' => 'grupos_id',
             'targetForeignKey' => 'funcoes_id',
             'propertyName' => 'funcoes'
-        ]); 
+         ]);
     }
 }
