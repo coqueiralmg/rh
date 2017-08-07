@@ -67,6 +67,12 @@
                         <p>Atestados</p>
                     </a>
                 </li>
+                 <li class="<?= $this->Menu->activeMenu(['controller' => 'atestados']) ?>">
+                    <a href="<?= $this->Url->build('/atestados') ?>">
+                        <i class="material-icons">face</i>
+                        <p>Médicos</p>
+                    </a>
+                </li>
                 
         </ul>
     </div>
