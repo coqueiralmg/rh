@@ -1,9 +1,9 @@
-<div class="sidebar" data-background-color="white" data-color="green">
+<div class="sidebar" data-background-color="white" data-color="blue">
     <div class="logo">
         <center>
             <?= $this->Html->image('brasao_coqueiral.png', ['class' => 'img-responsive', 'width' => '100px;', 'title' => 'Prefeitura Municipal de Coqueiral', 'alt' => 'Prefeitura Municipal de Coqueiral', 'url' => ['controller' => 'System', 'action' => 'board']]); ?>
         </center>
-        <?= $this->Html->link('Painel de Controle', ['controller' => 'System', 'action' => 'board'],  ['class' => 'simple-text']) ?>
+        <?= $this->Html->link('Painel de Controle', ['controller' => 'System', 'action' => 'board'], ['class' => 'simple-text']) ?>
     </div>
 
     <div class="user">
@@ -29,7 +29,7 @@
 
     <div class="sidebar-wrapper">
         <ul class="nav">
-            <?php if ($this->Membership->handleMenu("painel")): ?>
+            <?php if ($this->Membership->handleMenu("painel")) : ?>
                 <li class="<?= $this->Menu->activeMenu(['controller' => 'system', 'action' => 'board']) ?>">
                     <a href="<?= $this->Url->build(['controller' => 'system', 'action' => 'board']) ?>">
                         <i class="material-icons">dashboard</i>
@@ -37,7 +37,7 @@
                     </a>
                 </li>
             <?php endif; ?>
-            <?php if ($this->Membership->handleMenu("usuarios")): ?>
+            <?php if ($this->Membership->handleMenu("usuarios")) : ?>
                 <li class="<?= $this->Menu->activeMenu(['controller' => 'usuarios']) ?>">
                     <a href="<?= $this->Url->build('/usuarios') ?>">
                         <i class="material-icons">person</i>
@@ -45,7 +45,7 @@
                     </a>
                 </li>
             <?php endif; ?>
-            <?php if ($this->Membership->handleMenu("grupo_usuarios")): ?>
+            <?php if ($this->Membership->handleMenu("grupo_usuarios")) : ?>
                 <li class="<?= $this->Menu->activeMenu(['controller' => 'grupos']) ?>">
                     <a href="<?= $this->Url->build('/grupos') ?>">
                         <i class="material-icons">group_work</i>
@@ -53,7 +53,7 @@
                     </a>
                 </li>
             <?php endif; ?>
-            <?php if ($this->Membership->handleMenu("firewall")): ?>
+            <?php if ($this->Membership->handleMenu("firewall")) : ?>
                 <li class="<?= $this->Menu->activeMenu(['controller' => 'firewall']) ?>">
                     <a href="<?= $this->Url->build(['controller' => 'firewall', 'action' => 'index']) ?>">
                         <i class="material-icons">security</i>
@@ -61,7 +61,7 @@
                     </a>
                 </li>
             <?php endif; ?>
-            <?php if ($this->Membership->handleMenu("publicacoes")): ?>
+            <?php if ($this->Membership->handleMenu("publicacoes")) : ?>
                 <li class="<?= $this->Menu->activeMenu(['controller' => 'publicacoes']) ?>">
                     <a href="<?= $this->Url->build('/publicacoes') ?>">
                         <i class="material-icons">library_books</i>
@@ -69,7 +69,7 @@
                     </a>
                 </li>
             <?php endif; ?>
-            <?php if ($this->Membership->handleMenu("licitacoes")): ?>
+            <?php if ($this->Membership->handleMenu("licitacoes")) : ?>
                 <li class="<?= $this->Menu->activeMenu(['controller' => 'licitacoes']) ?>">
                     <a href="<?= $this->Url->build('/licitacoes') ?>">
                         <i class="material-icons">work</i>
@@ -77,7 +77,7 @@
                     </a>
                 </li>
             <?php endif; ?>
-            <?php if ($this->Membership->handleMenu("noticias")): ?>
+            <?php if ($this->Membership->handleMenu("noticias")) : ?>
                 <li class="<?= $this->Menu->activeMenu(['controller' => 'noticias']) ?>">
                     <a href="<?= $this->Url->build('/noticias') ?>">
                         <i class="material-icons">style</i>
@@ -85,7 +85,7 @@
                     </a>
                 </li>
             <?php endif; ?>
-            <?php if ($this->Membership->handleSubmenus("legislacao", "categorias_legislacao")): ?>
+            <?php if ($this->Membership->handleSubmenus("legislacao", "categorias_legislacao")) : ?>
                 <li>
                     <a data-toggle="collapse" href="#legislacao">
                     <i class="material-icons">location_city</i>
@@ -93,14 +93,14 @@
                     </a>
                     <div class="collapse" id="legislacao" aria-expanded="true" style="padding: 0 0 0 40px">
                         <ul class="nav">
-                            <?php if ($this->Membership->handleMenu("legislacao")): ?>
+                            <?php if ($this->Membership->handleMenu("legislacao")) : ?>
                                 <li class="<?= $this->Menu->activeMenu(['controller' => 'legislacao', 'action' => 'index']) ?>">
                                     <a href="<?= $this->Url->build('/legislacao') ?>">
                                         Cadastro e Pesquisa
                                     </a>
                                 </li>
                             <?php endif; ?>
-                            <?php if ($this->Membership->handleMenu("categorias_legislacao")): ?>
+                            <?php if ($this->Membership->handleMenu("categorias_legislacao")) : ?>
                                 <li class="<?= $this->Menu->activeMenu(['controller' => 'legislacao', 'action' => 'categorias']) ?>">
                                     <a href="<?= $this->Url->build(['controller' => 'legislacao', 'action' => 'categorias']) ?>">
                                         Categorias
@@ -111,7 +111,7 @@
                     </div>
                 </li>
             <?php endif; ?>
-            <?php if ($this->Membership->handleMenu("secretarias")): ?>
+            <?php if ($this->Membership->handleMenu("secretarias")) : ?>
                 <li class="<?= $this->Menu->activeMenu(['controller' => 'secretarias']) ?>">
                     <a href="<?= $this->Url->build('/secretarias') ?>">
                         <i class="material-icons">business_center</i>
@@ -119,7 +119,7 @@
                     </a>
                 </li>
             <?php endif; ?>
-            <?php if ($this->Membership->handleMenu("paginas")): ?>
+            <?php if ($this->Membership->handleMenu("paginas")) : ?>
                 <li class="<?= $this->Menu->activeMenu(['controller' => 'paginas']) ?>">
                     <a href="<?= $this->Url->build('/paginas') ?>">
                         <i class="material-icons">public</i>
@@ -127,7 +127,7 @@
                     </a>
                 </li>
             <?php endif; ?>
-            <?php if ($this->Membership->handleMenu("banners")): ?>
+            <?php if ($this->Membership->handleMenu("banners")) : ?>
                 <li class="<?= $this->Menu->activeMenu(['controller' => 'banners']) ?>">
                     <a href="<?= $this->Url->build('/banners') ?>">
                         <i class="material-icons">slideshow</i>
@@ -135,7 +135,7 @@
                     </a>
                 </li>
             <?php endif; ?>
-            <?php if ($this->Membership->handleMenu("controles")): ?>
+            <?php if ($this->Membership->handleMenu("controles")) : ?>
                 <li class="<?= $this->Menu->activeMenu(['controller' => 'controles']) ?>">
                     <a href="<?= $this->Url->build('/controles') ?>">
                         <i class="material-icons">gamepad</i>
@@ -143,7 +143,7 @@
                     </a>
                 </li>
             <?php endif; ?>
-            <?php if ($this->Membership->handleMenu("auditoria")): ?>
+            <?php if ($this->Membership->handleMenu("auditoria")) : ?>
                 <li class="<?= $this->Menu->activeMenu(['controller' => 'auditoria']) ?>">
                     <a href="<?= $this->Url->build('/auditoria') ?>">
                     <i class="material-icons">fingerprint</i>

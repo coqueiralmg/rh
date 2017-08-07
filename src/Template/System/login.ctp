@@ -12,8 +12,8 @@
                         ]]);
                     ?>
                     <div class="card card-login card-hidden">
-                        <div class="card-header text-center" data-background-color="green">
-                            <h4 class="card-title">Painel de Controle</h4>
+                        <div class="card-header text-center" data-background-color="blue">
+                            <h4 class="card-title">Recursos Humanos</h4>
                             <p>Prefeitura Municipal de Coqueiral - Minas Gerais</p>
                         </div>
                         <p class="category text-center">
