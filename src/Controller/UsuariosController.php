@@ -31,7 +31,7 @@ class UsuariosController extends AppController
             $grupo = $this->request->query('grupo');
             $mostrar = $this->request->query('mostrar');
 
-            $condicoes['Pessoa.nome LIKE'] = '%' . $nome . '%';
+            $condicoes['Usuario.nome LIKE'] = '%' . $nome . '%';
             $condicoes['Usuario.usuario LIKE'] = '%' . $usuario . '%';
             $condicoes['Usuario.email LIKE'] = '%' . $email . '%';
 
@@ -56,7 +56,7 @@ class UsuariosController extends AppController
 
         $this->paginate = [
             'limit' => $limite_paginacao,
-            'contain' => ['Pessoa', 'GrupoUsuario'],
+            'contain' => ['GrupoUsuario'],
             'conditions' => $condicoes
         ];
 
@@ -67,7 +67,6 @@ class UsuariosController extends AppController
 
         $usuarios = $this->paginate($t_usuarios);
         $qtd_total = $t_usuarios->find('all', [
-            'contain' => ['Pessoa', 'GrupoUsuario'],
             'conditions' => $condicoes]
             )->count();
 
@@ -106,7 +105,7 @@ class UsuariosController extends AppController
             $grupo = $this->request->query('grupo');
             $mostrar = $this->request->query('mostrar');
 
-            $condicoes['Pessoa.nome LIKE'] = '%' . $nome . '%';
+            $condicoes['Usuario.nome LIKE'] = '%' . $nome . '%';
             $condicoes['Usuario.usuario LIKE'] = '%' . $usuario . '%';
             $condicoes['Usuario.email LIKE'] = '%' . $email . '%';
 
@@ -130,7 +129,7 @@ class UsuariosController extends AppController
         }
 
         $usuarios = $t_usuarios->find('all', [ 
-            'contain' => ['Pessoa', 'GrupoUsuario'],
+            'contain' => ['GrupoUsuario'],
             'conditions' => $condicoes
         ]);
 

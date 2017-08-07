@@ -28,8 +28,8 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group form-group-min">
-                                      <?= $this->Form->label("usuario", "Usuário") ?>
-                                      <?= $this->Form->text("usuario", ["class" => "form-control"]) ?>
+                                        <?= $this->Form->label("usuario", "Usuário") ?>
+                                        <?= $this->Form->text("usuario", ["class" => "form-control"]) ?>
                                       <span class="material-input"></span></div>
                                 </div>
                                 <div class="col-md-4">
@@ -58,12 +58,10 @@
                             </div>
                             <div class="form-group form-button">
                             <button type="submit" class="btn btn-fill btn-success pull-right">Buscar<div class="ripple-container"></div></button>
-                            <?php if ($this->Membership->handleRole("adicionar_usuario")): ?>
                                 <a href="<?= $this->Url->build(['controller' => 'Usuarios', 'action' => 'add']) ?>" class="btn btn-warning btn-default pull-right">Novo<div class="ripple-container"></div></a>
-                            <?php endif; ?>
                             <a href="<?= $this->Url->build(['controller' => 'Usuarios', 'action' => 'imprimir', '?' => $data]) ?>" target="_blank" class="btn btn-fill btn-default pull-right">Imprimir<div class="ripple-container"></div></a>
                             </div>
-                         <?php echo $this->Form->end(); ?>
+                            <?php echo $this->Form->end(); ?>
                         
                     </div>
                 </div>
@@ -71,7 +69,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-content table-responsive">
-                        <?php if(count($usuarios) > 0):?>
+                        <?php if (count($usuarios) > 0) :?>
                             <h4 class="card-title">Lista de Usuários</h4>
                             <table class="table">
                                 <thead class="text-primary">
@@ -85,31 +83,27 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($usuarios as $usuario): ?>
+                                    <?php foreach ($usuarios as $usuario) : ?>
                                         <tr>
-                                            <td style="width: 30%"><?=$usuario->pessoa->nome?></td>
+                                            <td style="width: 30%"><?=$usuario->nome?></td>
                                             <td style="width: 15%"><?=$usuario->usuario?></td>
                                             <td style="width: 20%"><?=$usuario->email?></td>
                                             <td><?=$usuario->ativado?></td>
                                             <td><?=$usuario->grupoUsuario->nome?></td>
                                             <td class="td-actions text-right">
-                                                <?php if ($this->Membership->handleRole("editar_usuario")): ?>
                                                     <a href="<?= $this->Url->build(['controller' => 'Usuarios', 'action' => 'edit', $usuario->id]) ?>" class="btn btn-primary btn-round">
                                                         <i class="material-icons">edit</i>
                                                     </a>
-                                                <?php endif; ?>
-                                                <?php if ($this->Membership->handleRole("excluir_usuario")): ?>
-                                                    <button type="button" onclick="excluirUsuario(<?= $usuario->id ?>, '<?= $usuario->pessoa->nome ?>')" class="btn btn-danger btn-round"><i class="material-icons">close</i></button>
-                                                <?php endif; ?>
+                                                    <button type="button" onclick="excluirUsuario(<?= $usuario->id ?>, '<?= $usuario->nome ?>')" class="btn btn-danger btn-round"><i class="material-icons">close</i></button>
                                             </td>
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>
                             </table>
-                        <?php else: ?>
-                            <?php if ($this->Membership->handleRole("adicionar_usuario")): ?>
+                        <?php else : ?>
+                            <?php if ($this->Membership->handleRole("adicionar_usuario")) : ?>
                                 <h3>Nenhum usuário encontrado. Para adicionar novo usuário, <?=$this->Html->link("clique aqui", ["controller" => "usuarios", "action" => "add"])?>.</h3>
-                            <?php else:?>
+                            <?php else :?>
                                 <h3>Nenhum usuário encontrado.</h3>
                             <?php endif; ?>
                         <?php endif; ?>
@@ -117,7 +111,7 @@
                      <div class="card-content">
                         <div class="material-datatables">
                             <div class="row">
-                               <?=$this->element('pagination', $opcao_paginacao) ?>
+                                <?=$this->element('pagination', $opcao_paginacao) ?>
                             </div>
                         </div>
                     </div>

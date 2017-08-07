@@ -1,4 +1,4 @@
-<?php if($qtd_total > 0):?>
+<?php if ($qtd_total > 0) :?>
     <h4 class="card-title">Lista de Usuários</h4>
     <table class="table table-striped">
         <thead class="text-primary">
@@ -11,9 +11,9 @@
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($usuarios as $usuario): ?>
+            <?php foreach ($usuarios as $usuario) : ?>
                 <tr>
-                    <td style="width: 30%"><?=$usuario->pessoa->nome?></td>
+                    <td style="width: 30%"><?=$usuario->nome?></td>
                     <td style="width: 15%"><?=$usuario->usuario?></td>
                     <td style="width: 20%"><?=$usuario->email?></td>
                     <td><?=$usuario->ativado?></td>
@@ -29,7 +29,7 @@
             </div>
         </div>
     </div>
-<?php else: ?>
+<?php else : ?>
     <h3>Nenhum usuário encontrado.</h3>
 <?php endif; ?>
 
