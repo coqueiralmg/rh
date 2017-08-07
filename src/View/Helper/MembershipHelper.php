@@ -18,28 +18,23 @@ class MembershipHelper extends Helper
      */
     public function handleRole($function, $userID = null)
     {
-        if (!isset($userID))
-        {
+        if (!isset($userID)) {
             $userID = $this->getUser();
 
-            if ($userID == null)
-            {
+            if ($userID == null) {
                 return false;
             }
         }
 
-        if (!$this->isFunction($function))
-        {
-            throw new InternalErrorException("O método de validação de componentes, está chamando uma função inválida.");
+        if (!$this->isFunction($function)) {
+            //throw new InternalErrorException("O método de validação de componentes, está chamando uma função inválida.");
         }
 
         $user_functions = $this->request->session()->check('USER_FUNCTIONS') ? $this->request->session()->read('USER_FUNCTIONS') : $this->getFunctionsUser($userID);
         $autorizado = false;
 
-        foreach($user_functions as $chave => $nome)
-        {
-            if($chave == $function)
-            {
+        foreach ($user_functions as $chave => $nome) {
+            if ($chave == $function) {
                 $autorizado = true;
                 break;
             }
@@ -72,8 +67,7 @@ class MembershipHelper extends Helper
         $args = func_get_args();
         $autorizado = false;
 
-        for($i = 0; $i < $qtd_args && !$autorizado; $i++)
-        {
+        for ($i = 0; $i < $qtd_args && !$autorizado; $i++) {
             $chave = $args[$i];
             $autorizado = $this->handleMenu($chave);
         }
@@ -91,10 +85,8 @@ class MembershipHelper extends Helper
     {
         $it = null;
 
-        foreach ($menu as $item)
-        {
-            if ($item["chave"] == $chave)
-            {
+        foreach ($menu as $item) {
+            if ($item["chave"] == $chave) {
                 $it = $item;
                 break;
             }
@@ -145,8 +137,7 @@ class MembershipHelper extends Helper
         $grupo = $grupos->get($usuario->grupo, ['contain' => ['Funcao']]);
         $fs = array();
 
-        foreach($grupo->funcoes as $func)
-        {
+        foreach ($grupo->funcoes as $func) {
             $fs[$func->chave] = $func->nome;
         }
 
@@ -163,19 +154,15 @@ class MembershipHelper extends Helper
     {
         $actionRoles = array();
 
-        if(Cache::read('ACTION_ROLES') != null)
-        {
+        if (Cache::read('ACTION_ROLES') != null) {
             $actionRoles = Cache::read('ACTION_ROLES');
-        }
-        else
-        {
+        } else {
             $t_funcao = TableRegistry::get('Funcao');
             $t_acao = TableRegistry::get('Acao');
 
             $funcoes = $t_funcao->find('all');
 
-            foreach($funcoes as $funcao)
-            {
+            foreach ($funcoes as $funcao) {
                 $action = array();
                 $query = $t_acao->find('all', [
                     'conditions' => [
@@ -183,8 +170,7 @@ class MembershipHelper extends Helper
                     ]
                 ]);
                 
-                foreach($query as $acao)
-                {
+                foreach ($query as $acao) {
                     $valor = [
                         'controller' => $acao->controller,
                         'action' => $acao->action
