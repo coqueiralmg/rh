@@ -34,7 +34,8 @@ class AuditoriaComponent extends Component
         16 => 'Adicão do registro do firewall lista negra',
         17 => 'Adicão do registro do firewall lista branca',
         18 => 'Edição do registro do firewall',
-        19 => 'Exclusão do registro do firewall'
+        19 => 'Exclusão do registro do firewall',
+        20 => 'Liberação de usuário suspenso'
     ];
     
     /**
@@ -51,14 +52,13 @@ class AuditoriaComponent extends Component
 
         $auditoria->data = date("Y-m-d H:i:s");
         $auditoria->ocorrencia = $dados['ocorrencia'];
-        $auditoria->descricao = empty($dados['descricao']) ? NULL : $dados['descricao'];
-        $auditoria->dado_adicional = empty($dados['dado_adicional']) ? NULL : $dados['dado_adicional'];
+        $auditoria->descricao = empty($dados['descricao']) ? null : $dados['descricao'];
+        $auditoria->dado_adicional = empty($dados['dado_adicional']) ? null : $dados['dado_adicional'];
         $auditoria->usuario = $dados['usuario'];
         $auditoria->ip = $_SERVER['REMOTE_ADDR'];
         $auditoria->agent = $_SERVER['HTTP_USER_AGENT'];
 
-        if($table->save($auditoria))
-        {
+        if ($table->save($auditoria)) {
             $id = $auditoria->id;
         }
 
@@ -72,13 +72,13 @@ class AuditoriaComponent extends Component
      */
     public function listar(int $usuario)
     {
-       $table = TableRegistry::get('Auditoria');
+        $table = TableRegistry::get('Auditoria');
 
-       $query = $table->find('all', [
+        $query = $table->find('all', [
            'conditions' => [
                'usuario' => $usuario
            ]
-       ]);
+        ]);
 
         return $query->toArray();
     }
@@ -150,8 +150,7 @@ class AuditoriaComponent extends Component
     {
         $campos = array();
 
-        foreach($propriedades as $chave => $valor)
-        {
+        foreach ($propriedades as $chave => $valor) {
             $campos[$chave] = $entity->get($chave);
         }
 
