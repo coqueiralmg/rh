@@ -76,13 +76,11 @@ class AppController extends Controller
             $this->set('_serialize', true);
         }
 
-        if($this->validationRole)
-        {
+        if ($this->validationRole) {
             $this->configurarAcesso();
             $this->controlAuth();
 
-            if ($this->isAuthorized())
-            {
+            if ($this->isAuthorized()) {
                 $this->carregarDadosSistema();
                 $this->accessRole();
             }
@@ -94,8 +92,7 @@ class AppController extends Controller
      */
     protected function controlAuth()
     {
-        if (!$this->isAuthorized())
-        {
+        if (!$this->isAuthorized()) {
             $this->redirectLogin("A sessão foi expirada!");
         }
     }
@@ -129,8 +126,7 @@ class AppController extends Controller
         $this->set('role', $this->Membership->getRoles($url));
         $this->set('roles', $this->Membership->actionRoles());
 
-        if(!$this->Membership->handleRole($url, $userID))
-        {
+        if (!$this->Membership->handleRole($url, $userID)) {
             //throw new ForbiddenException();
         }
     }
@@ -143,12 +139,9 @@ class AppController extends Controller
      */
     protected function redirectLogin(string $mensagem, bool $error = true)
     {
-        if ($error)
-        {
+        if ($error) {
             $this->Flash->error($mensagem);
-        }
-        else
-        {
+        } else {
             $this->Flash->success($mensagem);
         }
 
@@ -157,8 +150,7 @@ class AppController extends Controller
 
     protected function configurarAcesso()
     {
-        if(!$this->Firewall->verificar())
-        {
+        if (!$this->Firewall->verificar()) {
             $mensagem = "O acesso ao sistema está bloqueado para este endereço de IP. Caso tenha sido bloqueado por engano, entre em contato com administrador.";
             $this->redirect(['controller' => 'system', 'action' => 'fail', base64_encode($mensagem)]);
         }
@@ -166,10 +158,11 @@ class AppController extends Controller
 
     protected function carregarDadosSistema()
     {
-        $t_logs = TableRegistry::get('Log');
+        $t_logs = TableRegistry::get('Auditoria');
         $query = $t_logs->find('all', [
             'conditions' => [
-                'usuario' => $this->request->session()->read('UsuarioID')
+                'usuario' => $this->request->session()->read('UsuarioID'),
+                'ocorrencia' => 1
             ],
             'limit' => 1,
             'page' => 2,
@@ -179,13 +172,10 @@ class AppController extends Controller
         
         $log = $query->first();
 
-        if($log != null)
-        {
+        if ($log != null) {
             $this->set('ultimo_acesso', $log->data);
-        }
-        else
-        {
+        } else {
             $this->set('ultimo_acesso', null);
-        }    
+        }
     }
 }

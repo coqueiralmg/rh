@@ -136,7 +136,7 @@ class SystemController extends AppController
     public function board()
     {
         $this->controlAuth();
-        //$this->carregarDadosSistema();
+        $this->carregarDadosSistema();
 
         
 
