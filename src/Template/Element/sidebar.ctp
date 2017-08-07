@@ -3,7 +3,7 @@
         <center>
             <?= $this->Html->image('brasao_coqueiral.png', ['class' => 'img-responsive', 'width' => '100px;', 'title' => 'Prefeitura Municipal de Coqueiral', 'alt' => 'Prefeitura Municipal de Coqueiral', 'url' => ['controller' => 'System', 'action' => 'board']]); ?>
         </center>
-        <?= $this->Html->link('Painel de Controle', ['controller' => 'System', 'action' => 'board'], ['class' => 'simple-text']) ?>
+        <?= $this->Html->link('Recursos Humanos', ['controller' => 'System', 'action' => 'board'], ['class' => 'simple-text']) ?>
     </div>
 
     <div class="user">
