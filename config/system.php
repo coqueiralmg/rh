@@ -1,21 +1,15 @@
 <?php
 
 return[
-    'limitPagination' => 15,
-    'security' => [
-        'login' => [
-            'maxAttemps' => 5,
-            'warningAttemp' => 3
-        ]
-    ],
-    'system' => [
+    'System' => [
         'name'=> 'Recursos Humanos | Prefeitura Municipal de Coqueiral',
         'shortName' => 'RH Prefeitura de Coqueiral',
         'version' => '1.0',
         'fullVersion' => '1.0.0',
-        'yearRelease' => '2017'
+        'yearRelease' => '2017',
+        'yearCreation' => '2017'
     ],
-    'author' => [
+    'Author' => [
         'name' => 'Prefeitura Municipal de Coqueiral',
         'company' => 'Prefeitura Municipal de Coqueiral',
         'local' => 'Coqueiral - MG',
@@ -27,7 +21,7 @@ return[
             'email' => 'valentim@baudovalentim.net'
         ]
     ],
-    'host' => [
+    'Host' => [
         'developer' => 'localhost',
         'release' => 'coqueiral.mg.gov.br'
     ]
