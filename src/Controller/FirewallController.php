@@ -22,7 +22,7 @@ class FirewallController extends AppController
         $condicoes = array();
         $data = array();
         
-        if(count($this->request->getQueryParams()) > 0)
+        if(count($this->request->getQueryParams()) > 3)
         {
             $mostrar = $this->request->query('mostrar');
 
