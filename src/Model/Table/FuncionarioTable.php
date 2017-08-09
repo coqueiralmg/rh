@@ -8,5 +8,13 @@ class FuncionarioTable extends BaseTable
     {
         $this->table('funcionario');
         $this->primaryKey('id');
+        $this->entityClass('Funcionario');
+        
+        $this->belongsTo('TipoFuncionario', [
+            'className' => 'TipoFuncionario',
+            'foreignKey' => 'tipo',
+            'propertyName' => 'tipo',
+            'joinType' => 'INNER'
+        ]);
     }
 }
