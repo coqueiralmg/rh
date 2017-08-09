@@ -19,7 +19,7 @@ class UsuariosController extends AppController
         $t_usuarios = TableRegistry::get('Usuario');
         $t_grupos = TableRegistry::get('GrupoUsuario');
 
-        $limite_paginacao = Configure::read('limitPagination');
+        $limite_paginacao = Configure::read('Pagination.limit');
         $condicoes = array();
         $data = array();
 

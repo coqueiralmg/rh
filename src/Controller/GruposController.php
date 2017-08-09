@@ -21,7 +21,7 @@ class GruposController extends AppController
     public function index()
     {
         $t_grupos = TableRegistry::get('GrupoUsuario');
-        $limite_paginacao = Configure::read('limitPagination');
+        $limite_paginacao = Configure::read('Pagination.limit');
 
         $this->paginate = [
             'limit' => $limite_paginacao

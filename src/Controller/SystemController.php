@@ -238,8 +238,8 @@ class SystemController extends AppController
     protected function atualizarTentativas(string $mensagem)
     {
         $tentativa = $this->request->session()->read('LoginAttemps');
-        $aviso = Configure::read('security.login.warningAttemp');
-        $limite = Configure::read('security.login.maxAttemps');
+        $aviso = Configure::read('Security.login.attemps.warning');
+        $limite = Configure::read('Security.login.attemps.max');
         $this->request->session()->write('LoginAttemps', $tentativa + 1);
 
         if ($tentativa >= $aviso && $tentativa < $limite) {
@@ -359,7 +359,7 @@ class SystemController extends AppController
         if ($senha != '') {
             $tentativa = $this->request->session()->read('LoginAttemps');
 
-            if ($tentativa >= Configure::read('security.login.warningAttemp')) {
+            if ($tentativa >= Configure::read('Security.login.attemps.warning')) {
                 $this->request->session()->write('UsuarioSuspeito', true);
                 $this->Monitoria->monitorar($auditoria);
             } else {

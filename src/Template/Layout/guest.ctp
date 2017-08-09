@@ -11,11 +11,11 @@
         <?php
             if(isset($title))
             {
-                echo $title . " | " . \Cake\Core\Configure::read('system.name');
+                echo $title . " | " . $this->Data->setting('System.name');
             }
             else
             {
-                echo \Cake\Core\Configure::read('system.name');
+                echo $this->Data->setting('System.name');
             }
         ?>
     </title>

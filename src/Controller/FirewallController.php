@@ -18,7 +18,7 @@ class FirewallController extends AppController
     {
         $t_firewall = TableRegistry::get('Firewall');
 
-        $limite_paginacao = Configure::read('limitPagination');
+        $limite_paginacao = Configure::read('Pagination.limit');
         $condicoes = array();
         $data = array();
         

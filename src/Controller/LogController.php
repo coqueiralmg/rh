@@ -17,7 +17,7 @@ class LogController extends AppController
     public function index()
     {
         $t_auditoria = TableRegistry::get('Auditoria');
-        $limite_paginacao = Configure::read('limitPagination');
+        $limite_paginacao = Configure::read('Pagination.limit');
 
         $conditions = [
             'usuario' =>  $this->request->session()->read('UsuarioID'),
