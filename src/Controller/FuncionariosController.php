@@ -69,4 +69,43 @@ class FuncionariosController extends AppController
     {
         $this->set('title', 'Funcionários');
     }
+
+    public function add()
+    {
+        $this->redirect(['action' => 'cadastro', 0]);
+    }
+
+    public function edit(int $id)
+    {
+        $this->redirect(['action' => 'cadastro', $id]);
+    }
+
+    public function cadastro(int $id)
+    {
+        $title = ($id > 0) ? 'Edição de Funcionário' : 'Novo Funcionário';
+        $icon = 'work';
+
+        $t_funcionarios = TableRegistry::get('Funcionario');
+        $t_tipo_funcionario = TableRegistry::get('TipoFuncionario');
+
+        $tipos_funcionarios = $t_tipo_funcionario->find('list', [
+            'keyField' => 'id',
+            'valueField' => 'descricao'
+        ]);
+
+        if ($id > 0) 
+        {
+            $funcionario = $t_funcionarios->get($id);
+            $this->set('funcionario', $funcionario);
+        } 
+        else 
+        {
+            $this->set('funcionario', null);
+        }
+
+        $this->set('title', $title);
+        $this->set('icon', $icon);
+        $this->set('id', $id);
+        $this->set('tipos_funcionarios', $tipos_funcionarios);
+    }
 }
