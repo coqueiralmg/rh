@@ -16,6 +16,7 @@ class FuncionariosController extends AppController
     public function index()
     {
         $t_funcionarios = TableRegistry::get('Funcionario');
+        $t_tipo_funcionario = TableRegistry::get('TipoFuncionario');
 
         $limite_paginacao = Configure::read('Pagination.limit');
         $condicoes = array();
@@ -26,9 +27,20 @@ class FuncionariosController extends AppController
 
         }
 
+        $this->paginate = [
+            'limit' => $limite_paginacao,
+            'contain' => ['TipoFuncionario'],
+            'conditions' => $condicoes
+        ];
+
+        $funcionarios = $this->paginate($t_funcionarios);
+        $qtd_total = $t_funcionarios->find('all', [
+            'conditions' => $condicoes
+        ])->count();
+
         $opcao_paginacao = [
-            'name' => 'usuários',
-            'name_singular' => 'usuário'
+            'name' => 'funcionários',
+            'name_singular' => 'funcionário'
         ];
 
         $combo_mostra = [
@@ -37,11 +49,20 @@ class FuncionariosController extends AppController
             'I' => 'Somente inativos',
             'E' => 'Somente funcionários em estágio probatório'
         ];
+
+        $tipos_funcionarios = $t_tipo_funcionario->find('list', [
+            'keyField' => 'id',
+            'valueField' => 'descricao'
+        ]);
         
         $this->set('title', 'Funcionários');
         $this->set('icon', 'work');
         $this->set('opcao_paginacao', $opcao_paginacao);
         $this->set('combo_mostra', $combo_mostra);
+        $this->set('funcionarios', $funcionarios);
+        $this->set('qtd_total', $qtd_total);
+        $this->set('tipos_funcionarios', $tipos_funcionarios);
+        $this->set('data', $data);
     }
 
     public function imprimir()

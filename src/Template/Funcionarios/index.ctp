@@ -50,7 +50,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group form-group-min">
                                         <?= $this->Form->label("tipo", "Tipo de Funcionário") ?> <br/>
-                                        <?=$this->Form->select('mostrar', $combo_mostra, ['class' => 'form-control'])?>
+                                        <?=$this->Form->select('mostrar', $tipos_funcionarios, ['empty' => 'Todos', 'class' => 'form-control'])?>
                                         <span class="material-input"></span>
                                     </div>
                                 </div>
@@ -65,10 +65,10 @@
                             </div>
                             <div class="form-group form-button">
                             <button type="submit" class="btn btn-fill btn-success pull-right">Buscar<div class="ripple-container"></div></button>
-                            <?php if ($this->Membership->handleRole("adicionar_usuarios")) : ?>
-                                <a href="<?= $this->Url->build(['controller' => 'Usuarios', 'action' => 'add']) ?>" class="btn btn-warning btn-default pull-right">Novo<div class="ripple-container"></div></a>
+                            <?php if ($this->Membership->handleRole("adicionar_funcionarios")) : ?>
+                                <a href="<?= $this->Url->build(['controller' => 'Funcionarios', 'action' => 'add']) ?>" class="btn btn-warning btn-default pull-right">Novo<div class="ripple-container"></div></a>
                             <?php endif; ?>
-                            <a href="<?= $this->Url->build(['controller' => 'Usuarios', 'action' => 'imprimir', '?' => $data]) ?>" target="_blank" class="btn btn-fill btn-default pull-right">Imprimir<div class="ripple-container"></div></a>
+                            <a href="<?= $this->Url->build(['controller' => 'Funcionarios', 'action' => 'imprimir', '?' => $data]) ?>" target="_blank" class="btn btn-fill btn-default pull-right">Imprimir<div class="ripple-container"></div></a>
                             </div>
                             <?php echo $this->Form->end(); ?>
                         
@@ -78,34 +78,38 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-content table-responsive">
-                        <?php if (count($usuarios) > 0) :?>
+                        <?php if (count($funcionarios) > 0) :?>
                             <h4 class="card-title">Lista de Usuários</h4>
                             <table class="table">
                                 <thead class="text-primary">
                                     <tr>
                                         <th style="width: 25%">Nome</th>
-                                        <th>Usuário</th>
-                                        <th>E-mail</th>
+                                        <th>Matrícula</th>
+                                        <th>Nome</th>
+                                        <th>Cargo</th>
+                                        <th>Área</th>
+                                        <th>Tipo</th>
                                         <th>Ativo</th>
-                                        <th>Grupo</th>
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($usuarios as $usuario) : ?>
+                                    <?php foreach ($funcionarios as $funcionario) : ?>
                                         <tr>
-                                            <td style="width: 30%"><?=$usuario->nome?></td>
-                                            <td style="width: 15%"><?=$usuario->usuario?></td>
-                                            <td style="width: 20%"><?=$usuario->email?></td>
-                                            <td><?=$usuario->ativado?></td>
-                                            <td><?=$usuario->grupoUsuario->nome?></td>
+                                            <td><?=$funcionario->matricula?></td>
+                                            <td><?=$funcionario->nome?></td>
+                                            <td><?=$funcionario->cargo?></td>
+                                            <td><?=$funcionario->area?></td>
+                                            <td><?=$funcionario->tipo->descricao?></td>
+                                            <td><?=$funcionario->grupoUsuario->nome?></td>
+                                            <td><?=$funcionario->ativado?></td>
                                             <td class="td-actions text-right">
-                                                <?php if ($this->Membership->handleRole("editar_usuarios")) : ?>
+                                                <?php if ($this->Membership->handleRole("editar_funcionarios")) : ?>
                                                     <a href="<?= $this->Url->build(['controller' => 'Usuarios', 'action' => 'edit', $usuario->id]) ?>" class="btn btn-primary btn-round">
                                                         <i class="material-icons">edit</i>
                                                     </a>
                                                 <?php endif; ?>
-                                                <?php if ($this->Membership->handleRole("excluir_usuarios")) : ?>
+                                                <?php if ($this->Membership->handleRole("excluir_funcionarios")) : ?>
                                                     <button type="button" onclick="excluirUsuario(<?= $usuario->id ?>, '<?= $usuario->nome ?>')" class="btn btn-danger btn-round"><i class="material-icons">close</i></button>
                                                 <?php endif; ?>
                                             </td>
@@ -114,10 +118,10 @@
                                 </tbody>
                             </table>
                         <?php else : ?>
-                            <?php if ($this->Membership->handleRole("adicionar_usuarios")) : ?>
-                                <h3>Nenhum usuário encontrado. Para adicionar novo usuário, <?=$this->Html->link("clique aqui", ["controller" => "usuarios", "action" => "add"])?>.</h3>
+                            <?php if ($this->Membership->handleRole("adicionar_funcionarios")) : ?>
+                                <h3>Nenhum funcionario encontrado. Para adicionar novo usuário, <?=$this->Html->link("clique aqui", ["controller" => "Funcionarios", "action" => "add"])?>.</h3>
                             <?php else :?>
-                                <h3>Nenhum usuário encontrado.</h3>
+                                <h3>Nenhum funcionário encontrado.</h3>
                             <?php endif; ?>
                         <?php endif; ?>
                     </div>
