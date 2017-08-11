@@ -39,8 +39,7 @@
     <?= $this->Html->script('locales/bootstrap-datepicker.pt-BR.min.js') ?>
     <?= $this->Html->script('jquery.mask.min.js') ?>
     <?= $this->Html->script('ckeditor/ckeditor.js') ?>
-    
-    
+    <?= $this->Html->script('util.js') ?>
 </head>
 
 <body>
