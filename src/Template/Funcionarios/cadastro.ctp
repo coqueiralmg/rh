@@ -1,4 +1,4 @@
-<?= $this->Html->script('controller/usuarios.cadastro.js', ['block' => 'scriptBottom']) ?>
+<?= $this->Html->script('controller/funcionarios.cadastro.js', ['block' => 'scriptBottom']) ?>
 <div class="content">
     <div class="container-fluid">
         <div class="row">
@@ -30,10 +30,17 @@
                                         <span class="material-input"></span>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group label-control">
                                         <?= $this->Form->label("nome", "Nome") ?>
                                         <?= $this->Form->text("nome", ["id" => "nome", "class" => "form-control", "maxlength" => 80]) ?>
+                                        <span class="material-input"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group label-control">
+                                        <?= $this->Form->label("data_admissao", "Data de Admissão") ?>
+                                        <?= $this->Form->text("data_admissao", ["id" => "data_admissao", "class" => "form-control", "maxlength" => 14]) ?>
                                         <span class="material-input"></span>
                                     </div>
                                 </div>
@@ -47,7 +54,7 @@
                                 <div class="col-md-2">
                                     <div class="form-group label-control">
                                         <?= $this->Form->label("pis", "PIS") ?>
-                                        <?= $this->Form->text("pis", ["id" => "pis", "class" => "form-control", "maxlength" => 50]) ?>
+                                        <?= $this->Form->text("pis", ["id" => "pis", "class" => "form-control", "maxlength" => 11]) ?>
                                         <span class="material-input"></span>
                                     </div>
                                 </div>
