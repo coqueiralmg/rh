@@ -32,10 +32,11 @@ function validarCPF(cpf) {
 }
 
 function validarPIS(pis) {
-    total = 0;
-    resto = 0;
-    numPIS = 0;
-    strResto = "";
+    var ftap="3298765432";
+    var total = 0;
+    var resto = 0;
+    var numPIS = 0;
+    var strResto = "";
 
     numPIS = pis;
 
@@ -43,7 +44,7 @@ function validarPIS(pis) {
         return false;
     }
 
-    for (i = 0; i <= 9; i++) {
+    for (var i = 0; i <= 9; i++) {
         resultado = (numPIS.slice(i, i + 1)) * (ftap.slice(i, i + 1));
         total = total + resultado;
     }

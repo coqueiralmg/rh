@@ -10,7 +10,7 @@ $(function () {
 });
 
 function validar() {
-    
+
     var mensagem = "";
 
     if ($("#matricula").val() === "") {
@@ -31,7 +31,21 @@ function validar() {
         mensagem += "<li> É obrigatório informar o CPF do funcionário.</li>";
         $("label[for='cpf']").css("color", "red");
     } else {
-        $("label[for='cpf']").css("color", "#aaa");
+        if (!validarCPF($("#cpf").val())) {
+            mensagem += "<li> O CPF informado é inválido.</li>";
+            $("label[for='cpf']").css("color", "red");
+        } else {
+            $("label[for='cpf']").css("color", "#aaa");
+        }
+    }
+
+    if ($("#pis").val() !== "") {
+        if (!validarPIS($("#pis").val())) {
+            mensagem += "<li> O PIS informado é inválido.</li>";
+            $("label[for='pis']").css("color", "red");
+        } else {
+            $("label[for='pis']").css("color", "#aaa");
+        }
     }
 
     if ($("#tipo").val() === "") {
