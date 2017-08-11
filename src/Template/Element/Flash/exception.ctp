@@ -6,9 +6,9 @@
      <?php if(isset($params['details'])): ?>
         <span data-notify="message">
             <?= h($message) ?>
-            &nbsp;&nbsp;&nbsp;&nbsp;<a href="#" onclick="$('#details').toggle('blind');">Detalhes</a>
+            &nbsp;&nbsp;&nbsp;&nbsp;<a href="#" onclick="$('#detalhes_erro').toggle('blind');">Detalhes</a>
         </span>
-        <div id="details" class="detalhes">
+        <div id="detalhes_erro" class="detalhes">
             <?= h($params['details']) ?>
         </div>
     <?php else: ?>
