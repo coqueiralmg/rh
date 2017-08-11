@@ -25,7 +25,46 @@ class FuncionariosController extends AppController
 
         if (count($this->request->getQueryParams()) > 3)
         {
+            $matricula = $this->request->query('matricula');
+            $nome = $this->request->query('nome');
+            $area = $this->request->query('area');
+            $cargo = $this->request->query('cargo');
+            $tipo = $this->request->query('tipo');
+            $mostrar = $this->request->query('mostrar');
 
+            if($matricula != "")
+            {
+                $condicoes['matricula'] =  $matricula;
+            }
+            $condicoes['nome LIKE'] = '%' . $nome . '%';
+            $condicoes['area LIKE'] = '%' . $area . '%';
+            $condicoes['cargo LIKE'] = '%' . $cargo . '%';
+
+            if ($tipo != "") 
+            {
+                $condicoes['tipo'] = $tipo;
+            }
+            
+            if($mostrar == 'E')
+            {
+                $condicoes['probatorio'] = true;
+            }
+            else
+            {
+                if ($mostrar != 'T') 
+                {
+                    $condicoes["ativo"] = ($mostrar == "A") ? "1" : "0";
+                }
+            }
+            
+            $data['matricula'] = $matricula;
+            $data['nome'] = $nome;
+            $data['area'] = $area;
+            $data['cargo'] = $cargo;
+            $data['tipo'] = $tipo;
+            $data['mostrar'] = $mostrar;
+
+            $this->request->data = $data;
         }
 
         $this->paginate = [

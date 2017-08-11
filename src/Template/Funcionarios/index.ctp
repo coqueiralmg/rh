@@ -13,7 +13,7 @@
                         <?php
                         echo $this->Form->create("Usuario", [
                             "url" => [
-                                "controller" => "usuarios",
+                                "controller" => "funcionarios",
                                 "action" => "index"
                             ],
                             'type' => 'get',
@@ -50,7 +50,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group form-group-min">
                                         <?= $this->Form->label("tipo", "Tipo de Funcionário") ?> <br/>
-                                        <?=$this->Form->select('mostrar', $tipos_funcionarios, ['empty' => 'Todos', 'class' => 'form-control'])?>
+                                        <?=$this->Form->select('tipo', $tipos_funcionarios, ['empty' => 'Todos', 'class' => 'form-control'])?>
                                         <span class="material-input"></span>
                                     </div>
                                 </div>
@@ -83,7 +83,6 @@
                             <table class="table">
                                 <thead class="text-primary">
                                     <tr>
-                                        <th style="width: 25%">Nome</th>
                                         <th>Matrícula</th>
                                         <th>Nome</th>
                                         <th>Cargo</th>
@@ -101,16 +100,15 @@
                                             <td><?=$funcionario->cargo?></td>
                                             <td><?=$funcionario->area?></td>
                                             <td><?=$funcionario->tipo->descricao?></td>
-                                            <td><?=$funcionario->grupoUsuario->nome?></td>
                                             <td><?=$funcionario->ativado?></td>
                                             <td class="td-actions text-right">
                                                 <?php if ($this->Membership->handleRole("editar_funcionarios")) : ?>
-                                                    <a href="<?= $this->Url->build(['controller' => 'Usuarios', 'action' => 'edit', $usuario->id]) ?>" class="btn btn-primary btn-round">
+                                                    <a href="<?= $this->Url->build(['controller' => 'Usuarios', 'action' => 'edit', $funcionario->id]) ?>" class="btn btn-primary btn-round">
                                                         <i class="material-icons">edit</i>
                                                     </a>
                                                 <?php endif; ?>
                                                 <?php if ($this->Membership->handleRole("excluir_funcionarios")) : ?>
-                                                    <button type="button" onclick="excluirUsuario(<?= $usuario->id ?>, '<?= $usuario->nome ?>')" class="btn btn-danger btn-round"><i class="material-icons">close</i></button>
+                                                    <button type="button" onclick="excluirUsuario(<?= $funcionario->id ?>, '<?= $funcionario->nome ?>')" class="btn btn-danger btn-round"><i class="material-icons">close</i></button>
                                                 <?php endif; ?>
                                             </td>
                                         </tr>
