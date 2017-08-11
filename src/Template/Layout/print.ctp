@@ -45,7 +45,7 @@
 
     <script type="text/javascript">
         $(function () {
-           //window.print();
+           window.print();
         });
     </script>
 </head>
