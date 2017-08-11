@@ -110,7 +110,68 @@ class FuncionariosController extends AppController
 
     public function imprimir()
     {
+        $t_funcionarios = TableRegistry::get('Funcionario');
+
+        $condicoes = array();
+
+        if (count($this->request->getQueryParams()) > 0)
+        {
+            $matricula = $this->request->query('matricula');
+            $nome = $this->request->query('nome');
+            $area = $this->request->query('area');
+            $cargo = $this->request->query('cargo');
+            $tipo = $this->request->query('tipo');
+            $mostrar = $this->request->query('mostrar');
+
+            if($matricula != "")
+            {
+                $condicoes['matricula'] =  $matricula;
+            }
+            $condicoes['nome LIKE'] = '%' . $nome . '%';
+            $condicoes['area LIKE'] = '%' . $area . '%';
+            $condicoes['cargo LIKE'] = '%' . $cargo . '%';
+
+            if ($tipo != "") 
+            {
+                $condicoes['tipo'] = $tipo;
+            }
+            
+            if($mostrar == 'E')
+            {
+                $condicoes['probatorio'] = true;
+            }
+            else
+            {
+                if ($mostrar != 'T') 
+                {
+                    $condicoes["ativo"] = ($mostrar == "A") ? "1" : "0";
+                }
+            }
+        }
+
+        $funcionarios = $t_funcionarios->query('all', [
+            'conditions' => $condicoes,
+        ])->contain(['TipoFuncionario']);
+
+        $qtd_total = $funcionarios->count();
+
+        $auditoria = [
+            'ocorrencia' => 9,
+            'descricao' => 'O usuário solicitou a impressão da lista de funcionários.',
+            'usuario' => $this->request->session()->read('UsuarioID')
+        ];
+
+        $this->Auditoria->registrar($auditoria);
+
+        if ($this->request->session()->read('UsuarioSuspeito')) {
+            $this->Monitoria->monitorar($auditoria);
+        }
+
+        $this->viewBuilder()->layout('print');
+        
         $this->set('title', 'Funcionários');
+        $this->set('funcionarios', $funcionarios);
+        $this->set('qtd_total', $qtd_total);
     }
 
     public function add()
