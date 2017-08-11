@@ -202,6 +202,11 @@ Type::build('datetime')
 Type::build('timestamp')
     ->useImmutable();
 
+\Cake\I18n\Time::setToStringFormat('dd-MM-yyyy HH:mm:ss');
+\Cake\I18n\Date::setToStringFormat('dd-MM-yyyy');
+\Cake\I18n\FrozenTime::setToStringFormat('dd-MM-yyyy HH:mm:ss');
+\Cake\I18n\FrozenDate::setToStringFormat('dd-MM-yyyy');
+
 /*
  * Custom Inflector rules, can be set to correctly pluralize or singularize
  * table, model, controller names or whatever other string is passed to the

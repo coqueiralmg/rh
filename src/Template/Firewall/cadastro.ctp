@@ -37,7 +37,7 @@
                                 <div class="col-md-2">
                                     <div class="form-group label-control">
                                         <label>Data do Cadastro</label>
-                                        <p><i><?= $firewall->data?></i></p>
+                                        <p><i><?= $this->Format->date($firewall->data, true)?></i></p>
                                     </div>
                                 </div>
                                 <?php endif; ?>
