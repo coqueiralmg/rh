@@ -119,7 +119,7 @@
                             </table>
                         <?php else : ?>
                             <?php if ($this->Membership->handleRole("adicionar_funcionarios")) : ?>
-                                <h3>Nenhum funcionario encontrado. Para adicionar novo usuário, <?=$this->Html->link("clique aqui", ["controller" => "Funcionarios", "action" => "add"])?>.</h3>
+                                <h3>Nenhum funcionario encontrado. Para adicionar novo funcionário, <?=$this->Html->link("clique aqui", ["controller" => "Funcionarios", "action" => "add"])?>.</h3>
                             <?php else :?>
                                 <h3>Nenhum funcionário encontrado.</h3>
                             <?php endif; ?>
