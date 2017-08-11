@@ -103,7 +103,7 @@
                                             <td><?=$funcionario->ativado?></td>
                                             <td class="td-actions text-right">
                                                 <?php if ($this->Membership->handleRole("editar_funcionarios")) : ?>
-                                                    <a href="<?= $this->Url->build(['controller' => 'Usuarios', 'action' => 'edit', $funcionario->id]) ?>" class="btn btn-primary btn-round">
+                                                    <a href="<?= $this->Url->build(['controller' => 'Funcionarios', 'action' => 'edit', $funcionario->id]) ?>" class="btn btn-primary btn-round">
                                                         <i class="material-icons">edit</i>
                                                     </a>
                                                 <?php endif; ?>
