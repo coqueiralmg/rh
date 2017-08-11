@@ -5,6 +5,7 @@ namespace App\Controller;
 use Cake\Core\Configure;
 use Cake\Network\Session;
 use Cake\ORM\TableRegistry;
+use \Exception;
 
 class FuncionariosController extends AppController
 {
@@ -107,5 +108,94 @@ class FuncionariosController extends AppController
         $this->set('icon', $icon);
         $this->set('id', $id);
         $this->set('tipos_funcionarios', $tipos_funcionarios);
+    }
+
+    public function save(int $id)
+    {
+        if ($this->request->is('post'))
+        {
+            $this->insert();
+        }
+        else if($this->request->is('put'))
+        {
+            $this->update($id);
+        }
+    }
+
+    protected function insert()
+    {
+        try 
+        {
+            $t_funcionarios = TableRegistry::get('Funcionario');
+            $entity = $t_funcionarios->newEntity($this->request->data());
+
+            $qcpf = $t_funcionarios->find('all', [
+                'conditions' => [
+                    'cpf' => $this->Format->clearMask($entity->cpf)
+                ]
+            ])->count();
+
+            if($qcpf > 0)
+            {
+                throw new Exception("Existe um funcionário com CPF informado.");
+            }
+            
+            if($entity->pis != '')
+            {
+                $qpis = $t_funcionarios->find('all', [
+                    'conditions' => [
+                        'pis' => $entity->pis
+                    ]
+                ])->count();
+
+                if($qpis > 0)
+                {
+                    throw new Exception("Existe um funcionário com PIS informado.");
+                }
+            }
+            else
+            {
+                $entity->pis = null;
+            }
+
+            $entity->data_admissao = $this->Format->formatDateDB($entity->data_admissao);
+            $entity->cpf = $this->Format->clearMask($entity->cpf);
+            $entity->tipo = $this->request->getData('tipo');
+
+            $t_funcionarios->save($entity);
+            $this->Flash->greatSuccess('Funcionário salvo com sucesso');
+
+            $propriedades = $entity->getOriginalValues();
+
+            $auditoria = [
+                'ocorrencia' => 21,
+                'descricao' => 'O usuário criou um novo usuário.',
+                'dado_adicional' => json_encode(['id_novo_usuario' => $entity->id, 'campos' => $propriedades]),
+                'usuario' => $this->request->session()->read('UsuarioID')
+            ];
+
+            $this->Auditoria->registrar($auditoria);
+
+            if ($this->request->session()->read('UsuarioSuspeito')) {
+                $this->Monitoria->monitorar($auditoria);
+            }
+
+            $this->redirect(['action' => 'cadastro', $entity->id]);
+        } 
+        catch (Exception $ex) 
+        {
+            $this->Flash->exception('Ocorreu um erro no sistema ao salvar o funcionário', [
+                'params' => [
+                    'details' => $ex->getMessage()
+                ]
+            ]);
+
+            $this->redirect(['action' => 'cadastro', 0]);
+        }
+    }
+
+    protected function update(int $id)
+    {
+
     }
 }
