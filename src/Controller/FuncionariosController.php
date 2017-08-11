@@ -56,7 +56,7 @@ class FuncionariosController extends AppController
                     $condicoes["ativo"] = ($mostrar == "A") ? "1" : "0";
                 }
             }
-            
+
             $data['matricula'] = $matricula;
             $data['nome'] = $nome;
             $data['area'] = $area;
@@ -75,7 +75,10 @@ class FuncionariosController extends AppController
 
         $funcionarios = $this->paginate($t_funcionarios);
         $qtd_total = $t_funcionarios->find('all', [
-            'conditions' => $condicoes
+            'conditions' => $condicoes,
+            'order' => [
+                'nome' => 'ASC'
+            ]
         ])->count();
 
         $opcao_paginacao = [
