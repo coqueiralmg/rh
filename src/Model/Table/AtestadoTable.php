@@ -9,5 +9,12 @@ class AtestadoTable extends BaseTable
         $this->table('atestado');
         $this->primaryKey('id');
         $this->entityClass('Atestado');
+
+        $this->belongsTo('Funcionario', [
+            'className' => 'Funcionario',
+            'foreignKey' => 'funcionario',
+            'propertyName' => 'funcionario',
+            'joinType' => 'INNER'
+        ]);
     }
 }
