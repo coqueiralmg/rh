@@ -70,15 +70,16 @@ class FuncionariosController extends AppController
         $this->paginate = [
             'limit' => $limite_paginacao,
             'contain' => ['TipoFuncionario'],
-            'conditions' => $condicoes
-        ];
-
-        $funcionarios = $this->paginate($t_funcionarios);
-        $qtd_total = $t_funcionarios->find('all', [
             'conditions' => $condicoes,
             'order' => [
                 'nome' => 'ASC'
             ]
+        ];
+
+        $funcionarios = $this->paginate($t_funcionarios);
+        $qtd_total = $t_funcionarios->find('all', [
+            'conditions' => $condicoes
+            
         ])->count();
 
         $opcao_paginacao = [
@@ -297,6 +298,78 @@ class FuncionariosController extends AppController
 
     protected function update(int $id)
     {
+        try 
+        {
+            $t_funcionarios = TableRegistry::get('Funcionario');
+            $entity = $t_funcionarios->get($id);
 
+            $t_funcionarios->patchEntity($entity, $this->request->data());
+            
+            $qcpf = $t_funcionarios->find('all', [
+                'conditions' => [
+                    'cpf' => $this->Format->clearMask($entity->cpf),
+                    'id <>' => $id
+                ]
+            ])->count();
+
+            if($qcpf > 0)
+            {
+                throw new Exception("Existe um funcionário com CPF informado.");
+            }
+            
+            if($entity->pis != '')
+            {
+                $qpis = $t_funcionarios->find('all', [
+                    'conditions' => [
+                        'pis' => $entity->pis,
+                        'id <>' => $id
+                    ]
+                ])->count();
+
+                if($qpis > 0)
+                {
+                    throw new Exception("Existe um funcionário com PIS informado.");
+                }
+            }
+            else
+            {
+                $entity->pis = null;
+            }
+
+            $entity->data_admissao = $this->Format->formatDateDB($entity->data_admissao);
+            $entity->cpf = $this->Format->clearMask($entity->cpf);
+            $entity->tipo = $this->request->getData('tipo');
+
+            $propriedades = $this->Auditoria->changedOriginalFields($entity);
+            $modificadas = $this->Auditoria->changedFields($entity, $propriedades);
+
+            $t_funcionarios->save($entity);
+            $this->Flash->greatSuccess('Funcionário salvo com sucesso');
+
+            $auditoria = [
+                'ocorrencia' => 22,
+                'descricao' => 'O usuário modificou os dados de um determinado funcionário.',
+                'dado_adicional' => json_encode(['usuario_modificado' => $id, 'valores_originais' => $propriedades, 'valores_modificados' => $modificadas]),
+                'usuario' => $this->request->session()->read('UsuarioID')
+            ];
+
+            $this->Auditoria->registrar($auditoria);
+
+            if ($this->request->session()->read('UsuarioSuspeito')) {
+                $this->Monitoria->monitorar($auditoria);
+            }
+
+            $this->redirect(['action' => 'cadastro', $id]);
+        } 
+        catch (Exception $ex) 
+        {
+            $this->Flash->exception('Ocorreu um erro no sistema ao salvar o funcionário', [
+                'params' => [
+                    'details' => $ex->getMessage()
+                ]
+            ]);
+
+            $this->redirect(['action' => 'cadastro', $id]);
+        }
     }
 }
