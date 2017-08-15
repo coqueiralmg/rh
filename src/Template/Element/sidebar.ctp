@@ -78,7 +78,7 @@
                 </li>
             <?php endif; ?>
             <?php if ($this->Membership->handleMenu("medicos")) : ?>
-                 <li class="<?= $this->Menu->activeMenu(['controller' => 'atestados']) ?>">
+                 <li class="<?= $this->Menu->activeMenu(['controller' => 'medicos']) ?>">
                     <a href="<?= $this->Url->build('/atestados') ?>">
                         <i class="material-icons">face</i>
                         <p>Médicos</p>
