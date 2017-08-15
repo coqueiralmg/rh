@@ -3,8 +3,12 @@
 return [
     'Pagination' => [
         'limit' => 15,
-        'shortLimit' => 5,
         'modulus' => 6,
-        'visiblePages' => 7
+        'visiblePages' => 7,
+        'short' => [
+            'limit' => 5,
+            'modulus' => 4,
+            'visiblePages' => 5
+        ]
     ],
 ];
