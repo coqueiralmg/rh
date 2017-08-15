@@ -224,6 +224,68 @@ class FuncionariosController extends AppController
         }
     }
 
+    public function delete(int $id)
+    {
+        try 
+        {
+            $t_funcionarios = TableRegistry::get('Funcionario');
+            $t_atestados = TableRegistry::get('Atestado');
+
+            $exclui_atestados = $this->request->query('atestados');
+
+            $marcado = $t_funcionarios->get($id);
+            $nome = $marcado->nome;
+            $propriedades = $marcado->getOriginalValues();
+
+            if($exclui_atestados)
+            {
+                $t_atestados->deleteAll(['funcionario' => $id]);
+            }
+            else
+            {
+                $qtd = $t_atestados->find('all', [
+                    'conditions' => [
+                        'funcionario' => $id
+                    ]
+                ])->count();
+
+                if($qtd > 0)
+                {
+                    throw new Exception('Este funcionário não pode ser excluído, porque existem atestados associados a ele. Verifique os seus atestados antes de excluir definitivamente ou deixe-o inativo.');
+                }
+            }
+
+            $t_funcionarios->delete($marcado);
+            $this->Flash->greatSuccess('O funcionário ' . $nome . ' foi excluído com sucesso!');
+
+            $auditoria = [
+                'ocorrencia' => 23,
+                'descricao' => 'O usuário excluiu um determinado funcionário do sistema.',
+                'dado_adicional' => json_encode(['usuario_excluido' => $id, 'dados_funcionario_excluido' => $propriedades]),
+                'usuario' => $this->request->session()->read('UsuarioID')
+            ];
+
+            $this->Auditoria->registrar($auditoria);
+
+            if ($this->request->session()->read('UsuarioSuspeito')) 
+            {
+                $this->Monitoria->monitorar($auditoria);
+            }
+
+            $this->redirect(['action' => 'index']);
+        } 
+        catch (Exception $ex) 
+        {
+            $this->Flash->exception('Ocorreu um erro no sistema ao excluir o funcionário', [
+                'params' => [
+                    'details' => $ex->getMessage()
+                ]
+            ]);
+
+            $this->redirect(['action' => 'index']);
+        }
+    }
+
     protected function insert()
     {
         try 

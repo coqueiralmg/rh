@@ -1,6 +1,3 @@
-<script type="text/javascript">
-    var usuario = <?=$this->request->session()->read('UsuarioID')?>;
-</script>
 <?= $this->Html->script('controller/funcionarios.lista.js', ['block' => 'scriptBottom']) ?>
 <div class="content">
     <div class="container-fluid">
@@ -108,7 +105,7 @@
                                                     </a>
                                                 <?php endif; ?>
                                                 <?php if ($this->Membership->handleRole("excluir_funcionarios")) : ?>
-                                                    <button type="button" onclick="excluirUsuario(<?= $funcionario->id ?>, '<?= $funcionario->nome ?>')" class="btn btn-danger btn-round"><i class="material-icons">close</i></button>
+                                                    <button type="button" onclick="excluirFuncionario(<?= $funcionario->id ?>, '<?= $funcionario->nome ?>')" class="btn btn-danger btn-round"><i class="material-icons">close</i></button>
                                                 <?php endif; ?>
                                             </td>
                                         </tr>
