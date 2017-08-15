@@ -150,7 +150,7 @@ class FuncionariosController extends AppController
             }
         }
 
-        $funcionarios = $t_funcionarios->query('all')->contain(['TipoFuncionario'])->where($condicoes);
+        $funcionarios = $t_funcionarios->query('all')->contain(['TipoFuncionario'])->where($condicoes)->order(['nome' => 'ASC']);
 
         $qtd_total = $funcionarios->count();
 
