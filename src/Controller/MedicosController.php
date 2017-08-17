@@ -41,6 +41,38 @@ class MedicosController extends AppController
 
     public function insert()
     {
+        $t_medicos = TableRegistry::get('Medico');
         
+        if ($this->request->is('ajax'))
+        {
+            $this->autoRender = false;
+            $mensagem = null;
+            $entity = $t_medicos->newEntity($this->request->data());
+
+            if($entity->crm != '')
+            {
+                $qcrm = $t_medicos->find('all', [
+                    'conditions' => [
+                        'crm' => $entity->crm
+                    ]
+                ])->count();
+                
+                if($qcrm > 0)
+                {
+                    $mensagem = 'Existe um médico com o CRM selecionado';
+                }
+            }
+            else
+            {
+                $entity->crm = null;
+            }
+            
+
+            
+        }
+        else
+        {
+
+        }
     }
 }
