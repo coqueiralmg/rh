@@ -35,7 +35,7 @@ switch($type)
     <?php if(isset($details)): ?>
         <span data-notify="message">
             <?= h($message) ?>
-            &nbsp;&nbsp;&nbsp;&nbsp;<a href="#" onclick="$('#details').toggle('blind');">Detalhes</a>
+            &nbsp;&nbsp;&nbsp;&nbsp;<a href="#" onclick="$(this).parent().next().toggle('blind');">Detalhes</a>
         </span>
         <div id="details" class="detalhes">
             <?= h($details) ?>
