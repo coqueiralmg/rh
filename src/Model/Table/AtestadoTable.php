@@ -16,5 +16,12 @@ class AtestadoTable extends BaseTable
             'propertyName' => 'funcionario',
             'joinType' => 'INNER'
         ]);
+        
+        $this->belongsTo('Medico', [
+            'className' => 'Medico',
+            'foreignKey' => 'medico',
+            'propertyName' => 'medico',
+            'joinType' => 'INNER'
+        ]);
     }
 }
