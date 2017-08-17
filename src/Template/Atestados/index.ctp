@@ -68,7 +68,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
+                            
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group form-group-min">
@@ -84,9 +84,8 @@
                                         <span class="material-input"></span>
                                     </div>
                                 </div>
-                                
                             </div>
-                            </div>
+                            
                             <div class="form-group form-button">
                                 <button type="submit" class="btn btn-fill btn-success pull-right">Buscar<div class="ripple-container"></div></button>
                                 <?php if ($this->Membership->handleRole("adicionar_atestados")) : ?>
