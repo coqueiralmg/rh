@@ -291,7 +291,8 @@ class FuncionariosController extends AppController
         if ($this->request->is('ajax'))
         {
             $t_funcionarios = TableRegistry::get('Funcionario');
-            $nome = $this->request->getData("nome");
+            $this->autoRender = false;
+            $nome = $this->request->query("nome");
 
             $funcionarios = $t_funcionarios->find('all', [
                 'fields' => ['id', 'nome'],
@@ -301,11 +302,7 @@ class FuncionariosController extends AppController
                 ]
             ]);
 
-            $this->set([
-                'count' => $funcionarios->count(),
-                'funcionarios' => $funcionarios,
-                '_serialize' => ['count', 'funcionarios']
-            ]);
+            echo json_encode($funcionarios);
         }
     }
 
