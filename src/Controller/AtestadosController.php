@@ -87,8 +87,20 @@ class AtestadosController extends AppController
 
     public function cadastro(int $id)
     {
-        $title = ($id > 0) ? 'Edição de Funcionário' : 'Novo Funcionário';
+        $title = ($id > 0) ? 'Edição de Atestado' : 'Novo Atestado';
         $icon = 'local_hospital';
+
+        $t_atestado = TableRegistry::get('Atestado');
+
+        if ($id > 0) 
+        {
+            $atestado = $t_atestado->get($id);
+            $this->set('atestado', $atestado);
+        } 
+        else 
+        {
+            $this->set('atestado', null);
+        }
 
         $this->set('title', $title);
         $this->set('icon', $icon);
