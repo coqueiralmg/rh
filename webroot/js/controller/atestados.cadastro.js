@@ -45,7 +45,22 @@ $(function () {
 function salvarMedico(){
     if(!validarPopup()) return false;
 
-    
+    var nome = $("#nome").val();
+    var crm = $("#crm").val();
+    var especialidade = $("#especialidade").val();
+
+    $.ajax({
+        url: '/rh/medicos/insert',
+        dataType: 'json',
+        data: {
+            nome: nome,
+            crm: crm,
+            especialidade: especialidade
+        },
+        success: function(data){
+            $("#cadastro_sucesso_popup").show('shake');
+        }
+    });
 }
 
 function validarPopup() {
