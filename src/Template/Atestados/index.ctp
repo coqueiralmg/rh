@@ -122,12 +122,12 @@
                                             <td><?=$atestado->cid?></td>
                                             <td><?=$atestado->inss?></td>
                                             <td class="td-actions text-right">
-                                                <?php if ($this->Membership->handleRole("editar_funcionarios")) : ?>
+                                                <?php if ($this->Membership->handleRole("editar_atestados")) : ?>
                                                     <a href="<?= $this->Url->build(['controller' => 'Funcionarios', 'action' => 'edit', $atestado->id]) ?>" class="btn btn-primary btn-round">
                                                         <i class="material-icons">edit</i>
                                                     </a>
                                                 <?php endif; ?>
-                                                <?php if ($this->Membership->handleRole("excluir_funcionarios")) : ?>
+                                                <?php if ($this->Membership->handleRole("excluir_atestados")) : ?>
                                                     <button type="button" onclick="excluirFuncionario(<?= $atestado->id ?>)" class="btn btn-danger btn-round"><i class="material-icons">close</i></button>
                                                 <?php endif; ?>
                                             </td>
@@ -136,7 +136,7 @@
                                 </tbody>
                             </table>
                         <?php else : ?>
-                            <?php if ($this->Membership->handleRole("adicionar_funcionarios")) : ?>
+                            <?php if ($this->Membership->handleRole("adicionar_atestados")) : ?>
                                 <h3>Nenhum atestado encontrado. Para registrar o novo atestado, <?=$this->Html->link("clique aqui", ["controller" => "Atestados", "action" => "add"])?>.</h3>
                             <?php else :?>
                                 <h3>Nenhum atestado encontrado.</h3>
