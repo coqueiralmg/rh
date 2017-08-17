@@ -24,6 +24,11 @@
     <!-- Bootstrap DatePicker -->
     <?= $this->Html->css('bootstrap-datepicker.css') ?>
 
+    <!-- JQuey -->
+    <?= $this->Html->css('jquery-ui.css') ?>
+    <?= $this->Html->css('jquery-ui.structure.css') ?>
+    <?= $this->Html->css('jquery-ui.theme.css') ?>
+
     <!--     Fonts and icons     -->
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300|Material+Icons' rel='stylesheet' type='text/css'>
