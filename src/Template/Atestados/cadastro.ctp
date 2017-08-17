@@ -26,7 +26,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group label-control">
                                         <?= $this->Form->label("funcionario", "Funcionário") ?>
-                                        <?= $this->Form->hidden("funcionario") ?>
+                                        <?= $this->Form->hidden("funcionario", ["id" => "id_funcionario"]) ?>
                                         <?= $this->Form->text("nome_funcionario", ["id" => "nome_funcionario", "class" => "form-control", "maxlength" => 80]) ?>
                                         <span class="material-input"></span>
                                     </div>
@@ -64,6 +64,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <?= $this->Form->label("medico", "Médico") ?>
+                                        [<a class="link_build_form" href="#" data-toggle="modal" data-target="#modal_medico">Adicionar médico</a>]
                                         <?= $this->Form->hidden("medico") ?>
                                         <?= $this->Form->text("nome_medico", ["id" => "nome_medico", "class" => "form-control", "maxlength" => 80]) ?>
                                         <span class="material-input"></span>
@@ -113,6 +114,71 @@
                         <?php echo $this->Form->end(); ?>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal_medico" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    <i class="material-icons">clear</i>
+                </button>
+                <h4 class="modal-title">Novo Médico</h4>
+            </div>
+            <div class="modal-body">
+            <?php
+                echo $this->Form->create('Medico', [
+                    "url" => [
+                        "controller" => "medico",
+                        "action" => "save",
+                        $id
+                    ],
+                    "role" => "form"]);
+                ?>
+                <?=$this->element('message', [
+                    'name' => 'cadastro_erro_popup',
+                    'type' => 'error',
+                    'message' => 'Ocorreu um erro ao salvar o médico.',
+                    'details' => ''
+                ]) ?>
+                <?=$this->element('message', [
+                    'name' => 'cadastro_sucesso_popup',
+                    'type' => 'success',
+                    'message' => 'O médico foi salvo com sucesso.',
+                ]) ?>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group label-control">
+                            <?= $this->Form->label("nome", "Nome") ?>
+                            <?= $this->Form->text("nome", ["id" => "nome", "class" => "form-control", "maxlength" => 80]) ?>
+                            <span class="material-input"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group label-control">
+                            <?= $this->Form->label("crm", "CRM") ?>
+                            <?= $this->Form->text("crm", ["id" => "crm", "class" => "form-control", "maxlength" => 6]) ?>
+                            <span class="material-input"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group label-control">
+                            <?= $this->Form->label("especialidade", "Especialidade") ?>
+                            <?= $this->Form->text("especialidade", ["id" => "especialidade", "class" => "form-control", "maxlength" => 50]) ?>
+                            <span class="material-input"></span>
+                        </div>
+                    </div>
+                </div>
+                <?php echo $this->Form->end(); ?>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-simple" data-dismiss="modal">Fechar<div class="ripple-container"><div class="ripple ripple-on ripple-out" style="left: 50.5833px; top: 23px; background-color: rgb(244, 67, 54); transform: scale(8.51042);"></div></div></button>
+                <button type="button" class="btn btn-success btn-simple" onclick="return salvarMedico()">Salvar<div class="ripple-container"></div></button>
             </div>
         </div>
     </div>
