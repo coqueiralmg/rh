@@ -286,6 +286,29 @@ class FuncionariosController extends AppController
         }
     }
 
+    public function listar()
+    {
+        if ($this->request->is('ajax'))
+        {
+            $t_funcionarios = TableRegistry::get('Funcionario');
+            $nome = $this->request->getData("nome");
+
+            $funcionarios = $t_funcionarios->find('all', [
+                'fields' => ['id', 'nome'],
+                'conditions' => [
+                    'nome LIKE' => '%' . $nome . '%',
+                    'ativo' => true
+                ]
+            ]);
+
+            $this->set([
+                'count' => $funcionarios->count(),
+                'funcionarios' => $funcionarios,
+                '_serialize' => ['count', 'funcionarios']
+            ]);
+        }
+    }
+
     protected function insert()
     {
         try 
