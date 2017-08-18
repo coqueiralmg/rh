@@ -25,7 +25,69 @@ class AtestadosController extends AppController
 
         if (count($this->request->getQueryParams()) > 3)
         {
+            $funcionario = $this->request->query('funcionario');
+            $medico = $this->request->query('medico');
+            $cid = $this->request->query('cid');
+            $emissao_inicial = $this->request->query('emissao_inicial');
+            $emissao_final = $this->request->query('emissao_final');
+            $afastamento_inicial = $this->request->query('afastamento_inicial');
+            $afastamento_final = $this->request->query('afastamento_final');
+            $tipo_funcionario = $this->request->query('tipo_funcionario');
+            $mostrar = $this->request->query('mostrar');
 
+            $condicoes['Funcionario.nome LIKE'] = '%' . $funcionario . '%';
+            $condicoes['Medico.nome LIKE'] = '%' . $medico . '%';
+
+            if($cid != '')
+            {
+                $condicoes['Atestado.cid'] = $cid;
+            }
+
+            if($cid != '')
+            {
+                $condicoes['Atestado.cid'] = $cid;
+            }
+
+            if($emissao_inicial != "" && $emissao_final != "")
+            {
+                $condicoes["Atestado.emissao >="] = $this->Format->formatDateDB($emissao_inicial);
+                $condicoes["Atestado.emissao <="] = $this->Format->formatDateDB($emissao_final);
+            }
+
+            if($afastamento_inicial != "" && $afastamento_final != "")
+            {
+                $condicoes["Atestado.afastamento >="] = $this->Format->formatDateDB($afastamento_inicial);
+                $condicoes["Atestado.afastamento <="] = $this->Format->formatDateDB($afastamento_final);
+            }
+            
+            if($tipo_funcionario != "")
+            {
+                $condicoes["Funcionario.tipo"] = $tipo_funcionario;
+            }
+
+            if($mostrar == 'E')
+            {
+                $condicoes['Funcionario.probatorio'] = true;
+            }
+            else
+            {
+                if ($mostrar != 'T') 
+                {
+                    $condicoes["Funcionario.ativo"] = ($mostrar == "A") ? "1" : "0";
+                }
+            }
+
+            $data['funcionario'] = $funcionario;
+            $data['medico'] = $medico;
+            $data['cid'] = $cid;
+            $data['emissao_inicial'] = $emissao_inicial;
+            $data['emissao_final'] = $emissao_final;
+            $data['afastamento_inicial'] = $afastamento_inicial;
+            $data['afastamento_final'] = $afastamento_final;
+            $data['tipo_funcionario'] = $tipo_funcionario;
+            $data['mostrar'] = $mostrar;
+
+            $this->request->data = $data;
         }
 
         $this->paginate = [
@@ -39,6 +101,7 @@ class AtestadosController extends AppController
 
         $atestados = $this->paginate($t_atestados);
         $qtd_total = $t_atestados->find('all', [
+            'contain' => ['Funcionario', 'Medico'],
             'conditions' => $condicoes
             
         ])->count();

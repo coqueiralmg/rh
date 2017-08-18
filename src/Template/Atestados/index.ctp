@@ -6,6 +6,12 @@
                 <div class="card">
                     <div class="card-content">
                         <?= $this->Flash->render() ?>
+                        <?=$this->element('message', [
+                            'name' => 'lista_erro',
+                            'type' => 'error',
+                            'message' => 'Ocorreu um erro ao buscar as atestados',
+                            'details' => ''
+                        ]) ?>
                         <h4 class="card-title">Buscar</h4>
                         <?php
                         echo $this->Form->create("Atestado", [
@@ -33,7 +39,7 @@
                                 <div class="col-md-2">
                                     <div class="form-group form-group-min">
                                         <?= $this->Form->label("cid", "CID") ?>
-                                        <?= $this->Form->text("medico", ["class" => "form-control"]) ?>
+                                        <?= $this->Form->text("cid", ["id" => "cid", "class" => "form-control"]) ?>
                                     <span class="material-input"></span></div>
                                 </div>
                                 
@@ -42,28 +48,28 @@
                                 <div class="col-md-3">
                                     <div class="form-group form-group-min">
                                         <?= $this->Form->label("emissao_inicial", "Data de Emissão Inicial") ?> <br/>
-                                        <?= $this->Form->text("emissao_inicial", ["class" => "form-control"]) ?>
+                                        <?= $this->Form->text("emissao_inicial", ["id" => "emissao_inicial", "class" => "form-control"]) ?>
                                         <span class="material-input"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group form-group-min">
                                         <?= $this->Form->label("emissao_final", "Data de Emissão Final") ?> <br/>
-                                        <?= $this->Form->text("emissao_final", ["class" => "form-control"]) ?>
+                                        <?= $this->Form->text("emissao_final", ["id" => "emissao_final", "class" => "form-control"]) ?>
                                         <span class="material-input"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group form-group-min">
                                         <?= $this->Form->label("afastamento_inicial", "Data de Afastamento Inicial") ?> <br/>
-                                        <?= $this->Form->text("afastamento_inicial", ["class" => "form-control"]) ?>
+                                        <?= $this->Form->text("afastamento_inicial", ["id" => "afastamento_inicial", "class" => "form-control"]) ?>
                                         <span class="material-input"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group form-group-min">
                                         <?= $this->Form->label("afastamento_final", "Data de Afastamento Final") ?> <br/>
-                                        <?= $this->Form->text("afastamento_final", ["class" => "form-control"]) ?>
+                                        <?= $this->Form->text("afastamento_final", ["id" => "afastamento_final", "class" => "form-control"]) ?>
                                         <span class="material-input"></span>
                                     </div>
                                 </div>
@@ -72,8 +78,8 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group form-group-min">
-                                        <?= $this->Form->label("tipo", "Tipo de Funcionário") ?> <br/>
-                                        <?=$this->Form->select('tipo', $tipos_funcionarios, ['empty' => 'Todos', 'class' => 'form-control'])?>
+                                        <?= $this->Form->label("tipo_funcionario", "Tipo de Funcionário") ?> <br/>
+                                        <?=$this->Form->select('tipo_funcionario', $tipos_funcionarios, ['empty' => 'Todos', 'class' => 'form-control'])?>
                                         <span class="material-input"></span>
                                     </div>
                                 </div>
@@ -87,7 +93,7 @@
                             </div>
                             
                             <div class="form-group form-button">
-                                <button type="submit" class="btn btn-fill btn-success pull-right">Buscar<div class="ripple-container"></div></button>
+                                <button type="submit" onclick="return validar()" class="btn btn-fill btn-success pull-right">Buscar<div class="ripple-container"></div></button>
                                 <?php if ($this->Membership->handleRole("adicionar_atestados")) : ?>
                                     <a href="<?= $this->Url->build(['controller' => 'Atestados', 'action' => 'add']) ?>" class="btn btn-warning btn-default pull-right">Novo<div class="ripple-container"></div></a>
                                 <?php endif; ?>
