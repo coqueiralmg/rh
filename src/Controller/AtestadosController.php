@@ -135,7 +135,91 @@ class AtestadosController extends AppController
 
     public function imprimir()
     {
+        $t_atestados = TableRegistry::get('Atestado');
+        $condicoes = array();
+
+        if (count($this->request->getQueryParams()) > 0)
+        {
+            $funcionario = $this->request->query('funcionario');
+            $medico = $this->request->query('medico');
+            $cid = $this->request->query('cid');
+            $emissao_inicial = $this->request->query('emissao_inicial');
+            $emissao_final = $this->request->query('emissao_final');
+            $afastamento_inicial = $this->request->query('afastamento_inicial');
+            $afastamento_final = $this->request->query('afastamento_final');
+            $tipo_funcionario = $this->request->query('tipo_funcionario');
+            $mostrar = $this->request->query('mostrar');
+
+            $condicoes['Funcionario.nome LIKE'] = '%' . $funcionario . '%';
+            $condicoes['Medico.nome LIKE'] = '%' . $medico . '%';
+
+            if($cid != '')
+            {
+                $condicoes['Atestado.cid'] = $cid;
+            }
+
+            if($cid != '')
+            {
+                $condicoes['Atestado.cid'] = $cid;
+            }
+
+            if($emissao_inicial != "" && $emissao_final != "")
+            {
+                $condicoes["Atestado.emissao >="] = $this->Format->formatDateDB($emissao_inicial);
+                $condicoes["Atestado.emissao <="] = $this->Format->formatDateDB($emissao_final);
+            }
+
+            if($afastamento_inicial != "" && $afastamento_final != "")
+            {
+                $condicoes["Atestado.afastamento >="] = $this->Format->formatDateDB($afastamento_inicial);
+                $condicoes["Atestado.afastamento <="] = $this->Format->formatDateDB($afastamento_final);
+            }
+            
+            if($tipo_funcionario != "")
+            {
+                $condicoes["Funcionario.tipo"] = $tipo_funcionario;
+            }
+
+            if($mostrar == 'E')
+            {
+                $condicoes['Funcionario.probatorio'] = true;
+            }
+            else
+            {
+                if ($mostrar != 'T') 
+                {
+                    $condicoes["Funcionario.ativo"] = ($mostrar == "A") ? "1" : "0";
+                }
+            }
+        }
+
+        $atestados = $t_atestados->find('all', [
+            'contain' => ['Funcionario', 'Medico'],
+            'conditions' => $condicoes,
+            'order' => [
+                'afastamento' => 'DESC'
+            ]
+        ]);
+
+        $qtd_total = $atestados->count();
+
+        $auditoria = [
+            'ocorrencia' => 9,
+            'descricao' => 'O usuário solicitou a impressão da lista de atestados.',
+            'usuario' => $this->request->session()->read('UsuarioID')
+        ];
+
+        $this->Auditoria->registrar($auditoria);
+
+        if ($this->request->session()->read('UsuarioSuspeito')) {
+            $this->Monitoria->monitorar($auditoria);
+        }
+
+        $this->viewBuilder()->layout('print');
         
+        $this->set('title', 'Atestados');
+        $this->set('atestados', $atestados);
+        $this->set('qtd_total', $qtd_total);
     }
 
     public function add()
