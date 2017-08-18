@@ -117,10 +117,10 @@
                                     <?php foreach ($atestados as $atestado) : ?>
                                         <tr>
                                             <td><?=$atestado->funcionario->nome?></td>
-                                            <td><?=$atestado->afastamento?></td>
-                                            <td><?=$atestado->retorno?></td>
+                                            <td><?=$this->Format->date($atestado->afastamento)?></td>
+                                            <td><?=$this->Format->date($atestado->retorno)?></td>
                                             <td><?=$atestado->cid?></td>
-                                            <td><?=$atestado->inss?></td>
+                                            <td><?=$atestado->afastado?></td>
                                             <td class="td-actions text-right">
                                                 <?php if ($this->Membership->handleRole("editar_atestados")) : ?>
                                                     <a href="<?= $this->Url->build(['controller' => 'Atestados', 'action' => 'edit', $atestado->id]) ?>" class="btn btn-primary btn-round">
