@@ -353,8 +353,8 @@ class FuncionariosController extends AppController
 
             $auditoria = [
                 'ocorrencia' => 21,
-                'descricao' => 'O usuário criou um novo usuário.',
-                'dado_adicional' => json_encode(['id_novo_usuario' => $entity->id, 'campos' => $propriedades]),
+                'descricao' => 'O usuário cadastrou o novo funcionário.',
+                'dado_adicional' => json_encode(['id_novo_funcionario' => $entity->id, 'campos' => $propriedades]),
                 'usuario' => $this->request->session()->read('UsuarioID')
             ];
 
