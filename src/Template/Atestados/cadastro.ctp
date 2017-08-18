@@ -66,6 +66,7 @@
                                         <?= $this->Form->label("medico", "Médico") ?>
                                         [<a class="link_build_form" href="#" data-toggle="modal" data-target="#modal_medico">Adicionar médico</a>]
                                         <?= $this->Form->hidden("medico") ?>
+                                        <?= $this->Form->hidden("medico", ["id" => "id_medico"]) ?>
                                         <?= $this->Form->text("nome_medico", ["id" => "nome_medico", "class" => "form-control", "maxlength" => 80]) ?>
                                         <span class="material-input"></span>
                                     </div>

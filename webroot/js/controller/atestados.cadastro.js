@@ -37,9 +37,34 @@ $(function () {
         }
     }).autocomplete("instance")._renderItem = function (ul, item) {
         return $("<li>")
-            .append(item.nome)
+            .append('<span>' + item.nome + '</span>')
             .appendTo(ul);
     };
+
+    $('#nome_medico').autocomplete({
+        source: function (request, response) {
+            $.ajax({
+                url: '/rh/medicos/listar',
+                dataType: 'json',
+                data: {
+                    nome: request.term
+                },
+                success: function (data) {
+                    response(data);
+                }
+            });
+        },
+        select: function (event, ui) {
+            $('#nome_medico').val(ui.item.nome);
+            $('#id_medico').val(ui.item.id);
+
+            return false;
+        }
+    }).autocomplete("instance")._renderItem = function (ul, item) {
+        return $("<li>")
+            .append('<span><b>' + item.nome + '</b><span><br/><small>'+ item.especialidade + ' CRM:' + item.crm + '</small>')
+            .appendTo(ul);
+    };;
 });
 
 function salvarMedico(){
