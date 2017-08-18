@@ -41,7 +41,10 @@ class AuditoriaComponent extends Component
         23 => 'Exclusão do funcionário',
         24 => 'Inclusão de médico',
         25 => 'Alteração de médico',
-        26 => 'Exclusão de médico'
+        26 => 'Exclusão de médico',
+        27 => 'Inclusão do atestado',
+        28 => 'Alteração do atestado',
+        29 => 'Exclusão do atestado'
     ];
     
     /**
