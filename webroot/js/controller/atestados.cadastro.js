@@ -16,6 +16,10 @@ $(function () {
     $('#data_retorno').mask('00/00/0000');
     $('#crm').mask('00000000000');
 
+    $('#cid').blur(function (e) {
+        this.value = this.value.toUpperCase();
+    });
+
     $('#nome_funcionario').autocomplete({
         source: function (request, response) {
             $.ajax({
@@ -129,36 +133,36 @@ function validar() {
 
     if ($("#data_emissao").val() === "") {
         mensagem += "<li> É obrigatório informar a data de emissão do atestado.</li>";
-        $("label[for='data-emissao']").css("color", "red");
+        $("label[for='emissao']").css("color", "red");
     } else {
-        $("label[for='data-emissao']").css("color", "#aaa");
+        $("label[for='emissao']").css("color", "#aaa");
     }
 
     if ($("#data_afastamento").val() === "") {
         mensagem += "<li> É obrigatório informar a data de afastamento do funcionário.</li>";
-        $("label[for='data-afastamento']").css("color", "red");
+        $("label[for='afastamento']").css("color", "red");
     } else {
-        $("label[for='data-afastamento']").css("color", "#aaa");
+        $("label[for='afastamento']").css("color", "#aaa");
     }
 
     if ($("#data_retorno").val() === "") {
         mensagem += "<li> É obrigatório informar a data de retorno do funcionário.</li>";
-        $("label[for='data-retorno']").css("color", "red");
+        $("label[for='retorno']").css("color", "red");
     } else {
-        $("label[for='data-retorno']").css("color", "#aaa");
+        $("label[for='retorno']").css("color", "#aaa");
     }
 
-    if($("#data_afastamento").val() !== "" && $("#data_retorno").val() !== "") {
+    if ($("#data_afastamento").val() !== "" && $("#data_retorno").val() !== "") {
         var afastamento = new Date($("#data_afastamento").val());
         var retorno = new Date($("#data_retorno").val());
 
-        if(afastamento > retorno) {
+        if (afastamento > retorno) {
             mensagem += "<li> A data de afastamento é maior do que a data de retorno.</li>";
-            $("label[for='data-afastamento']").css("color", "red");
-            $("label[for='data-retorno']").css("color", "red");
+            $("label[for='afastamento']").css("color", "red");
+            $("label[for='retorno']").css("color", "red");
         } else {
-            $("label[for='data-afastamento']").css("color", "#aaa");
-            $("label[for='data-retorno']").css("color", "#aaa");
+            $("label[for='afastamento']").css("color", "#aaa");
+            $("label[for='retorno']").css("color", "#aaa");
         }
     }
 
