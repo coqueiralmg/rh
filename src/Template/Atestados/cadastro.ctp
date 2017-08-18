@@ -33,22 +33,22 @@
                                 </div>
                                 <div class="col-md-2">
                                     <div class="form-group label-control">
-                                        <?= $this->Form->label("data_emissao", "Data de Emissão") ?>
-                                        <?= $this->Form->text("data_emissao", ["id" => "data_emissao", "class" => "form-control", "maxlength" => 14]) ?>
+                                        <?= $this->Form->label("emissao", "Data de Emissão") ?>
+                                        <?= $this->Form->text("emissao", ["id" => "data_emissao", "class" => "form-control", "maxlength" => 14]) ?>
                                         <span class="material-input"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-2">
                                     <div class="form-group label-control">
-                                        <?= $this->Form->label("data_afastamento", "Data de Afastamento") ?>
-                                        <?= $this->Form->text("data_afastamento", ["id" => "data_afastamento", "class" => "form-control", "maxlength" => 14]) ?>
+                                        <?= $this->Form->label("afastamento", "Data de Afastamento") ?>
+                                        <?= $this->Form->text("afastamento", ["id" => "data_afastamento", "class" => "form-control", "maxlength" => 14]) ?>
                                         <span class="material-input"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-2">
                                     <div class="form-group label-control">
-                                        <?= $this->Form->label("data_retorno", "Data de Retorno") ?>
-                                        <?= $this->Form->text("data_retorno", ["id" => "data_retorno", "class" => "form-control", "maxlength" => 11]) ?>
+                                        <?= $this->Form->label("retorno", "Data de Retorno") ?>
+                                        <?= $this->Form->text("retorno", ["id" => "data_retorno", "class" => "form-control", "maxlength" => 11]) ?>
                                         <span class="material-input"></span>
                                     </div>
                                 </div>
