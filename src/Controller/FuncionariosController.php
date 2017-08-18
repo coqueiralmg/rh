@@ -431,7 +431,7 @@ class FuncionariosController extends AppController
             $auditoria = [
                 'ocorrencia' => 22,
                 'descricao' => 'O usuário modificou os dados de um determinado funcionário.',
-                'dado_adicional' => json_encode(['usuario_modificado' => $id, 'valores_originais' => $propriedades, 'valores_modificados' => $modificadas]),
+                'dado_adicional' => json_encode(['funcionario_modificado' => $id, 'valores_originais' => $propriedades, 'valores_modificados' => $modificadas]),
                 'usuario' => $this->request->session()->read('UsuarioID')
             ];
 
