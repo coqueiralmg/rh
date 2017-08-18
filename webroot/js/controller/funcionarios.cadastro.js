@@ -27,6 +27,13 @@ function validar() {
         $("label[for='nome']").css("color", "#aaa");
     }
 
+    if ($("#data_admissao").val() === "") {
+        mensagem += "<li> É obrigatório informar a data de admissão do funcionário.</li>";
+        $("label[for='data-admissao']").css("color", "red");
+    } else {
+        $("label[for='data-admissao']").css("color", "#aaa");
+    }
+
     if ($("#cpf").val() === "") {
         mensagem += "<li> É obrigatório informar o CPF do funcionário.</li>";
         $("label[for='cpf']").css("color", "red");
