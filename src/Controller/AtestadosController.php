@@ -94,7 +94,17 @@ class AtestadosController extends AppController
 
         if ($id > 0) 
         {
+            $t_funcionarios = TableRegistry::get('Funcionario');
+            $t_medicos = TableRegistry::get('Medico');
+
             $atestado = $t_atestado->get($id);
+
+            $funcionario = $t_funcionarios->get($atestado->funcionario);
+            $medico = $t_medicos->get($atestado->medico);
+
+            $atestado->nome_funcionario = $funcionario->nome;
+            $atestado->nome_medico = $medico->nome;
+
             $this->set('atestado', $atestado);
         } 
         else 
@@ -105,5 +115,111 @@ class AtestadosController extends AppController
         $this->set('title', $title);
         $this->set('icon', $icon);
         $this->set('id', $id);
+    }
+
+    public function save(int $id)
+    {
+        if ($this->request->is('post'))
+        {
+            $this->insert();
+        }
+        else if($this->request->is('put'))
+        {
+            $this->update($id);
+        }
+    }
+
+    protected function insert()
+    {
+        try 
+        {
+            $t_atestado = TableRegistry::get('Atestado');
+            $entity = $t_atestado->newEntity($this->request->data());
+
+            $entity->emissao = $this->Format->formatDateDB($entity->emissao);
+            $entity->afastamento = $this->Format->formatDateDB($entity->afastamento);
+            $entity->retorno = $this->Format->formatDateDB($entity->retorno);
+            $entity->funcionario = $this->request->getData('funcionario');
+            $entity->medico = $this->request->getData('medico');
+
+            $t_atestado->save($entity);
+            $this->Flash->greatSuccess('Atestado salvo com sucesso');
+
+            $propriedades = $entity->getOriginalValues();
+            
+            $auditoria = [
+                'ocorrencia' => 27,
+                'descricao' => 'O usuário cadastrou o novo atestado.',
+                'dado_adicional' => json_encode(['id_novo_atestado' => $entity->id, 'campos' => $propriedades]),
+                'usuario' => $this->request->session()->read('UsuarioID')
+            ];
+
+            $this->Auditoria->registrar($auditoria);
+
+            if ($this->request->session()->read('UsuarioSuspeito')) {
+                $this->Monitoria->monitorar($auditoria);
+            }
+
+            $this->redirect(['action' => 'cadastro', $entity->id]);
+        } 
+        catch (Exception $ex) 
+        {
+            $this->Flash->exception('Ocorreu um erro no sistema ao salvar o atestado', [
+                'params' => [
+                    'details' => $ex->getMessage()
+                ]
+            ]);
+
+            $this->redirect(['action' => 'cadastro', 0]);
+        }
+    }
+
+    protected function update(int $id)
+    {
+        try 
+        {
+            $t_atestado = TableRegistry::get('Atestado');
+            
+            $entity = $t_atestado->get($id);
+
+            $t_atestado->patchEntity($entity, $this->request->data());
+
+            $entity->emissao = $this->Format->formatDateDB($entity->emissao);
+            $entity->afastamento = $this->Format->formatDateDB($entity->afastamento);
+            $entity->retorno = $this->Format->formatDateDB($entity->retorno);
+            $entity->funcionario = $this->request->getData('funcionario');
+            $entity->medico = $this->request->getData('medico');
+
+            $propriedades = $this->Auditoria->changedOriginalFields($entity);
+            $modificadas = $this->Auditoria->changedFields($entity, $propriedades);
+
+            $t_atestado->save($entity);
+            $this->Flash->greatSuccess('Atestado salvo com sucesso');
+            
+            $auditoria = [
+                'ocorrencia' => 28,
+                'descricao' => 'O usuário modificou as informações do atestado.',
+                'dado_adicional' => json_encode(['atestado_modificado' => $id, 'valores_originais' => $propriedades, 'valores_modificados' => $modificadas]),
+                'usuario' => $this->request->session()->read('UsuarioID')
+            ];
+
+            $this->Auditoria->registrar($auditoria);
+
+            if ($this->request->session()->read('UsuarioSuspeito')) {
+                $this->Monitoria->monitorar($auditoria);
+            }
+
+            $this->redirect(['action' => 'cadastro', $entity->id]);
+        } 
+        catch (Exception $ex) 
+        {
+            $this->Flash->exception('Ocorreu um erro no sistema ao salvar o atestado', [
+                'params' => [
+                    'details' => $ex->getMessage()
+                ]
+            ]);
+
+            $this->redirect(['action' => 'cadastro', $id]);
+        }  
     }
 }
