@@ -112,6 +112,7 @@
                                 <thead class="text-primary">
                                     <tr>
                                         <th>Funcionário</th>
+                                        <th>Data de Emissão</th>
                                         <th>Data de Afastamento</th>
                                         <th>Data de Retorno</th>
                                         <th>CID</th>
@@ -123,6 +124,7 @@
                                     <?php foreach ($atestados as $atestado) : ?>
                                         <tr>
                                             <td><?=$atestado->funcionario->nome?></td>
+                                            <td><?=$this->Format->date($atestado->emissao)?></td>
                                             <td><?=$this->Format->date($atestado->afastamento)?></td>
                                             <td><?=$this->Format->date($atestado->retorno)?></td>
                                             <td><?=$atestado->cid?></td>
@@ -134,7 +136,7 @@
                                                     </a>
                                                 <?php endif; ?>
                                                 <?php if ($this->Membership->handleRole("excluir_atestados")) : ?>
-                                                    <button type="button" onclick="excluirFuncionario(<?= $atestado->id ?>)" class="btn btn-danger btn-round"><i class="material-icons">close</i></button>
+                                                    <button type="button" onclick="excluirAtestado(<?= $atestado->id ?>, '<?= $this->Format->date($atestado->emissao) ?>', '<?=$atestado->funcionario->nome?>')" class="btn btn-danger btn-round"><i class="material-icons">close</i></button>
                                                 <?php endif; ?>
                                             </td>
                                         </tr>

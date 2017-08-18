@@ -276,6 +276,46 @@ class AtestadosController extends AppController
         }
     }
 
+    public function delete(int $id)
+    {
+        try 
+        {
+            $t_atestados = TableRegistry::get('Atestado');
+
+            $marcado = $t_atestados->get($id);
+            $propriedades = $marcado->getOriginalValues();
+
+            $t_atestados->delete($marcado);
+            $this->Flash->greatSuccess('O atestado foi excluído com sucesso!');
+
+            $auditoria = [
+                'ocorrencia' => 29,
+                'descricao' => 'O usuário excluiu um atestado do sistema.',
+                'dado_adicional' => json_encode(['atestado_excluido' => $id, 'dados_atestado_excluido' => $propriedades]),
+                'usuario' => $this->request->session()->read('UsuarioID')
+            ];
+
+            $this->Auditoria->registrar($auditoria);
+
+            if ($this->request->session()->read('UsuarioSuspeito')) 
+            {
+                $this->Monitoria->monitorar($auditoria);
+            }
+
+            $this->redirect(['action' => 'index']);
+        } 
+        catch (Exception $ex) 
+        {
+            $this->Flash->exception('Ocorreu um erro no sistema ao excluir o atestado.', [
+                'params' => [
+                    'details' => $ex->getMessage()
+                ]
+            ]);
+
+            $this->redirect(['action' => 'index']);
+        }
+    }
+
     protected function insert()
     {
         try 

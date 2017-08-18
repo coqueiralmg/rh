@@ -1,9 +1,10 @@
 <?php if ($qtd_total > 0) :?>
-    <h4 class="card-title">Lista de Funcionários</h4>
+    <h4 class="card-title">Lista de Atestados Emitidos</h4>
     <table class="table  table-striped">
         <thead class="text-primary">
             <tr>
                 <th>Funcionário</th>
+                <th>Data de Emissão</th>
                 <th>Data de Afastamento</th>
                 <th>Data de Retorno</th>
                 <th>CID</th>
@@ -15,6 +16,7 @@
             <?php foreach ($atestados as $atestado) : ?>
                 <tr>
                     <td><?=$atestado->funcionario->nome?></td>
+                    <td><?=$this->Format->date($atestado->emissao)?></td>
                     <td><?=$this->Format->date($atestado->afastamento)?></td>
                     <td><?=$this->Format->date($atestado->retorno)?></td>
                     <td><?=$atestado->cid?></td>
