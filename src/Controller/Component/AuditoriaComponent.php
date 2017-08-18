@@ -38,7 +38,10 @@ class AuditoriaComponent extends Component
         20 => 'Liberação de usuário suspenso',
         21 => 'Inclusão do funcionário',
         22 => 'Alteração do funcionário',
-        23 => 'Exclusão do funcionário'
+        23 => 'Exclusão do funcionário',
+        24 => 'Inclusão de médico',
+        25 => 'Alteração de médico',
+        26 => 'Exclusão de médico'
     ];
     
     /**
