@@ -50,17 +50,27 @@ function salvarMedico(){
     var especialidade = $("#especialidade").val();
 
     $.ajax({
-        url: '/rh/medicos/insert',
+        url: '/rh/medicos/append',
         dataType: 'json',
         data: {
             nome: nome,
             crm: crm,
             especialidade: especialidade
         },
-        success: function(data){
-            $("#cadastro_sucesso_popup").show('shake');
+        success: function(data) {
+            $("#cadastro_sucesso_popup").show('fade');
+            $("#btnSalvaMedico").hide();
         }
     });
+}
+
+function fecharModalMedico() {
+    $("#btnSalvaMedico").show();
+    $("#nome").val('');   
+    $("#crm").val(''); 
+    $("#especialidade").val('');
+    $("#cadastro_sucesso_popup").hide();
+    $("#cadastro_erro_popup").hide();
 }
 
 function validarPopup() {

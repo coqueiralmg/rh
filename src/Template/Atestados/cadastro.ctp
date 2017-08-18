@@ -177,8 +177,8 @@
                 <?php echo $this->Form->end(); ?>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger btn-simple" data-dismiss="modal">Fechar<div class="ripple-container"><div class="ripple ripple-on ripple-out" style="left: 50.5833px; top: 23px; background-color: rgb(244, 67, 54); transform: scale(8.51042);"></div></div></button>
-                <button type="button" class="btn btn-success btn-simple" onclick="return salvarMedico()">Salvar<div class="ripple-container"></div></button>
+                <button id="btnFechaModalMedico" type="button" class="btn btn-danger btn-simple"  onclick="fecharModalMedico()" data-dismiss="modal">Fechar<div class="ripple-container"><div class="ripple ripple-on ripple-out" style="left: 50.5833px; top: 23px; background-color: rgb(244, 67, 54); transform: scale(8.51042);"></div></div></button>
+                <button id="btnSalvaMedico" type="button" class="btn btn-success btn-simple" onclick="return salvarMedico()">Salvar<div class="ripple-container"></div></button>
             </div>
         </div>
     </div>
