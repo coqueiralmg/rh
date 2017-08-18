@@ -80,7 +80,7 @@ class MedicosController extends AppController
 
             $auditoria = [
                 'ocorrencia' => 24,
-                'descricao' => 'O usuário cadastrou o novo médico.',
+                'descricao' => 'O usuário cadastrou o novo médico via formulário flutuante na tela de atestados.',
                 'dado_adicional' => json_encode(['id_novo_medico' => $entity->id, 'campos' => $propriedades]),
                 'usuario' => $this->request->session()->read('UsuarioID')
             ];
@@ -102,6 +102,20 @@ class MedicosController extends AppController
 
     public function listar() 
     {
+        if ($this->request->is('ajax'))
+        {
+            $t_medicos = TableRegistry::get('Medico');
 
+            $this->autoRender = false;
+            $nome = $this->request->query("nome");
+
+            $medicos = $t_medicos->find('all', [
+                'conditions' => [
+                    'nome LIKE' => '%' . $nome . '%',
+                ]
+            ]);
+
+            echo json_encode($medicos);
+        }
     }
 }
