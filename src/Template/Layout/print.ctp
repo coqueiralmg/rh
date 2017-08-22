@@ -50,7 +50,7 @@
     </script>
 </head>
 
-<body style="width:21cm; background: white;">
+<body style="width:29.7cm; background: white;">
 	<div class="wrapper">
 	    <div>
             <div class="content">
@@ -59,7 +59,7 @@
                         <div class="col-md-12">
                             <table>
                                 <tr>
-                                    <td style="width: 20%">
+                                    <td style="width: 15%">
                                         <?= $this->Html->image('brasao_coqueiral.png', ['class' => 'img-responsive', 'style' => 'padding: 15px;', 'title' => 'Prefeitura Municipal de Coqueiral', 'alt' => 'Prefeitura Municipal de Coqueiral']); ?>
                                     </td>
                                     <td>
