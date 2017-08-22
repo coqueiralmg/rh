@@ -60,7 +60,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <div class="form-group">
                                         <?= $this->Form->label("area", "Área") ?>
                                         <?= $this->Form->text("area", ["id" => "area", "class" => "form-control", "maxlength" => 30]) ?>
@@ -70,18 +70,25 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <?= $this->Form->label("cargo", "Cargo") ?>
-                                        <?= $this->Form->text("cargo", ["id" => "cargo", "class" => "form-control"]) ?>
+                                        <?= $this->Form->text("cargo", ["id" => "cargo", "class" => "form-control", "maxlength" => 30]) ?>
+                                        <span class="material-input"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <?= $this->Form->label("email", "E-mail") ?>
+                                        <?= $this->Form->email("email", ["id" => "email", "class" => "form-control", "maxlength" => 30]) ?>
                                         <span class="material-input"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <?= $this->Form->label("email", "E-mail") ?>
-                                        <?= $this->Form->email("email", ["id" => "email", "class" => "form-control"]) ?>
+                                        <?=$this->Form->label("empresa", "Empresa") ?> <br/>
+                                        <?=$this->Form->select('empresa', $empresas, ['id' => 'empresa', 'empty' => true, 'class' => 'form-control'])?>
                                         <span class="material-input"></span>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <div class="form-group">
                                         <?= $this->Form->label("tipo", "Tipo") ?> <br/>
                                         <?=$this->Form->select('tipo', $tipos_funcionarios, ['id' => 'tipo', 'empty' => true, 'class' => 'form-control'])?>

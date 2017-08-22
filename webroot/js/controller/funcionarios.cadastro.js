@@ -55,6 +55,13 @@ function validar() {
         }
     }
 
+    if ($("#empresa").val() === "") {
+        mensagem += "<li> É obrigatório informar a empresa em que o funcionário estará alocado.</li>";
+        $("label[for='empresa']").css("color", "red");
+    } else {
+        $("label[for='empresa']").css("color", "#aaa");
+    }
+
     if ($("#tipo").val() === "") {
         mensagem += "<li> É obrigatório informar o tipo do funcionário.</li>";
         $("label[for='tipo']").css("color", "red");
