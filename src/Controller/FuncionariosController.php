@@ -38,9 +38,21 @@ class FuncionariosController extends AppController
             {
                 $condicoes['matricula'] =  $matricula;
             }
-            $condicoes['nome LIKE'] = '%' . $nome . '%';
-            $condicoes['area LIKE'] = '%' . $area . '%';
-            $condicoes['cargo LIKE'] = '%' . $cargo . '%';
+
+            if($nome != "")
+            {
+                $condicoes['nome LIKE'] = '%' . $nome . '%';
+            }
+
+            if($area != "")
+            {
+                $condicoes['area LIKE'] = '%' . $area . '%';
+            }
+            
+            if($cargo != "")
+            {
+                $condicoes['cargo LIKE'] = '%' . $cargo . '%';
+            }
             
             if ($empresa != "") 
             {
@@ -143,9 +155,21 @@ class FuncionariosController extends AppController
             {
                 $condicoes['matricula'] =  $matricula;
             }
-            $condicoes['nome LIKE'] = '%' . $nome . '%';
-            $condicoes['area LIKE'] = '%' . $area . '%';
-            $condicoes['cargo LIKE'] = '%' . $cargo . '%';
+
+            if($nome != "")
+            {
+                $condicoes['nome LIKE'] = '%' . $nome . '%';
+            }
+
+            if($area != "")
+            {
+                $condicoes['area LIKE'] = '%' . $area . '%';
+            }
+            
+            if($cargo != "")
+            {
+                $condicoes['cargo LIKE'] = '%' . $cargo . '%';
+            }
 
             if ($empresa != "") 
             {
