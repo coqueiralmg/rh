@@ -8,6 +8,7 @@
                 <th>Cargo</th>
                 <th>Área</th>
                 <th>CPF</th>
+                <th>PIS</th>
                 <th>Tipo</th>
                 <th>Ativo</th>
             </tr>
@@ -19,7 +20,8 @@
                     <td><?=$funcionario->nome?></td>
                     <td><?=$funcionario->cargo?></td>
                     <td><?=$funcionario->area?></td>
-                    <td><?=$funcionario->cpf?></td>
+                    <td><?=$this->Format->cpf($funcionario->cpf)?></td>
+                    <td><?=$funcionario->pis?></td>
                     <td><?=$funcionario->tipo->descricao?></td>
                     <td><?=$funcionario->ativado?></td>
                 </tr>
