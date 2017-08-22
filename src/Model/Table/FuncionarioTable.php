@@ -16,5 +16,12 @@ class FuncionarioTable extends BaseTable
             'propertyName' => 'tipo',
             'joinType' => 'INNER'
         ]);
+
+        $this->belongsTo('Empresa', [
+            'className' => 'Empresa',
+            'foreignKey' => 'empresa',
+            'propertyName' => 'empresa',
+            'joinType' => 'INNER'
+        ]);
     }
 }
