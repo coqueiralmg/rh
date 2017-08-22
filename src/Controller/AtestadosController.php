@@ -18,6 +18,7 @@ class AtestadosController extends AppController
     {
         $t_atestados = TableRegistry::get('Atestado');
         $t_tipo_funcionario = TableRegistry::get('TipoFuncionario');
+        $t_empresas = TableRegistry::get('Empresa');
 
         $limite_paginacao = Configure::read('Pagination.limit');
         $condicoes = array();
@@ -32,6 +33,7 @@ class AtestadosController extends AppController
             $emissao_final = $this->request->query('emissao_final');
             $afastamento_inicial = $this->request->query('afastamento_inicial');
             $afastamento_final = $this->request->query('afastamento_final');
+            $empresa = $this->request->query('empresa');
             $tipo_funcionario = $this->request->query('tipo_funcionario');
             $mostrar = $this->request->query('mostrar');
 
@@ -59,6 +61,11 @@ class AtestadosController extends AppController
                 $condicoes["Atestado.afastamento >="] = $this->Format->formatDateDB($afastamento_inicial);
                 $condicoes["Atestado.afastamento <="] = $this->Format->formatDateDB($afastamento_final);
             }
+
+            if ($empresa != "") 
+            {
+                $condicoes['empresa'] = $empresa;
+            }
             
             if($tipo_funcionario != "")
             {
@@ -84,6 +91,7 @@ class AtestadosController extends AppController
             $data['emissao_final'] = $emissao_final;
             $data['afastamento_inicial'] = $afastamento_inicial;
             $data['afastamento_final'] = $afastamento_final;
+            $data['empresa'] = $empresa;
             $data['tipo_funcionario'] = $tipo_funcionario;
             $data['mostrar'] = $mostrar;
 
@@ -116,6 +124,11 @@ class AtestadosController extends AppController
             'valueField' => 'descricao'
         ]);
 
+        $empresas = $t_empresas->find('list', [
+            'keyField' => 'id',
+            'valueField' => 'nome'
+        ]);
+
         $combo_mostra = [
             'T' => 'Atestados de todos os funcionários', 
             'A' => 'Somente atestados de funcionários ativos', 
@@ -129,6 +142,7 @@ class AtestadosController extends AppController
         $this->set('atestados', $atestados);
         $this->set('qtd_total', $qtd_total);
         $this->set('tipos_funcionarios', $tipos_funcionarios);
+        $this->set('empresas', $empresas);
         $this->set('combo_mostra', $combo_mostra);
         $this->set('data', $data);
     }
@@ -147,6 +161,7 @@ class AtestadosController extends AppController
             $emissao_final = $this->request->query('emissao_final');
             $afastamento_inicial = $this->request->query('afastamento_inicial');
             $afastamento_final = $this->request->query('afastamento_final');
+            $empresa = $this->request->query('empresa');
             $tipo_funcionario = $this->request->query('tipo_funcionario');
             $mostrar = $this->request->query('mostrar');
 
@@ -173,6 +188,11 @@ class AtestadosController extends AppController
             {
                 $condicoes["Atestado.afastamento >="] = $this->Format->formatDateDB($afastamento_inicial);
                 $condicoes["Atestado.afastamento <="] = $this->Format->formatDateDB($afastamento_final);
+            }
+
+            if ($empresa != "") 
+            {
+                $condicoes['empresa'] = $empresa;
             }
             
             if($tipo_funcionario != "")

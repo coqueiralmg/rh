@@ -76,14 +76,21 @@
                             </div>
                             
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
+                                    <div class="form-group form-group-min">
+                                        <?= $this->Form->label("empresa", "Empresa") ?> <br/>
+                                        <?=$this->Form->select('empresa', $empresas, ['empty' => 'Todos', 'class' => 'form-control'])?>
+                                        <span class="material-input"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
                                     <div class="form-group form-group-min">
                                         <?= $this->Form->label("tipo_funcionario", "Tipo de Funcionário") ?> <br/>
                                         <?=$this->Form->select('tipo_funcionario', $tipos_funcionarios, ['empty' => 'Todos', 'class' => 'form-control'])?>
                                         <span class="material-input"></span>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group form-group-min">
                                         <?= $this->Form->label("mostrar", "Mostrar") ?> <br/>
                                         <?=$this->Form->select('mostrar', $combo_mostra, ['class' => 'form-control'])?>
