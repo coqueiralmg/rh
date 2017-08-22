@@ -70,7 +70,7 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <?= $this->Form->label("cargo", "Cargo") ?>
-                                        <?= $this->Form->text("cargo", ["id" => "cargo", "class" => "form-control", "maxlength" => 30]) ?>
+                                        <?= $this->Form->text("cargo", ["id" => "cargo", "class" => "form-control", "maxlength" => 50]) ?>
                                         <span class="material-input"></span>
                                     </div>
                                 </div>
