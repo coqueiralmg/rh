@@ -18,6 +18,7 @@ class FuncionariosController extends AppController
     {
         $t_funcionarios = TableRegistry::get('Funcionario');
         $t_tipo_funcionario = TableRegistry::get('TipoFuncionario');
+        $t_empresas = TableRegistry::get('Empresa');
 
         $limite_paginacao = Configure::read('Pagination.limit');
         $condicoes = array();
@@ -29,6 +30,7 @@ class FuncionariosController extends AppController
             $nome = $this->request->query('nome');
             $area = $this->request->query('area');
             $cargo = $this->request->query('cargo');
+            $empresa = $this->request->query('empresa');
             $tipo = $this->request->query('tipo');
             $mostrar = $this->request->query('mostrar');
 
@@ -39,6 +41,11 @@ class FuncionariosController extends AppController
             $condicoes['nome LIKE'] = '%' . $nome . '%';
             $condicoes['area LIKE'] = '%' . $area . '%';
             $condicoes['cargo LIKE'] = '%' . $cargo . '%';
+            
+            if ($empresa != "") 
+            {
+                $condicoes['empresa'] = $empresa;
+            }
 
             if ($tipo != "") 
             {
@@ -61,6 +68,7 @@ class FuncionariosController extends AppController
             $data['nome'] = $nome;
             $data['area'] = $area;
             $data['cargo'] = $cargo;
+            $data['empresa'] = $empresa;
             $data['tipo'] = $tipo;
             $data['mostrar'] = $mostrar;
 
@@ -98,6 +106,11 @@ class FuncionariosController extends AppController
             'keyField' => 'id',
             'valueField' => 'descricao'
         ]);
+
+        $empresas = $t_empresas->find('list', [
+            'keyField' => 'id',
+            'valueField' => 'nome'
+        ]);
         
         $this->set('title', 'Funcionários');
         $this->set('icon', 'work');
@@ -106,6 +119,7 @@ class FuncionariosController extends AppController
         $this->set('funcionarios', $funcionarios);
         $this->set('qtd_total', $qtd_total);
         $this->set('tipos_funcionarios', $tipos_funcionarios);
+        $this->set('empresas', $empresas);
         $this->set('data', $data);
     }
 
@@ -121,6 +135,7 @@ class FuncionariosController extends AppController
             $nome = $this->request->query('nome');
             $area = $this->request->query('area');
             $cargo = $this->request->query('cargo');
+            $empresa = $this->request->query('empresa');
             $tipo = $this->request->query('tipo');
             $mostrar = $this->request->query('mostrar');
 
@@ -131,6 +146,11 @@ class FuncionariosController extends AppController
             $condicoes['nome LIKE'] = '%' . $nome . '%';
             $condicoes['area LIKE'] = '%' . $area . '%';
             $condicoes['cargo LIKE'] = '%' . $cargo . '%';
+
+            if ($empresa != "") 
+            {
+                $condicoes['empresa'] = $empresa;
+            }
 
             if ($tipo != "") 
             {
@@ -190,10 +210,16 @@ class FuncionariosController extends AppController
 
         $t_funcionarios = TableRegistry::get('Funcionario');
         $t_tipo_funcionario = TableRegistry::get('TipoFuncionario');
+        $t_empresas = TableRegistry::get('Empresa');
 
         $tipos_funcionarios = $t_tipo_funcionario->find('list', [
             'keyField' => 'id',
             'valueField' => 'descricao'
+        ]);
+
+        $empresas = $t_empresas->find('list', [
+            'keyField' => 'id',
+            'valueField' => 'nome'
         ]);
 
         if ($id > 0) 
@@ -210,6 +236,7 @@ class FuncionariosController extends AppController
         $this->set('icon', $icon);
         $this->set('id', $id);
         $this->set('tipos_funcionarios', $tipos_funcionarios);
+        $this->set('empresas', $empresas);
     }
 
     public function save(int $id)
@@ -345,6 +372,7 @@ class FuncionariosController extends AppController
             $entity->data_admissao = $this->Format->formatDateDB($entity->data_admissao);
             $entity->cpf = $this->Format->clearMask($entity->cpf);
             $entity->tipo = $this->request->getData('tipo');
+            $entity->empresa = $this->request->getData('empresa');
 
             $t_funcionarios->save($entity);
             $this->Flash->greatSuccess('Funcionário salvo com sucesso');
@@ -421,6 +449,7 @@ class FuncionariosController extends AppController
             $entity->data_admissao = $this->Format->formatDateDB($entity->data_admissao);
             $entity->cpf = $this->Format->clearMask($entity->cpf);
             $entity->tipo = $this->request->getData('tipo');
+            $entity->empresa = $this->request->getData('empresa');
 
             $propriedades = $this->Auditoria->changedOriginalFields($entity);
             $modificadas = $this->Auditoria->changedFields($entity, $propriedades);
