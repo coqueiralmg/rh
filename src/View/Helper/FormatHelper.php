@@ -20,7 +20,7 @@ class FormatHelper extends Helper
     }
 
     /**
-     * Fora para CEP.
+     * Formata para CEP.
      * @param string $value Valor original cep
      * @return string CEP Formatado
      */
@@ -28,6 +28,19 @@ class FormatHelper extends Helper
     {
         $pattern = '/^(\d{5})(\d{3})$/';
         $result = preg_replace($pattern, '\\1-\\2', $value);
+
+        return $result;
+    }
+
+    /**
+     * Formata para CPF.
+     * @param string $value Valor original cep
+     * @return string CEP Formatado
+     */
+    public function cpf(string $value)
+    {
+        $pattern = '/^(\d{3})(\d{3})(\d{3})(\d{2})$/';
+        $result = preg_replace($pattern, '\\1.\\2.\\3-\\4', $value);
 
         return $result;
     }
