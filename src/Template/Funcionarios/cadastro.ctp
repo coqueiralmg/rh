@@ -14,7 +14,7 @@
                                 ],
                                 "role" => "form"]);
                             ?>
-                                <?=$this->element('message', [
+                            <?=$this->element('message', [
                                 'name' => 'cadastro_erro',
                                 'type' => 'error',
                                 'message' => 'Ocorreu um erro ao salvar o funcionario',
