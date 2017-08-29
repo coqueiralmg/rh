@@ -343,7 +343,8 @@ class SystemController extends AppController
             return;
         }
 
-        if ($senha != '') {
+        if ($senha != '') 
+        {
             $this->request->session()->write('Usuario', $usuario);
             $this->request->session()->write('UsuarioID', $usuario->id);
             $this->request->session()->write('UsuarioNick', $usuario->usuario);
@@ -360,13 +361,17 @@ class SystemController extends AppController
         $this->Auditoria->registrar($auditoria);
         $this->request->session()->write('UsuarioEntrada', date("Y-m-d H:i:s"));
 
-        if ($senha != '') {
+        if ($senha != '') 
+        {
             $tentativa = $this->request->session()->read('LoginAttemps');
 
-            if ($tentativa >= Configure::read('Security.login.attemps.warning')) {
+            if ($tentativa >= Configure::read('Security.login.attemps.warning')) 
+            {
                 $this->request->session()->write('UsuarioSuspeito', true);
                 $this->Monitoria->monitorar($auditoria);
-            } else {
+            } 
+            else 
+            {
                 $this->request->session()->write('UsuarioSuspeito', false);
             }
         }
