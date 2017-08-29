@@ -51,7 +51,7 @@ class MonitoriaComponent extends Component
             'name' => 'Segurança Coqueiral',
             'from' => 'security@coqueiral.mg.gov.br',
             'to' => $emails,
-            'subject' => 'Possível tentativa não autorizada de acesso ao Administrador do Site'
+            'subject' => 'Possível tentativa não autorizada de acesso ao Sistema de Recursos Humanos'
         );
 
         $params = array(
@@ -75,7 +75,7 @@ class MonitoriaComponent extends Component
             'name' => 'Segurança Coqueiral',
             'from' => 'security@coqueiral.mg.gov.br',
             'to' => $emails,
-            'subject' => 'Acesso bloqueado ao Administrador da Prefeitura de Coqueiral'
+            'subject' => 'Acesso bloqueado ao Sistema de Recursos Humanos'
         );
 
         $params = array(
