@@ -26,7 +26,7 @@ class SystemController extends AppController
                 $query = $t_usuario->find('all', [
                     'contain' => ['GrupoUsuario'],
                     'conditions' => [
-                        'usuario.id' => $idUsuario
+                        'Usuario.id' => $idUsuario
                     ]
                 ]);
 
@@ -122,6 +122,8 @@ class SystemController extends AppController
             ];
 
             $this->Auditoria->registrar($auditoria);
+
+            $this->request->session()->destroy();
 
             $this->redirectLogin('Sua senha foi alterada com sucesso.', false);
         } else {
