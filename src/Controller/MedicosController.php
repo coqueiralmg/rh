@@ -149,6 +149,49 @@ class MedicosController extends AppController
         }        
     }
 
+    public function delete(int $id)
+    {
+        try
+        {
+            $t_medicos = TableRegistry::get('Medico');
+
+            $marcado = $t_medicos->get($id);
+            $nome = $marcado->nome;
+
+            $propriedades = $marcado->getOriginalValues();
+
+            $t_medicos->delete($marcado);
+
+            $this->Flash->greatSuccess('O médico ' . $nome . ' foi excluído com sucesso!');
+
+            $auditoria = [
+                'ocorrencia' => 26,
+                'descricao' => 'O usuário excluiu um determinado médico do sistema.',
+                'dado_adicional' => json_encode(['medico_excluido' => $id, 'dados_medico_excluido' => $propriedades]),
+                'usuario' => $this->request->session()->read('UsuarioID')
+            ];
+
+            $this->Auditoria->registrar($auditoria);
+
+            if ($this->request->session()->read('UsuarioSuspeito')) 
+            {
+                $this->Monitoria->monitorar($auditoria);
+            }
+
+            $this->redirect(['action' => 'index']);
+        }
+        catch(Exception $ex)
+        {
+            $this->Flash->exception('Ocorreu um erro no sistema ao excluir o médico.', [
+                'params' => [
+                    'details' => $ex->getMessage()
+                ]
+            ]);
+
+            $this->redirect(['action' => 'index']);
+        }
+    }
+
     public function append()
     {
         if ($this->request->is('ajax'))
