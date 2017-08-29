@@ -71,7 +71,38 @@ class MedicosController extends AppController
 
     public function imprimir()
     {
+        $t_medicos = TableRegistry::get('Medico');
         
+        $condicoes = array();
+        $data = array();
+
+        if (count($this->request->getQueryParams()) > 1)
+        {
+            $nome = $this->request->query('nome');
+            $crm = $this->request->query('crm');
+            
+            if($nome != "")
+            {
+                $condicoes['nome LIKE'] = '%' . $nome . '%';
+            }
+
+            if($crm != "")
+            {
+                $condicoes['crm'] = $crm;
+            }
+        }
+
+        $medicos = $t_medicos->find('all', [
+            'conditions' => $condicoes
+        ]);
+
+        $qtd_total = $medicos->count();
+
+        $this->viewBuilder()->layout('print');
+
+        $this->set('title', 'Médicos');
+        $this->set('medicos', $medicos);
+        $this->set('qtd_total', $qtd_total);
     }
 
     public function add()
