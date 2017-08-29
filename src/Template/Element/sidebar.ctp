@@ -79,7 +79,7 @@
             <?php endif; ?>
             <?php if ($this->Membership->handleMenu("medicos")) : ?>
                  <li class="<?= $this->Menu->activeMenu(['controller' => 'medicos']) ?>">
-                    <a href="<?= $this->Url->build('/atestados') ?>">
+                    <a href="<?= $this->Url->build('/medicos') ?>">
                         <i class="material-icons">face</i>
                         <p>Médicos</p>
                     </a>
