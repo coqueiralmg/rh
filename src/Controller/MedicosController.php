@@ -16,7 +16,57 @@ class MedicosController extends AppController
 
     public function index()
     {
-        
+        $t_medicos = TableRegistry::get('Medico');
+
+        $limite_paginacao = Configure::read('Pagination.limit');
+        $condicoes = array();
+        $data = array();
+
+        if (count($this->request->getQueryParams()) > 1)
+        {
+            $nome = $this->request->query('nome');
+            $crm = $this->request->query('crm');
+            
+            if($nome != "")
+            {
+                $condicoes['nome LIKE'] = '%' . $nome . '%';
+            }
+
+            if($crm != "")
+            {
+                $condicoes['crm'] = $crm;
+            }
+
+            $data['nome'] = $nome;
+            $data['crm'] = $crm;
+
+            $this->request->data = $data;
+        }
+
+        $this->paginate = [
+            'limit' => $limite_paginacao,
+            'conditions' => $condicoes,
+            'order' => [
+                'nome' => 'ASC'
+            ]
+        ];
+
+        $medicos = $this->paginate($t_medicos);
+        $qtd_total = $t_medicos->find('all', [
+            'conditions' => $condicoes
+        ])->count();
+
+        $opcao_paginacao = [
+            'name' => 'médicos',
+            'name_singular' => 'médico'
+        ];
+
+        $this->set('title', 'Médicos');
+        $this->set('icon', 'face');
+        $this->set('opcao_paginacao', $opcao_paginacao);
+        $this->set('medicos', $medicos);
+        $this->set('qtd_total', $qtd_total);
+        $this->set('data', $data);
     }
 
     public function imprimir()
