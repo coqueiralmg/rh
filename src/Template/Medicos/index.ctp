@@ -77,7 +77,7 @@
                             </table>
                         <?php else : ?>
                             <?php if ($this->Membership->handleRole("adicionar_medicos")) : ?>
-                                <h3>Nenhum médico encontrado. Para registrar o novo médico, <?=$this->Html->link("clique aqui", ["controller" => "Médicos", "action" => "add"])?>.</h3>
+                                <h3>Nenhum médico encontrado. Para registrar o novo médico, <?=$this->Html->link("clique aqui", ["controller" => "Medicos", "action" => "add"])?>.</h3>
                             <?php else :?>
                                 <h3>Nenhum médico encontrado.</h3>
                             <?php endif; ?>
