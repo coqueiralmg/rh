@@ -6,7 +6,6 @@
                 <th>Endereço de IP</th>
                 <th>Data do Cadastro</th>
                 <th>Lista Branca</th>
-                <th>Bloqueio no Site</th>
                 <th>Ativo</th>
                 <th></th>
             </tr>
@@ -17,7 +16,6 @@
                     <td><?= $item->ip ?></td>
                     <td><?= $this->Format->date($item->data) ?></td>
                     <td><?= $item->whitelist ?></td>
-                    <td><?= $item->bloqueiaSite ?></td>
                     <td><?= $item->ativado ?></td>
                 </tr>
             <?php endforeach; ?>
