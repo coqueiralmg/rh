@@ -117,7 +117,36 @@ class MedicosController extends AppController
 
     public function cadastro(int $id)
     {
-        
+        $title = ($id > 0) ? 'Edição de Médico' : 'Novo Médico';
+        $icon = 'face';
+
+        $t_medicos = TableRegistry::get('Medico');
+
+        if ($id > 0) 
+        {
+            $medico = $t_medicos->get($id);
+            $this->set('medico', $medico);
+        }
+        else
+        {
+            $this->set('medico', null);
+        }
+
+        $this->set('title', $title);
+        $this->set('icon', $icon);
+        $this->set('id', $id);
+    }
+
+    public function save(int $id)
+    {
+        if ($this->request->is('post'))
+        {
+            $this->insert();
+        }
+        else if($this->request->is('put'))
+        {
+            $this->update($id);
+        }        
     }
 
     public function append()
@@ -145,7 +174,7 @@ class MedicosController extends AppController
                 
                 if($qcrm > 0)
                 {
-                    $mensagem = 'Existe um médico com o CRM selecionado';
+                    $mensagem = 'Existe um médico com o CRM informado.';
                 }
             }
             else
@@ -197,6 +226,66 @@ class MedicosController extends AppController
             ]);
 
             echo json_encode($medicos);
+        }
+    }
+
+    protected function insert()
+    {
+        try 
+        {
+            $t_medicos = TableRegistry::get('Medico');
+
+            $entity = $t_medicos->newEntity($this->request->data());
+
+            if($entity->crm != '')
+            {
+                $qcrm = $t_medicos->find('all', [
+                    'conditions' => [
+                        'crm' => $entity->crm
+                    ]
+                ])->count();
+                
+                if($qcrm > 0)
+                {
+                    throw new Exception("Existe um médico com o CRM informado.");
+                }
+            }
+            else
+            {
+                $entity->crm = null;
+            }
+
+            $t_medicos->save($entity);
+            
+            $this->Flash->greatSuccess('O médico foi salvo com sucesso');
+            
+            $propriedades = $entity->getOriginalValues();
+            
+            $auditoria = [
+                'ocorrencia' => 24,
+                'descricao' => 'O usuário cadastrou o novo médico via formulário de cadastro de médicos.',
+                'dado_adicional' => json_encode(['id_novo_medico' => $entity->id, 'campos' => $propriedades]),
+                'usuario' => $this->request->session()->read('UsuarioID')
+            ];
+
+            $this->Auditoria->registrar($auditoria);
+
+            if ($this->request->session()->read('UsuarioSuspeito')) 
+            {
+                $this->Monitoria->monitorar($auditoria);
+            }
+
+            $this->redirect(['action' => 'cadastro', $entity->id]);
+        } 
+        catch (Exception $ex) 
+        {
+            $this->Flash->exception('Ocorreu um erro no sistema ao salvar o médico', [
+                'params' => [
+                    'details' => $ex->getMessage()
+                ]
+            ]);
+
+            $this->redirect(['action' => 'cadastro', 0]);
         }
     }
 }
