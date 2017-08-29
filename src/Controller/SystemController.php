@@ -123,15 +123,14 @@ class SystemController extends AppController
 
             $this->Auditoria->registrar($auditoria);
 
-            $this->request->session()->destroy();
-
             $this->redirectLogin('Sua senha foi alterada com sucesso.', false);
         } else {
-            $usuario = $this->request->session()->read('Usuario');
+            $idUsuario = $this->request->session()->read('UsuarioID');
+            $this->request->session()->destroy();
             
             $this->viewBuilder()->layout('guest');
             $this->set('title', 'Troca de Senha');
-            $this->set('idUsuario', $usuario->id);
+            $this->set('idUsuario', $idUsuario);
         }
     }
 
@@ -139,8 +138,6 @@ class SystemController extends AppController
     {
         $this->controlAuth();
         $this->carregarDadosSistema();
-
-        
 
         $this->set('title', 'Painel Principal');
         $this->set('icon', 'dashboard');
@@ -170,10 +167,10 @@ class SystemController extends AppController
         
         $query = $t_usuario->find('all', [
             'conditions' => [
-                'usuario.usuario' => $login
+                'Usuario.usuario' => $login
             ]
         ])->orWhere([
-            'usuario.email' => $login
+            'Usuario.email' => $login
         ]);
 
         if ($query->count() > 0) {
@@ -279,10 +276,10 @@ class SystemController extends AppController
 
         $query = $t_usuario->find('all', [
             'conditions' => [
-                'usuario.usuario' => $login
+                'Usuario.usuario' => $login
             ]
         ])->orWhere([
-            'usuario.email' => $login
+            'Usuario.email' => $login
         ]);
 
         if ($query->count() > 0) {
@@ -311,31 +308,36 @@ class SystemController extends AppController
 
     protected function validarLogin($usuario, $senha = '')
     {
-        if (!$usuario->ativo) {
+        if (!$usuario->ativo) 
+        {
             $this->redirectLogin("O usuário encontra-se inativo para o sistema.");
             return;
         }
 
-        if ($usuario->suspenso) {
+        if ($usuario->suspenso) 
+        {
             $this->redirectLogin("O usuário encontra-se suspenso no sistema. Favor entrar em contato com o administrador do sistema.");
             return;
         }
 
-        if (!$usuario->grupoUsuario->ativo) {
+        if (!$usuario->grupoUsuario->ativo) 
+        {
             $this->redirectLogin("O usuário encontra-se em um grupo de usuário inativo.");
             return;
         }
 
-        if ($senha != '') {
-            if ($usuario->senha != sha1($senha)) {
+        if ($senha != '') 
+        {
+            if ($usuario->senha != sha1($senha)) 
+            {
                 $this->atualizarTentativas('A senha informada é inválida.');
                 return;
             }
         }
 
-        if ($usuario->verificar) {
-            $this->request->session()->write('Usuario', $usuario);
-
+        if ($usuario->verificar) 
+        {
+            $this->request->session()->write('UsuarioID', $usuario->id);
             $this->Flash->success('Por favor, troque a senha.');
             $this->redirect(['controller' => 'system', 'action' => 'password']);
             return;
