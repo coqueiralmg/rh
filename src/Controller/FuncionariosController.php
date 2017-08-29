@@ -312,7 +312,7 @@ class FuncionariosController extends AppController
             $auditoria = [
                 'ocorrencia' => 23,
                 'descricao' => 'O usuário excluiu um determinado funcionário do sistema.',
-                'dado_adicional' => json_encode(['usuario_excluido' => $id, 'dados_funcionario_excluido' => $propriedades]),
+                'dado_adicional' => json_encode(['funcionario_excluido' => $id, 'dados_funcionario_excluido' => $propriedades]),
                 'usuario' => $this->request->session()->read('UsuarioID')
             ];
 
