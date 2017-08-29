@@ -288,4 +288,67 @@ class MedicosController extends AppController
             $this->redirect(['action' => 'cadastro', 0]);
         }
     }
+
+    protected function update(int $id)
+    {
+        try 
+        {
+            $t_medicos = TableRegistry::get('Medico');
+            $entity = $t_medicos->get($id);
+
+            $t_medicos->patchEntity($entity, $this->request->data());
+            
+            if($entity->crm != '')
+            {
+                $qcrm = $t_medicos->find('all', [
+                    'conditions' => [
+                        'crm' => $entity->crm,
+                        'id <>' => $id
+                    ]
+                ])->count();
+                
+                if($qcrm > 0)
+                {
+                    throw new Exception("Existe um médico com o CRM informado.");
+                }
+            }
+            else
+            {
+                $entity->crm = null;
+            }
+
+            $propriedades = $this->Auditoria->changedOriginalFields($entity);
+            $modificadas = $this->Auditoria->changedFields($entity, $propriedades);
+
+            $t_medicos->save($entity);
+
+            $this->Flash->greatSuccess('O médico foi salvo com sucesso');
+
+            $auditoria = [
+                'ocorrencia' => 25,
+                'descricao' => 'O usuário modificou os dados de um determinado médico.',
+                'dado_adicional' => json_encode(['medico_modificado' => $id, 'valores_originais' => $propriedades, 'valores_modificados' => $modificadas]),
+                'usuario' => $this->request->session()->read('UsuarioID')
+            ];
+
+            $this->Auditoria->registrar($auditoria);
+
+            if ($this->request->session()->read('UsuarioSuspeito')) 
+            {
+                $this->Monitoria->monitorar($auditoria);
+            }
+
+            $this->redirect(['action' => 'cadastro', $id]);
+        } 
+        catch (Exception $ex) 
+        {
+            $this->Flash->exception('Ocorreu um erro no sistema ao salvar o médico', [
+                'params' => [
+                    'details' => $ex->getMessage()
+                ]
+            ]);
+
+            $this->redirect(['action' => 'cadastro', $id]);
+        }
+    }
 }
