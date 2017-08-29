@@ -45,11 +45,6 @@ class AtestadosController extends AppController
                 $condicoes['Atestado.cid'] = $cid;
             }
 
-            if($cid != '')
-            {
-                $condicoes['Atestado.cid'] = $cid;
-            }
-
             if($emissao_inicial != "" && $emissao_final != "")
             {
                 $condicoes["Atestado.emissao >="] = $this->Format->formatDateDB($emissao_inicial);
