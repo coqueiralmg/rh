@@ -33,9 +33,9 @@
                             <div class="form-group form-button">
                                 <button type="submit" class="btn btn-fill btn-success pull-right">Buscar<div class="ripple-container"></div></button>
                                 <?php if ($this->Membership->handleRole("adicionar_medicos")) : ?>
-                                    <a href="<?= $this->Url->build(['controller' => 'Firewall', 'action' => 'add']) ?>" class="btn btn-warning btn-default pull-right">Novo<div class="ripple-container"></div></a>
+                                    <a href="<?= $this->Url->build(['controller' => 'Medicos', 'action' => 'add']) ?>" class="btn btn-warning btn-default pull-right">Novo<div class="ripple-container"></div></a>
                                 <?php endif; ?>
-                                <a href="<?= $this->Url->build(['controller' => 'Firewall', 'action' => 'imprimir', '?' => $data]) ?>" target="_blank" class="btn btn-fill btn-default pull-right">Imprimir<div class="ripple-container"></div></a>
+                                <a href="<?= $this->Url->build(['controller' => 'Medicos', 'action' => 'imprimir', '?' => $data]) ?>" target="_blank" class="btn btn-fill btn-default pull-right">Imprimir<div class="ripple-container"></div></a>
                             </div>
                         <?php echo $this->Form->end(); ?>
                     </div>
@@ -63,7 +63,7 @@
                                             <td><?= $medico->crm ?></td>
                                             <td class="td-actions text-right">
                                                 <?php if ($this->Membership->handleRole("editar_medicos")) : ?>
-                                                    <a href="<?= $this->Url->build(['controller' => 'Firewall', 'action' => 'edit', $medico->id]) ?>" class="btn btn-primary btn-round">
+                                                    <a href="<?= $this->Url->build(['controller' => 'Medicos', 'action' => 'edit', $medico->id]) ?>" class="btn btn-primary btn-round">
                                                         <i class="material-icons">edit</i>
                                                     </a>
                                                 <?php endif; ?>
