@@ -64,6 +64,11 @@
                                             <td><?= $medico->especialidade ?></td>
                                             <td><?= $medico->crm ?></td>
                                             <td class="td-actions text-right">
+                                                <?php if ($this->Membership->handleRole("visualizar_medicos")) : ?>
+                                                    <a href="<?= $this->Url->build(['controller' => 'Medicos', 'action' => 'view', $medico->id]) ?>" class="btn btn-info btn-round">
+                                                        <i class="material-icons">pageview</i>
+                                                    </a>
+                                                <?php endif; ?>
                                                 <?php if ($this->Membership->handleRole("editar_medicos")) : ?>
                                                     <a href="<?= $this->Url->build(['controller' => 'Medicos', 'action' => 'edit', $medico->id]) ?>" class="btn btn-primary btn-round">
                                                         <i class="material-icons">edit</i>
