@@ -139,6 +139,11 @@
                                             <td><?=$atestado->cid?></td>
                                             <td><?=$atestado->afastado?></td>
                                             <td class="td-actions text-right">
+                                                <?php if ($this->Membership->handleRole("visualizar_atestados")) : ?>
+                                                    <a href="<?= $this->Url->build(['controller' => 'Atestados', 'action' => 'view', $atestado->id]) ?>" class="btn btn-info btn-round">
+                                                        <i class="material-icons">pageview</i>
+                                                    </a>
+                                                <?php endif; ?>
                                                 <?php if ($this->Membership->handleRole("editar_atestados")) : ?>
                                                     <a href="<?= $this->Url->build(['controller' => 'Atestados', 'action' => 'edit', $atestado->id]) ?>" class="btn btn-primary btn-round">
                                                         <i class="material-icons">edit</i>
