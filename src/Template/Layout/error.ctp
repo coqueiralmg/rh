@@ -15,32 +15,55 @@
 ?>
 <!DOCTYPE html>
 <html>
-<head>
-    <?= $this->Html->charset() ?>
-    <title>
-        <?= $this->fetch('title') ?>
-    </title>
-    <?= $this->Html->meta('icon') ?>
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+        <meta name="viewport" content="width=device-width" />
 
-    <?= $this->Html->css('base.css') ?>
-    <?= $this->Html->css('cake.css') ?>
+        <title>
+            <?php
+                if(isset($title))
+                {
+                    echo $title . " | " . $this->Data->setting('System.name');
+                }
+                else
+                {
+                    echo $this->Data->setting('System.name');
+                }
+            ?>
+        </title>
 
-    <?= $this->fetch('meta') ?>
-    <?= $this->fetch('css') ?>
-    <?= $this->fetch('script') ?>
-</head>
+        <!-- Bootstrap core CSS     -->
+        <?= $this->Html->css('bootstrap.min.css') ?>
+        <!--  Material Dashboard CSS    -->
+        <?= $this->Html->css('material-dashboard.css') ?>
+        <!--  CSS for Demo Purpose, don't include it in your project     -->
+        <?= $this->Html->css('demo.css') ?>
+        <!--  Fonts and icons     -->
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons" />
+    </head>
 <body>
-    <div id="container">
-        <div id="header">
-            <h1><?= __('Error') ?></h1>
-        </div>
-        <div id="content">
-            <?= $this->Flash->render() ?>
+    <div class="wrapper wrapper-full-page">
+        <div class="full-page login-page">
+            <div class="col-md-4 col-sm-6 col-md-offset-4 col-sm-offset-3">
+                <form id="form_login">
+                    <div class="card card-login card-hidden">
+                        <div class="card-header text-center" data-background-color="red">
+                            <h4 class="card-title">Erro</h4>
+                        </div>
+                        <div class="card-content">
+                            <?= $this->Flash->render() ?>
 
-            <?= $this->fetch('content') ?>
-        </div>
-        <div id="footer">
-            <?= $this->Html->link(__('Back'), 'javascript:history.back()') ?>
+                            <?= $this->fetch('content') ?>
+                        </div>
+                        <div class="footer text-center">
+                            <?= $this->Html->link('Voltar', 'javascript:history.back()', ['class' => 'btn btn-danger btn-simple btn-wd btn-lg']) ?>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </body>
