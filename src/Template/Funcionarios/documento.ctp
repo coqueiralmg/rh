@@ -54,7 +54,7 @@
         <tr colspan="2">
             <td>
                 <b>Observação</b><br/>
-                <td><?=$funcionario->observacao?></td>
+                <?=$funcionario->observacao?>
             </td>
         </tr>
     </tfoot>
