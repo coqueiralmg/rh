@@ -31,8 +31,14 @@ if (Configure::read('debug')):
     $this->end();
 endif;
 ?>
-<h2><?= h($message) ?></h2>
+<h4><?= h($message) ?></h4>
 <p class="error">
-    <strong><?= __d('cake', 'Error') ?>: </strong>
-    <?= __d('cake', 'The requested address {0} was not found on this server.', "<strong>'{$url}'</strong>") ?>
+    <?php if($message == 'Forbidden'): ?>
+    <strong>Erro: </strong>
+    <?= __d('cake', 'Você não tem permissão para acessar este endereço {0}.', "<strong>'{$url}'</strong>") ?>
+    <?php elseif($message == 'Not Found'):?>
+    <strong>Erro: </strong>
+    <?= __d('cake', 'O endereço requisitado {0} não foi encontrado em nosso servidor.', "<strong>'{$url}'</strong>") ?>
+    <?php endif;?>
+    
 </p>
