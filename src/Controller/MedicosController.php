@@ -115,6 +115,11 @@ class MedicosController extends AppController
         $this->redirect(['action' => 'cadastro', $id]);
     }
 
+    public function view(int $id)
+    {
+        $this->redirect(['action' => 'consulta', $id]);
+    }
+
     public function cadastro(int $id)
     {
         $title = ($id > 0) ? 'Edição de Médico' : 'Novo Médico';
@@ -135,6 +140,31 @@ class MedicosController extends AppController
         $this->set('title', $title);
         $this->set('icon', $icon);
         $this->set('id', $id);
+    }
+
+    public function consulta(int $id)
+    {
+        $title = 'Consulta de Dados do Médico';
+        $icon = 'face';
+
+        $t_medicos = TableRegistry::get('Medico');
+        $medico = $t_medicos->get($id);
+
+        $this->set('title', $title);
+        $this->set('icon', $icon);
+        $this->set('id', $id);
+        $this->set('medico', $medico);
+    }
+
+    public function documento(int $id)
+    {
+        $t_medicos = TableRegistry::get('Medico');
+        $medico = $t_medicos->get($id);
+
+        $this->viewBuilder()->layout('print');
+        
+        $this->set('title', 'Dados do Médico');
+        $this->set('medico', $medico);
     }
 
     public function save(int $id)
