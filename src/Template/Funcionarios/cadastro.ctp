@@ -46,7 +46,7 @@
                                 </div>
                                 <div class="col-md-2">
                                     <div class="form-group label-control">
-                                        <?= $this->Form->label("cpf", "CFP") ?>
+                                        <?= $this->Form->label("cpf", "CPF") ?>
                                         <?= $this->Form->text("cpf", ["id" => "cpf", "class" => "form-control", "maxlength" => 14]) ?>
                                         <span class="material-input"></span>
                                     </div>
