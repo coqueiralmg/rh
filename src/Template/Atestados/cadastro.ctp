@@ -64,7 +64,9 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <?= $this->Form->label("medico", "Médico") ?>
-                                        [<a class="link_build_form" href="#" data-toggle="modal" data-target="#modal_medico">Adicionar médico</a>]
+                                        <?php if ($this->Membership->handleRole("adicionar_medicos")) : ?>
+                                            [<a class="link_build_form" href="#" data-toggle="modal" data-target="#modal_medico">Adicionar médico</a>]
+                                        <?php endif;?>
                                         <?= $this->Form->hidden("medico") ?>
                                         <?= $this->Form->hidden("medico", ["id" => "id_medico"]) ?>
                                         <?= $this->Form->text("nome_medico", ["id" => "nome_medico", "class" => "form-control", "maxlength" => 80]) ?>
