@@ -16,7 +16,9 @@
                         <?php if ($this->Membership->handleRole("adicionar_grupos_usuarios")) : ?>
                             <a href="<?= $this->Url->build(['controller' => 'Grupos', 'action' => 'add']) ?>" class="btn btn-fill btn-warning pull-right">Novo<div class="ripple-container"></div></a>
                         <?php endif; ?>
-                        <a href="<?= $this->Url->build(['controller' => 'Grupos', 'action' => 'imprimir']) ?>" target="_blank" class="btn btn-fill btn-default pull-right">Imprimir<div class="ripple-container"></div></a>
+                        <?php if ($this->Membership->handleRole("imprimir_grupos")) : ?>
+                            <a href="<?= $this->Url->build(['controller' => 'Grupos', 'action' => 'imprimir']) ?>" target="_blank" class="btn btn-fill btn-default pull-right">Imprimir<div class="ripple-container"></div></a>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>

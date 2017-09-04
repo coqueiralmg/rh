@@ -104,7 +104,9 @@
                                 <?php if ($this->Membership->handleRole("adicionar_atestados")) : ?>
                                     <a href="<?= $this->Url->build(['controller' => 'Atestados', 'action' => 'add']) ?>" class="btn btn-warning btn-default pull-right">Novo<div class="ripple-container"></div></a>
                                 <?php endif; ?>
-                                <a href="<?= $this->Url->build(['controller' => 'Atestados', 'action' => 'imprimir', '?' => $data]) ?>" target="_blank" class="btn btn-fill btn-default pull-right">Imprimir<div class="ripple-container"></div></a>
+                                <?php if ($this->Membership->handleRole("imprimir_atestados")) : ?>
+                                    <a href="<?= $this->Url->build(['controller' => 'Atestados', 'action' => 'imprimir', '?' => $data]) ?>" target="_blank" class="btn btn-fill btn-default pull-right">Imprimir<div class="ripple-container"></div></a>
+                                <?php endif;?>
                             </div>
                             <?php echo $this->Form->end(); ?>
                     </div>
