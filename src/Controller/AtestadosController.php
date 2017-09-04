@@ -247,6 +247,11 @@ class AtestadosController extends AppController
         $this->redirect(['action' => 'cadastro', $id]);
     }
 
+    public function view(int $id)
+    {
+        $this->redirect(['action' => 'consulta', $id]);
+    }
+
     public function cadastro(int $id)
     {
         $title = ($id > 0) ? 'Edição de Atestado' : 'Novo Atestado';
@@ -277,6 +282,33 @@ class AtestadosController extends AppController
         $this->set('title', $title);
         $this->set('icon', $icon);
         $this->set('id', $id);
+    }
+
+    public function consulta(int $id)
+    {
+        $title = 'Consulta de Dados do Atestado';
+        $icon = 'local_hospital';
+
+        $t_atestado = TableRegistry::get('Atestado');
+        
+        $atestado = $t_atestado->get($id, ['contain' => ['Funcionario', 'Medico']]);
+
+        $this->set('title', $title);
+        $this->set('icon', $icon);
+        $this->set('id', $id);
+        $this->set('atestado', $atestado);
+    }
+
+    public function documento(int $id)
+    {
+        $t_atestado = TableRegistry::get('Atestado');
+
+        $atestado = $t_atestado->get($id, ['contain' => ['Funcionario', 'Medico']]);
+
+        $this->viewBuilder()->layout('print');
+        
+        $this->set('title', 'Dados do Atestado');
+        $this->set('atestado', $atestado);
     }
 
     public function save(int $id)
