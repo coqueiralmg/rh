@@ -108,6 +108,11 @@
                                             <td><?=$funcionario->tipo->descricao?></td>
                                             <td><?=$funcionario->ativado?></td>
                                             <td class="td-actions text-right">
+                                                <?php if ($this->Membership->handleRole("visualizar_funcionarios")) : ?>
+                                                    <a href="<?= $this->Url->build(['controller' => 'Funcionarios', 'action' => 'view', $funcionario->id]) ?>" class="btn btn-info btn-round">
+                                                        <i class="material-icons">pageview</i>
+                                                    </a>
+                                                <?php endif; ?>
                                                 <?php if ($this->Membership->handleRole("editar_funcionarios")) : ?>
                                                     <a href="<?= $this->Url->build(['controller' => 'Funcionarios', 'action' => 'edit', $funcionario->id]) ?>" class="btn btn-primary btn-round">
                                                         <i class="material-icons">edit</i>
