@@ -10,4 +10,9 @@ class Funcionario extends Entity
     {
         return $this->_properties['ativo'] ? 'Sim' : 'Não';
     }
+
+    protected function _getEstagio()
+    {
+        return $this->_properties['probatorio'] ? 'Sim' : 'Não';
+    }
 }
