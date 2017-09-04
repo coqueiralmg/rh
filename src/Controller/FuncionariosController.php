@@ -227,6 +227,11 @@ class FuncionariosController extends AppController
         $this->redirect(['action' => 'cadastro', $id]);
     }
 
+    public function view(int $id)
+    {
+        $this->redirect(['action' => 'consulta', $id]);
+    }
+
     public function cadastro(int $id)
     {
         $title = ($id > 0) ? 'Edição de Funcionário' : 'Novo Funcionário';
@@ -261,6 +266,31 @@ class FuncionariosController extends AppController
         $this->set('id', $id);
         $this->set('tipos_funcionarios', $tipos_funcionarios);
         $this->set('empresas', $empresas);
+    }
+
+    public function consulta(int $id)
+    {
+        $title = 'Consulta de Dados do Funcionário';
+        $icon = 'work';
+
+        $t_funcionarios = TableRegistry::get('Funcionario');
+        $funcionario = $t_funcionarios->get($id, ['contain' => ['Empresa', 'TipoFuncionario']]);
+
+        $this->set('title', $title);
+        $this->set('icon', $icon);
+        $this->set('id', $id);
+        $this->set('funcionario', $funcionario);
+    }
+
+    public function documento(int $id)
+    {
+        $t_funcionarios = TableRegistry::get('Funcionario');
+        $funcionario = $t_funcionarios->get($id, ['contain' => ['Empresa', 'TipoFuncionario']]);
+
+        $this->viewBuilder()->layout('print');
+        
+        $this->set('title', 'Dados do Funcionário');
+        $this->set('funcionario', $funcionario);
     }
 
     public function save(int $id)
