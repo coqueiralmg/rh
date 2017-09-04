@@ -88,15 +88,15 @@
                                 </div>
                             </div>
                             <?php if ($this->Membership->handleRole("imprimir_atestados")) : ?>
-                            <a href="<?= $this->Url->build(['controller' => 'Atestados', 'action' => 'documento', $id]) ?>" class="btn btn-default btn-default pull-right" target="_blank">Imprimir<div class="ripple-container"></div></a>
-                        <?php endif; ?>
-                        <?php if ($this->Membership->handleRole("excluir_atestados")) : ?>
-                            <button type="button" onclick="excluirAtestado(<?= $atestado->id ?>, '<?= $this->Format->date($atestado->emissao) ?>', '<?= $atestado->funcionario->nome ?>')" class="btn btn-danger pull-right">Excluir</button>
-                        <?php endif; ?>
-                        <?php if ($this->Membership->handleRole("editar_atestados")) : ?>
-                            <a href="<?= $this->Url->build(['controller' => 'Atestados', 'action' => 'edit', $id]) ?>" class="btn btn-primary btn-default pull-right">Editar<div class="ripple-container"></div></a>
-                        <?php endif; ?>
-                        <button type="button" onclick="window.location='<?= $this->Url->build('/atestados') ?>'" class="btn btn-info pull-right">Voltar</button>
+                                <a href="<?= $this->Url->build(['controller' => 'Atestados', 'action' => 'documento', $id]) ?>" class="btn btn-default btn-default pull-right" target="_blank">Imprimir<div class="ripple-container"></div></a>
+                            <?php endif; ?>
+                            <?php if ($this->Membership->handleRole("excluir_atestados")) : ?>
+                                <button type="button" onclick="excluirAtestado(<?= $atestado->id ?>, '<?= $this->Format->date($atestado->emissao) ?>', '<?= $atestado->funcionario->nome ?>')" class="btn btn-danger pull-right">Excluir</button>
+                            <?php endif; ?>
+                            <?php if ($this->Membership->handleRole("editar_atestados")) : ?>
+                                <a href="<?= $this->Url->build(['controller' => 'Atestados', 'action' => 'edit', $id]) ?>" class="btn btn-primary btn-default pull-right">Editar<div class="ripple-container"></div></a>
+                            <?php endif; ?>
+                            <button type="button" onclick="window.location='<?= $this->Url->build('/atestados') ?>'" class="btn btn-info pull-right">Voltar</button>
                             <div class="clearfix"></div>
                         <?php echo $this->Form->end(); ?>
                     </div>
