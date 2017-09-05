@@ -107,7 +107,7 @@
                                             <td><?=$funcionario->area?></td>
                                             <td><?=$funcionario->tipo->descricao?></td>
                                             <td><?=$funcionario->ativado?></td>
-                                            <td class="td-actions text-right">
+                                            <td class="td-actions text-right" style="width: 12%">
                                                 <?php if ($this->Membership->handleRole("visualizar_funcionarios")) : ?>
                                                     <a href="<?= $this->Url->build(['controller' => 'Funcionarios', 'action' => 'view', $funcionario->id]) ?>" class="btn btn-info btn-round">
                                                         <i class="material-icons">pageview</i>

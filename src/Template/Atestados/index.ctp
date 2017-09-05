@@ -138,7 +138,7 @@
                                             <td><?=$this->Format->date($atestado->retorno)?></td>
                                             <td><?=$atestado->cid?></td>
                                             <td><?=$atestado->afastado?></td>
-                                            <td class="td-actions text-right">
+                                            <td class="td-actions text-right" style="width: 12%">
                                                 <?php if ($this->Membership->handleRole("visualizar_atestados")) : ?>
                                                     <a href="<?= $this->Url->build(['controller' => 'Atestados', 'action' => 'view', $atestado->id]) ?>" class="btn btn-info btn-round">
                                                         <i class="material-icons">pageview</i>
