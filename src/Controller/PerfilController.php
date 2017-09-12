@@ -52,6 +52,50 @@ class PerfilController extends AppController
         $this->set('id', $id);
     }
 
+    public function senha()
+    {
+        $t_usuarios = TableRegistry::get('Usuario');
+        $id = $this->request->session()->read('UsuarioID');
+        
+        $usuario = $t_usuarios->get($id);
+
+        if ($this->request->is('put')) 
+        {
+            $t_usuarios->patchEntity($usuario, $this->request->data());
+
+            $usuario->senha = sha1($usuario->nova);
+
+            $propriedades = $this->Auditoria->changedOriginalFields($usuario);
+            $modificadas = $this->Auditoria->changedFields($usuario, $propriedades);
+
+            $t_usuarios->save($usuario);
+            $this->Flash->greatSuccess('A senha foi modificada com sucesso.');
+
+            $auditoria = [
+                'ocorrencia' => 31,
+                'descricao' => 'O usuário modificou sua própria senha.',
+                'dado_adicional' => json_encode(['usuario_modificado' => $id, 'valores_originais' => $propriedades, 'valores_modificados' => $modificadas]),
+                'usuario' => $this->request->session()->read('UsuarioID')
+            ];
+
+            $this->Auditoria->registrar($auditoria);
+
+            if ($this->request->session()->read('UsuarioSuspeito')) 
+            {
+                $this->Monitoria->monitorar($auditoria);
+            }
+
+            $this->redirect(['controller' => 'perfil', 'action' => 'index']);
+        }
+        else
+        {
+            $this->set('title', 'Mudança de Senha');
+            $this->set('icon', 'vpn_key');
+            $this->set('usuario', $usuario);
+            $this->set('id', $id);
+        }
+    }
+
     public function save(int $id)
     {
         if ($this->request->is('put')) 
