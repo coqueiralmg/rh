@@ -41,8 +41,8 @@
                                 </div>
                             </div>
                             
-                            <a href="<?= $this->Url->build(['controller' => 'perfil', 'action' => 'senha', $usuario->id]) ?>" class="btn btn-danger btn-default pull-right" target="_blank">Trocar Senha<div class="ripple-container"></div></a>
-                            <a href="<?= $this->Url->build(['controller' => 'perfil', 'action' => 'edicao', $usuario->id]) ?>" class="btn btn-primary btn-default pull-right">Editar Perfil<div class="ripple-container"></div></a>
+                            <a href="<?= $this->Url->build(['controller' => 'perfil', 'action' => 'senha']) ?>" class="btn btn-danger btn-default pull-right" target="_blank">Trocar Senha<div class="ripple-container"></div></a>
+                            <a href="<?= $this->Url->build(['controller' => 'perfil', 'action' => 'edicao']) ?>" class="btn btn-primary btn-default pull-right">Editar Perfil<div class="ripple-container"></div></a>
                             <div class="clearfix"></div>
                         <?php echo $this->Form->end(); ?>
                     </div>
