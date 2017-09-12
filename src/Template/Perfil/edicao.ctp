@@ -14,7 +14,7 @@
                                 ],
                                 "role" => "form"]);
                             ?>
-                                <?=$this->element('message', [
+                            <?=$this->element('message', [
                                 'name' => 'cadastro_erro',
                                 'type' => 'error',
                                 'message' => 'Ocorreu um erro ao salvar o seus dados cadastrais',
@@ -58,7 +58,6 @@
                             </div>
                             
                             <button type="submit" onclick="return validar()" class="btn btn-success pull-right">Salvar</button>
-                            <button type="reset" class="btn btn-default pull-right">Limpar</button>
                             <button type="button" onclick="window.location='<?= $this->Url->build('/perfil') ?>'" class="btn btn-info pull-right">Voltar</button>
                             <div class="clearfix"></div>
                         <?php echo $this->Form->end(); ?>
