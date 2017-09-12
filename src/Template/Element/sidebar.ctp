@@ -17,7 +17,7 @@
             <div class="collapse" id="collapseExample" aria-expanded="false" style="height: auto;">
                 <ul class="nav">
                     <li>
-                        <a href="#">Perfil</a>
+                        <a href="<?= $this->Url->build(['controller' => 'perfil', 'action' => 'index']) ?>">Perfil</a>
                     </li>
                     <li>
                         <a href="<?= $this->Url->build(['controller' => 'log', 'action' => 'index']) ?>">Log de Acesso</a>
