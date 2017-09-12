@@ -45,7 +45,8 @@ class AuditoriaComponent extends Component
         27 => 'Inclusão do atestado',
         28 => 'Alteração do atestado',
         29 => 'Exclusão do atestado',
-        30 => 'Edição de perfil do usuário'
+        30 => 'Edição de perfil do usuário',
+        31 => 'Mudança de senha'
     ];
     
     /**
