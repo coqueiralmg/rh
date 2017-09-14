@@ -201,7 +201,8 @@ class MembershipHelper extends Helper
             ['chave' => 'firewall', 'active' => $this->handleRole('listar_ips_firewall')],
             ['chave' => 'funcionarios', 'active' => $this->handleRole('listar_funcionarios')],
             ['chave' => 'atestados', 'active' => $this->handleRole('listar_atestados')],
-            ['chave' => 'medicos', 'active' => $this->handleRole('listar_medicos')]
+            ['chave' => 'medicos', 'active' => $this->handleRole('listar_medicos')],
+            ['chave' => 'auditoria', 'active' => $this->handleRole('listar_auditoria')]
         ];
     }
 }
