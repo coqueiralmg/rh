@@ -85,6 +85,14 @@
                     </a>
                 </li>
             <?php endif; ?>
+            <?php if ($this->Membership->handleMenu("auditoria")): ?>
+                <li class="<?= $this->Menu->activeMenu(['controller' => 'auditoria']) ?>">
+                    <a href="<?= $this->Url->build('/auditoria') ?>">
+                    <i class="material-icons">fingerprint</i>
+                        <p>Auditoria</p>
+                    </a>
+                </li>
+            <?php endif; ?>
         </ul>
     </div>
 </div>
