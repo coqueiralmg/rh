@@ -16,7 +16,7 @@
                     <td><?=$this->Format->zeroPad($registro->id, 5)?></td>
                     <td><?=$this->Format->date($registro->data, true)?></td>
                     <td><?=$this->Auditoria->buscarNomeOcorrencia($registro->ocorrencia)?></td>
-                    <td><?=$registro->usuario->nome?></td>
+                    <td><?=($registro->usuario == null) ? 'Sem usuário associado' : $registro->usuario->nome?></td>
                     <td><?=$registro->ip?></td>
                 </tr>
             <?php endforeach; ?>

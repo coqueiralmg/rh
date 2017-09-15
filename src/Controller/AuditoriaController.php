@@ -32,10 +32,17 @@ class AuditoriaController extends AppController
             $data_final = $this->request->query('data_final');
             $ip = $this->request->query('ip');
             
-            if($responsavel != '')
+            if($responsavel == 0)
             {
-                $condicoes['Usuario.id'] = $responsavel;
+                $condicoes['Usuario.id IS'] = null;
             }
+            else
+            {
+                if($responsavel != '')
+                {
+                    $condicoes['Usuario.id'] = $responsavel;
+                }
+            }   
 
             if($ocorrencia != '')
             {
@@ -79,6 +86,14 @@ class AuditoriaController extends AppController
             'valueField' => 'nome'
         ]);
 
+        $combo_usuarios[''] = 'Todos';
+        $combo_usuarios[0] = 'Sem usuário associado';
+
+        foreach($usuarios as $key => $value)
+        {
+            $combo_usuarios[$key] = $value;
+        }
+
         $ocorrencias = $this->Auditoria->obterOcorrencias();
         
         $this->set('title', ' Auditoria do Sistema');
@@ -86,7 +101,7 @@ class AuditoriaController extends AppController
         $this->set('auditoria', $trilha);
         $this->set('qtd_total', $total);
         $this->set('data', $data);
-        $this->set('usuarios', $usuarios);
+        $this->set('usuarios', $combo_usuarios);
         $this->set('ocorrencias', $ocorrencias);
     }
 
@@ -103,10 +118,17 @@ class AuditoriaController extends AppController
             $data_final = $this->request->query('data_final');
             $ip = $this->request->query('ip');
             
-            if($responsavel != '')
+            if($responsavel == 0)
             {
-                $condicoes['Usuario.id'] = $responsavel;
+                $condicoes['Usuario.id IS'] = null;
             }
+            else
+            {
+                if($responsavel != '')
+                {
+                    $condicoes['Usuario.id'] = $responsavel;
+                }
+            } 
 
             if($ocorrencia != '')
             {
@@ -151,6 +173,7 @@ class AuditoriaController extends AppController
 
         $this->set('title', 'Detalhes do Registro de Auditoria do Sistema');
         $this->set('icon', 'fingerprint');
-        $this->set('auditoria', $registro);
+        $this->set('registro', $registro);
+        $this->set('id', $id);
     }
 }

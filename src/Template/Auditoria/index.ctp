@@ -12,7 +12,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group form-group-min">
                                         <?= $this->Form->label("responsavel", "Responsável") ?> <br/>
-                                        <?=$this->Form->select('responsavel', $usuarios, ['empty' => 'Todos', 'class' => 'form-control'])?>
+                                        <?=$this->Form->select('responsavel', $usuarios, ['class' => 'form-control'])?>
                                         <span class="material-input"></span>
                                     </div>
                                 </div>
@@ -81,7 +81,7 @@
                                             <td><?=$this->Format->zeroPad($registro->id, 5)?></td>
                                             <td><?=$this->Format->date($registro->data, true)?></td>
                                             <td><?=$this->Auditoria->buscarNomeOcorrencia($registro->ocorrencia)?></td>
-                                            <td><?=$registro->usuario->nome?></td>
+                                            <td><?=($registro->usuario == null) ? 'Sem usuário associado' : $registro->usuario->nome?></td>
                                             <td><?=$registro->ip?></td>
                                             <td class="td-actions text-right" style="width: 10%">
                                             <?php if ($this->Membership->handleRole("detalhes_registro_auditoria")) : ?>
