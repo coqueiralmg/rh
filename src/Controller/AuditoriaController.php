@@ -32,17 +32,17 @@ class AuditoriaController extends AppController
             $data_final = $this->request->query('data_final');
             $ip = $this->request->query('ip');
             
-            if($responsavel == 0)
+            if($responsavel != '')
             {
-                $condicoes['Usuario.id IS'] = null;
-            }
-            else
-            {
-                if($responsavel != '')
+                if($responsavel == 0)
+                {
+                    $condicoes['Usuario.id IS'] = null;
+                }
+                else
                 {
                     $condicoes['Usuario.id'] = $responsavel;
                 }
-            }   
+            }
 
             if($ocorrencia != '')
             {
@@ -118,17 +118,17 @@ class AuditoriaController extends AppController
             $data_final = $this->request->query('data_final');
             $ip = $this->request->query('ip');
             
-            if($responsavel == 0)
+            if($responsavel != '')
             {
-                $condicoes['Usuario.id IS'] = null;
-            }
-            else
-            {
-                if($responsavel != '')
+                if($responsavel == 0)
+                {
+                    $condicoes['Usuario.id IS'] = null;
+                }
+                else
                 {
                     $condicoes['Usuario.id'] = $responsavel;
                 }
-            } 
+            }
 
             if($ocorrencia != '')
             {
