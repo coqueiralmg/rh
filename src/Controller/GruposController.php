@@ -210,7 +210,7 @@ class GruposController extends AppController
             $this->Flash->greatSuccess('Grupo de usuário salvo com sucesso!');
 
             $auditoria = [
-                'ocorrencia' => 11,
+                'ocorrencia' => 14,
                 'descricao' => 'O usuário criou um novo grupo de usuário.',
                 'dado_adicional' => json_encode([
                     'id_novo_grupo_usuario' => $entity->id,
@@ -262,7 +262,7 @@ class GruposController extends AppController
             $this->Flash->greatSuccess('Grupo de usuário atualizado com sucesso!');
 
             $auditoria = [
-                'ocorrencia' => 12,
+                'ocorrencia' => 15,
                 'descricao' => 'O usuário modificou os dados de um determinado grupo de usuário.',
                 'dado_adicional' => json_encode([
                     'grupo_usuario_modificado' => $id,
