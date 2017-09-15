@@ -50,7 +50,7 @@
                             <div class="form-group form-button">
                                 <button type="submit" class="btn btn-fill btn-success pull-right">Buscar<div class="ripple-container"></div></button>
                                 <?php if ($this->Membership->handleRole("imprimir_ips_firewall")) : ?>
-                                    <a href="<?= $this->Url->build(['controller' => 'Firewall', 'action' => 'imprimir', '?' => $data]) ?>" target="_blank" class="btn btn-fill btn-default pull-right">Imprimir<div class="ripple-container"></div></a>
+                                    <a href="<?= $this->Url->build(['controller' => 'Auditoria', 'action' => 'imprimir', '?' => $data]) ?>" target="_blank" class="btn btn-fill btn-default pull-right">Imprimir<div class="ripple-container"></div></a>
                                 <?php endif; ?>
                             </div>
                         </form>
@@ -85,12 +85,12 @@
                                             <td><?=$registro->ip?></td>
                                             <td class="td-actions text-right" style="width: 10%">
                                             <?php if ($this->Membership->handleRole("detalhes_registro_auditoria")) : ?>
-                                                <a href="<?= $this->Url->build(['controller' => 'Atestados', 'action' => 'view', $registro->id]) ?>" class="btn btn-info btn-round">
+                                                <a href="<?= $this->Url->build(['controller' => 'Auditoria', 'action' => 'view', $registro->id]) ?>" class="btn btn-info btn-round">
                                                     <i class="material-icons">pageview</i>
                                                 </a>
                                             <?php endif; ?>
                                             <?php if ($this->Membership->handleRole("excluir_registro_auditoria")) : ?>
-                                                <button type="button" onclick="excluirAtestado(<?= $registro->id ?>')" class="btn btn-danger btn-round"><i class="material-icons">close</i></button>
+                                                <button type="button" onclick="excluirRegistro(<?= $registro->id ?>')" class="btn btn-danger btn-round"><i class="material-icons">close</i></button>
                                             <?php endif; ?>
                                         </td>
                                         </tr>

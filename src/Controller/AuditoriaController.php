@@ -90,6 +90,59 @@ class AuditoriaController extends AppController
         $this->set('ocorrencias', $ocorrencias);
     }
 
+    public function imprimir()
+    {
+        $t_auditoria = TableRegistry::get('Auditoria');
+        $condicoes = array();
+
+        if (count($this->request->getQueryParams()) > 3)
+        {
+            $responsavel = $this->request->query('responsavel');
+            $ocorrencia = $this->request->query('ocorrencia');
+            $data_inicial = $this->request->query('data_inicial');
+            $data_final = $this->request->query('data_final');
+            $ip = $this->request->query('ip');
+            
+            if($responsavel != '')
+            {
+                $condicoes['Usuario.id'] = $responsavel;
+            }
+
+            if($ocorrencia != '')
+            {
+                $condicoes['ocorrencia'] = $ocorrencia;
+            }
+
+            if($data_inicial != "" && $data_final != "")
+            {
+                $condicoes["data >="] = $this->Format->formatDateDB($data_inicial);
+                $condicoes["data <="] = $this->Format->formatDateDB($data_final);
+            }
+
+            if($ip != '')
+            {
+                $condicoes['ip'] = $ip;
+            }
+        }
+
+        $trilha = $t_auditoria->find('all', [
+            'contain' => ['Usuario'], 
+            'conditions' => $condicoes,
+            'order' => [
+                'data' => 'DESC'
+            ]
+        ]);
+
+        $total = $trilha->count();
+
+        $this->viewBuilder()->layout('print');
+
+        $this->set('title', ' Auditoria do Sistema');
+        $this->set('icon', 'fingerprint');
+        $this->set('auditoria', $trilha);
+        $this->set('qtd_total', $total);
+    }
+
     public function detalhe(int $id)
     {
         
