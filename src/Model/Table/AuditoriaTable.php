@@ -14,7 +14,7 @@ class AuditoriaTable extends BaseTable
             'className' => 'Usuario',
             'foreignKey' => 'usuario',
             'propertyName' => 'usuario',
-            'joinType' => 'INNER'
+            'joinType' => 'LEFT OUTER'
         ]);
     }
 }
