@@ -9,5 +9,12 @@ class AuditoriaTable extends BaseTable
     {
         $this->table('auditoria');
         $this->primaryKey('id');
+
+        $this->belongsTo('Usuario', [
+            'className' => 'Usuario',
+            'foreignKey' => 'usuario',
+            'propertyName' => 'usuario',
+            'joinType' => 'INNER'
+        ]);
     }
 }
