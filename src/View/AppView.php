@@ -42,5 +42,6 @@ class AppView extends View
         $this->loadHelper('Data');
         $this->loadHelper('Auditoria');
         $this->loadHelper('Agent');
+        $this->loadHelper('Inflector');
     }
 }
