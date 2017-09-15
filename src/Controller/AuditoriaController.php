@@ -137,14 +137,20 @@ class AuditoriaController extends AppController
 
         $this->viewBuilder()->layout('print');
 
-        $this->set('title', ' Auditoria do Sistema');
+        $this->set('title', 'Auditoria do Sistema');
         $this->set('icon', 'fingerprint');
         $this->set('auditoria', $trilha);
         $this->set('qtd_total', $total);
     }
 
-    public function detalhe(int $id)
+    public function registro(int $id)
     {
-        
+        $t_auditoria = TableRegistry::get('Auditoria');
+
+        $registro = $t_auditoria->get($id, ['contain' => ['Usuario' => ['GrupoUsuario']]]);
+
+        $this->set('title', 'Detalhes do Registro de Auditoria do Sistema');
+        $this->set('icon', 'fingerprint');
+        $this->set('auditoria', $registro);
     }
 }

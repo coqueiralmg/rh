@@ -85,7 +85,7 @@
                                             <td><?=$registro->ip?></td>
                                             <td class="td-actions text-right" style="width: 10%">
                                             <?php if ($this->Membership->handleRole("detalhes_registro_auditoria")) : ?>
-                                                <a href="<?= $this->Url->build(['controller' => 'Auditoria', 'action' => 'view', $registro->id]) ?>" class="btn btn-info btn-round">
+                                                <a href="<?= $this->Url->build(['controller' => 'Auditoria', 'action' => 'registro', $registro->id]) ?>" class="btn btn-info btn-round">
                                                     <i class="material-icons">pageview</i>
                                                 </a>
                                             <?php endif; ?>
