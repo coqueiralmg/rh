@@ -181,4 +181,21 @@ class AuditoriaController extends AppController
         $this->set('registro', $registro);
         $this->set('id', $id);
     }
+
+    public function documento(int $id)
+    {
+        $t_auditoria = TableRegistry::get('Auditoria');
+        
+        $registro = $t_auditoria->get($id);
+
+        if($registro->usuario != null && $registro->usuario > 0)
+        {
+            $registro = $t_auditoria->loadInto($registro, ['Usuario' => ['GrupoUsuario']]);
+        }
+
+        $this->viewBuilder()->layout('print');
+
+        $this->set('title', 'Detalhes do Registro de Auditoria do Sistema');
+        $this->set('registro', $registro);
+    }
 }
