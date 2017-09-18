@@ -157,6 +157,19 @@ class AuditoriaController extends AppController
 
         $total = $trilha->count();
 
+        $auditoria = [
+            'ocorrencia' => 33,
+            'descricao' => 'O usuário solicitou a impressão da trilha de auditoria.',
+            'usuario' => $this->request->session()->read('UsuarioID')
+        ];
+
+        $this->Auditoria->registrar($auditoria);
+
+        if ($this->request->session()->read('UsuarioSuspeito')) 
+        {
+            $this->Monitoria->monitorar($auditoria);
+        }
+
         $this->viewBuilder()->layout('print');
 
         $this->set('title', 'Auditoria do Sistema');
@@ -176,6 +189,20 @@ class AuditoriaController extends AppController
             $registro = $t_auditoria->loadInto($registro, ['Usuario' => ['GrupoUsuario']]);
         }
 
+        $auditoria = [
+            'ocorrencia' => 32,
+            'descricao' => 'O usuário visualizou um registro da trilha de auditoria.',
+            'dado_adicional' => json_encode(['registro_analisado' => $id, 'ocorrencia' => $this->Auditoria->buscarNomeOcorrencia($registro->ocorrencia)]),
+            'usuario' => $this->request->session()->read('UsuarioID')
+        ];
+
+        $this->Auditoria->registrar($auditoria);
+
+        if ($this->request->session()->read('UsuarioSuspeito')) 
+        {
+            $this->Monitoria->monitorar($auditoria);
+        }
+
         $this->set('title', 'Detalhes do Registro de Auditoria do Sistema');
         $this->set('icon', 'fingerprint');
         $this->set('registro', $registro);
@@ -193,9 +220,64 @@ class AuditoriaController extends AppController
             $registro = $t_auditoria->loadInto($registro, ['Usuario' => ['GrupoUsuario']]);
         }
 
+        $auditoria = [
+            'ocorrencia' => 33,
+            'descricao' => 'O usuário solicitou a impressão da registro de auditoria.',
+            'usuario' => $this->request->session()->read('UsuarioID')
+        ];
+
+        $this->Auditoria->registrar($auditoria);
+
+        if ($this->request->session()->read('UsuarioSuspeito')) 
+        {
+            $this->Monitoria->monitorar($auditoria);
+        }
+
         $this->viewBuilder()->layout('print');
 
         $this->set('title', 'Detalhes do Registro de Auditoria do Sistema');
         $this->set('registro', $registro);
+    }
+
+    public function delete($id)
+    {
+        try 
+        {
+            $t_auditoria = TableRegistry::get('Auditoria');
+
+            $marcado = $t_auditoria->get($id);
+
+            $propriedades = $marcado->getOriginalValues();
+
+            $t_auditoria->delete($marcado);
+            $this->Flash->greatSuccess('O registro de auditoria foi excluído com sucesso!');
+
+            $auditoria = [
+                'ocorrencia' => 34,
+                'descricao' => 'O usuário excluiu um registro da trilha de auditoria.',
+                'dado_adicional' => json_encode(['registro_excluido' => $id, 'dados_registro_excluido' => $propriedades]),
+                'usuario' => $this->request->session()->read('UsuarioID')
+            ];
+
+            $this->Auditoria->registrar($auditoria);
+
+            if ($this->request->session()->read('UsuarioSuspeito')) 
+            {
+                $this->Monitoria->monitorar($auditoria);
+            }
+
+            $this->redirect(['action' => 'index']);
+            
+        } 
+        catch (Exception $ex) 
+        {
+            $this->Flash->exception('Ocorreu um erro no sistema ao excluir o registro.', [
+                'params' => [
+                    'details' => $ex->getMessage()
+                ]
+            ]);
+
+            $this->redirect(['action' => 'index']);
+        }
     }
 }
