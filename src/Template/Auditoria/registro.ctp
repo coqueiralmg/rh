@@ -125,15 +125,65 @@
                         <div class="clearfix"></div>
                     </div>
                     <?php endif; ?>
+                    <?php if($registro->usuario != null):?>
+                        <div class="card-content">
+                            <legend>Informações Sobre Usuário Responsável</legend>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <div class="form-group label-control">
+                                        <?= $this->Form->label("id", "ID") ?><br/>
+                                        <b><?=$this->Format->zeroPad($registro->usuario->id)?></b>
+                                        <span class="material-input"></span>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <div class="form-group label-control">
+                                        <?= $this->Form->label("nome", "Nome") ?><br/>
+                                        <?= $registro->usuario->nome?>
+                                        <span class="material-input"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group label-control">
+                                        <?= $this->Form->label("email", "E-mail") ?><br/>
+                                        <?=$registro->usuario->email?>
+                                        <span class="material-input"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <div class="form-group label-control">
+                                        <?= $this->Form->label("usuario", "Usuario") ?><br/>
+                                        <?=$registro->usuario->usuario?>
+                                        <span class="material-input"></span>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <div class="form-group label-control">
+                                        <?= $this->Form->label("grupo", "Grupo") ?><br/>
+                                        <?= $registro->usuario->grupoUsuario->nome?>
+                                        <span class="material-input"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group label-control">
+                                        <?= $this->Form->label("ativo", "Ativo") ?><br/>
+                                        <?=$registro->usuario->ativado?>
+                                        <span class="material-input"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endif; ?>
                     <div class="card-content">
-                        <?php if ($this->Membership->handleRole("imprimir_funcionarios")) : ?>
+                        <?php if ($this->Membership->handleRole("imprimir_auditoria")) : ?>
                             <a href="<?= $this->Url->build(['controller' => 'Funcionarios', 'action' => 'documento', $id]) ?>" class="btn btn-default btn-default pull-right" target="_blank">Imprimir<div class="ripple-container"></div></a>
                         <?php endif; ?>
-                        <?php if ($this->Membership->handleRole("excluir_funcionarios")) : ?>
+                        <?php if ($this->Membership->handleRole("excluir_registro_auditoria")) : ?>
                             <button type="button" onclick="" class="btn btn-danger pull-right">Excluir</button>
-                        <?php endif; ?>
-                        <?php if ($this->Membership->handleRole("editar_funcionarios")) : ?>
-                            <a href="<?= $this->Url->build(['controller' => 'Funcionarios', 'action' => 'edit', $id]) ?>" class="btn btn-primary btn-default pull-right">Editar<div class="ripple-container"></div></a>
                         <?php endif; ?>
                         <button type="button" onclick="window.location='<?= $this->Url->build('/auditoria') ?>'" class="btn btn-info pull-right">Voltar</button>
                         <div class="clearfix"></div>
