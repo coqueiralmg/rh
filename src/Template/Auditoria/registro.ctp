@@ -180,7 +180,7 @@
                     <?php endif; ?>
                     <div class="card-content">
                         <?php if ($this->Membership->handleRole("imprimir_auditoria")) : ?>
-                            <a href="<?= $this->Url->build(['controller' => 'Funcionarios', 'action' => 'documento', $id]) ?>" class="btn btn-default btn-default pull-right" target="_blank">Imprimir<div class="ripple-container"></div></a>
+                            <a href="<?= $this->Url->build(['controller' => 'Auditoria', 'action' => 'documento', $id]) ?>" class="btn btn-default btn-default pull-right" target="_blank">Imprimir<div class="ripple-container"></div></a>
                         <?php endif; ?>
                         <?php if ($this->Membership->handleRole("excluir_registro_auditoria")) : ?>
                             <button type="button" onclick="" class="btn btn-danger pull-right">Excluir</button>
