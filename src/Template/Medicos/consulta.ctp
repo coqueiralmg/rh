@@ -1,4 +1,4 @@
-<?= $this->Html->script('controller/medicos.consulta.js', ['block' => 'scriptBottom']) ?>
+<?= $this->Html->script('controller/medicos.general.js', ['block' => 'scriptBottom']) ?>
 <div class="content">
     <div class="container-fluid">
         <div class="row">

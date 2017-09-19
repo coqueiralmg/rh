@@ -1,3 +1,4 @@
+<?= $this->Html->script('controller/atestados.general.js', ['block' => 'scriptBottom']) ?>
 <?= $this->Html->script('controller/atestados.lista.js', ['block' => 'scriptBottom']) ?>
 <div class="content">
     <div class="container-fluid">

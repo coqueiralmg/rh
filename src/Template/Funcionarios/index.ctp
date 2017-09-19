@@ -1,4 +1,4 @@
-<?= $this->Html->script('controller/funcionarios.lista.js', ['block' => 'scriptBottom']) ?>
+<?= $this->Html->script('controller/funcionarios.general.js', ['block' => 'scriptBottom']) ?>
 <div class="content">
     <div class="container-fluid">
         <div class="row">

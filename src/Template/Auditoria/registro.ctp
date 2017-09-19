@@ -1,4 +1,4 @@
-<?= $this->Html->script('controller/auditoria.registro.js', ['block' => 'scriptBottom']) ?>
+<?= $this->Html->script('controller/auditoria.general.js', ['block' => 'scriptBottom']) ?>
 <div class="content">
     <div class="container-fluid">
         <div class="row">
