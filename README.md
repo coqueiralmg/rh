@@ -1,51 +1,36 @@
-# CakePHP Application Skeleton
+# Sistema de Gerenciamento de Recursos Humanos
 
-[![Build Status](https://img.shields.io/travis/cakephp/app/master.svg?style=flat-square)](https://travis-ci.org/cakephp/app)
-[![License](https://img.shields.io/packagist/l/cakephp/app.svg?style=flat-square)](https://packagist.org/packages/cakephp/app)
+O sistema de gerenciamento de recursos humanos, é um sistema voltado para empresas de administração pública, onde é possível gerenciar as informações sobre os funcionário dentro da empresa. Ele ganha pelo destaque de poder ser acessível em qualquer lugar, com telas intuitiva e de fácil aprendizado.
 
-A skeleton for creating applications with [CakePHP](http://cakephp.org) 3.x.
+O sistema foi feito na plataforma PHP, rodando sobre o banco de dados MySQL, para permitir que haja a integridade do mesmo. Além disso, o sistema é seguro, permitindo a integridade dos dados e evitando os vazamentos das mesmas informações, bem como as invasões. O sistema foi desenvolvido sobre o framework [CakePHP](http://cakephp.org), onde foi permitido a criação de sistema personalizado e seguro.
 
-The framework source code can be found here: [cakephp/cakephp](https://github.com/cakephp/cakephp).
+## Recursos
 
-## Installation
+Sistema de gerenciamento de recursos humanos, com os seguintes recursos e funcionalidades abaixo:
 
-1. Download [Composer](http://getcomposer.org/doc/00-intro.md) or update `composer self-update`.
-2. Run `php composer.phar create-project --prefer-dist cakephp/app [app_name]`.
+- **Log de Acesso**: Log de acesso, onde o usuário poderá ver todas as suas ações de usuário
+- **Cadastro de Usuários**: Sistema de Cadastro de Usuários que irão utilizar o sistema, com operações de inclusão, alteração e exclusão. Além disso haverá recursos de segurança, como obrigar o usuário a trocar de senha e também liberar o usuário que foi suspenso de acessar o sistema, por motivos de segurança.
+- **Cadastro de Grupo de Usuário**: Grupos de usuários com papéis, permissões e usos do sistema, com operações de inclusão, alteração e exclusão.
+- **Firewall**: Controle de acesso e bloqueio do Firewall, além de controle e verificação de segurança.
+- **Funcionários**: Cadastro funcional de funcionários, com operações de inclusão, alteração e exclusão.
+- **Segurança**: Controle robusto de acesso ao sistema, com limitação de tentativas de acesso, com bloqueio e suspensão automática de conta em caso de acesso indevido, podendo inclusive bloquear automaticamente o IP do usuário mal intencionado ao sistema. Além disso, o sistema conta com o sistema de auditoria e monitoria de atividades suspeitas do usuário.
+- **Funcionários**: Cadastro de funcionários completo, com inclusão, alteração, consulta e exclusão, com a 
+possibilidade de impressão das mesmas informações.
+- **Atestados**: Cadastro de atestados completo, com inclusão, alteração, consulta e exclusão, com a possibilidade de impressão das mesmas informações, utilizando a interface intuitiva e de fácil aprendizado.
+- **Médicos**: Cadastro de médicos completo, com inclusão, alteração, consulta e exclusão, com a possibilidade de impressão das mesmas informações.
+- **Auditoria**: Sistema de auditoria do sistema, onde os administradores podem consultar e monitorar todas as atividades dentro do sistema.
+- **Outros**: O usuário pode editar suas própria informações do usuário, bem como modificar a senha.
 
-If Composer is installed globally, run
+## Requisitos do Sistema
 
-```bash
-composer create-project --prefer-dist cakephp/app
-```
+- PHP 7 (ou superior)
+- MySQL 5.6 (ou superior)
+- Extensões de PHP:
+    - mbstring
+    - intl 
+    - simplexml 
+- Apache HTTP Server, com *mod_rewrite* habilitado IIS 7 (com *Rewrite Module*) ou nginx.
 
-In case you want to use a custom app dir name (e.g. `/myapp/`):
+## Instalação
 
-```bash
-composer create-project --prefer-dist cakephp/app myapp
-```
-
-You can now either use your machine's webserver to view the default home page, or start
-up the built-in webserver with:
-
-```bash
-bin/cake server -p 8765
-```
-
-Then visit `http://localhost:8765` to see the welcome page.
-
-## Update
-
-Since this skeleton is a starting point for your application and various files
-would have been modified as per your needs, there isn't a way to provide
-automated upgrades, so you have to do any updates manually.
-
-## Configuration
-
-Read and edit `config/app.php` and setup the `'Datasources'` and any other
-configuration relevant for your application.
-
-## Layout
-
-The app skeleton uses a subset of [Foundation](http://foundation.zurb.com/) CSS
-framework by default. You can, however, replace it with any other library or
-custom styles.
+O sistema deve ser instalado em um provedor PHP e rodado sobre o banco de dados MySQL. O mesmo pode ser baixado [por aqui](https://github.com/coqueiralmg/rh/releases). Além disso, é preciso imputar os dados padrão de acesso a usuário, que pode ser solicitado pela equipe responsável pelo desenvolvimento.
