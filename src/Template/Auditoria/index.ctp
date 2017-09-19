@@ -6,7 +6,7 @@
                 <div class="card">
                     <div class="card-content">
                         <h4 class="card-title">Buscar</h4>
-                        
+                        <?= $this->Flash->render() ?>
                         <form>
                             <div class="row">
                                 <div class="col-md-6">
@@ -90,7 +90,7 @@
                                                 </a>
                                             <?php endif; ?>
                                             <?php if ($this->Membership->handleRole("excluir_registro_auditoria")) : ?>
-                                                <button type="button" onclick="excluirRegistro(<?= $registro->id ?>')" class="btn btn-danger btn-round"><i class="material-icons">close</i></button>
+                                                <button type="button" onclick="excluirRegistro('<?= $registro->id ?>')" class="btn btn-danger btn-round"><i class="material-icons">close</i></button>
                                             <?php endif; ?>
                                         </td>
                                         </tr>

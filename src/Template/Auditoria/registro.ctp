@@ -183,7 +183,7 @@
                             <a href="<?= $this->Url->build(['controller' => 'Auditoria', 'action' => 'documento', $id]) ?>" class="btn btn-default btn-default pull-right" target="_blank">Imprimir<div class="ripple-container"></div></a>
                         <?php endif; ?>
                         <?php if ($this->Membership->handleRole("excluir_registro_auditoria")) : ?>
-                            <button type="button" onclick="" class="btn btn-danger pull-right">Excluir</button>
+                            <button type="button" onclick="excluirRegistro('<?= $registro->id ?>')" class="btn btn-danger pull-right">Excluir</button>
                         <?php endif; ?>
                         <button type="button" onclick="window.location='<?= $this->Url->build('/auditoria') ?>'" class="btn btn-info pull-right">Voltar</button>
                         <div class="clearfix"></div>
