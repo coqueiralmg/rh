@@ -153,8 +153,8 @@ function validar() {
     }
 
     if ($("#data_afastamento").val() !== "" && $("#data_retorno").val() !== "") {
-        var afastamento = new Date($("#data_afastamento").val());
-        var retorno = new Date($("#data_retorno").val());
+        var afastamento = new Date($("#data_afastamento").val().split('/').reverse().join('/'));
+        var retorno = new Date($("#data_retorno").val().split('/').reverse().join('/'));
 
         if (afastamento > retorno) {
             mensagem += "<li> A data de afastamento é maior do que a data de retorno.</li>";
