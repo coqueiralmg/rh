@@ -304,6 +304,20 @@ class AtestadosController extends AppController
         $t_atestado = TableRegistry::get('Atestado');
 
         $atestado = $t_atestado->get($id, ['contain' => ['Funcionario', 'Medico']]);
+        $propriedades = $atestado->getOriginalValues();
+
+        $auditoria = [
+            'ocorrencia' => 9,
+            'descricao' => 'O usuário solicitou a impressão de um determinado atestado.',
+            'dado_adicional' => json_encode(['registro_impresso' => $id, 'dados_registro' => $propriedades]),
+            'usuario' => $this->request->session()->read('UsuarioID')
+        ];
+
+        $this->Auditoria->registrar($auditoria);
+        
+        if ($this->request->session()->read('UsuarioSuspeito')) {
+            $this->Monitoria->monitorar($auditoria);
+        }
 
         $this->viewBuilder()->layout('print');
         

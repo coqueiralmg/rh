@@ -220,9 +220,12 @@ class AuditoriaController extends AppController
             $registro = $t_auditoria->loadInto($registro, ['Usuario' => ['GrupoUsuario']]);
         }
 
+        $propriedades = $registro->getOriginalValues();
+
         $auditoria = [
             'ocorrencia' => 33,
             'descricao' => 'O usuário solicitou a impressão da registro de auditoria.',
+            'dado_adicional' => json_encode(['registro_impresso' => $id, 'dados_registro' => $propriedades]),
             'usuario' => $this->request->session()->read('UsuarioID')
         ];
 
