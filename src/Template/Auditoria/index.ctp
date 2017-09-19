@@ -7,6 +7,12 @@
                     <div class="card-content">
                         <h4 class="card-title">Buscar</h4>
                         <?= $this->Flash->render() ?>
+                        <?=$this->element('message', [
+                            'name' => 'lista_erro',
+                            'type' => 'error',
+                            'message' => 'Ocorreu um erro ao filtrar a auditoria.',
+                            'details' => ''
+                        ]) ?>
                         <form>
                             <div class="row">
                                 <div class="col-md-6">
@@ -48,7 +54,7 @@
                                 </div>
                             </div>
                             <div class="form-group form-button">
-                                <button type="submit" class="btn btn-fill btn-success pull-right">Buscar<div class="ripple-container"></div></button>
+                                <button type="submit" onclick="return validar()" class="btn btn-fill btn-success pull-right">Buscar<div class="ripple-container"></div></button>
                                 <?php if ($this->Membership->handleRole("imprimir_ips_firewall")) : ?>
                                     <a href="<?= $this->Url->build(['controller' => 'Auditoria', 'action' => 'imprimir', '?' => $data]) ?>" target="_blank" class="btn btn-fill btn-default pull-right">Imprimir<div class="ripple-container"></div></a>
                                 <?php endif; ?>
