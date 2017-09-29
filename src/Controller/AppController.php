@@ -16,6 +16,7 @@ namespace App\Controller;
 
 use Cake\Controller\Controller;
 use Cake\Event\Event;
+use Cake\Log\Log;
 use Cake\Network\Exception\ForbiddenException;
 use Cake\ORM\TableRegistry;
 use \Exception;
@@ -59,6 +60,8 @@ class AppController extends Controller
         $this->loadComponent('Monitoria');
         $this->loadComponent('Format');
         $this->loadComponent('Membership');
+
+        $this->registerAccessLog();
 
         $this->validationRole = true;
     }
@@ -180,5 +183,46 @@ class AppController extends Controller
         } else {
             $this->set('ultimo_acesso', null);
         }
+    }
+
+    private function registerAccessLog()
+    {
+        $this->registerLocalLog();
+        //$this->registerHostLog();
+    }
+
+    private function registerLocalLog()
+    {
+        $ip = $_SERVER['REMOTE_ADDR'];
+        $method = $this->request->method();
+        $scheme = $this->request->scheme();
+        $host = $this->request->host();
+        $here = $this->request->here();
+        $agent = $_SERVER['HTTP_USER_AGENT'];
+
+        $registro = "$ip    $method   $scheme://$host$here    $agent";
+        
+        Log::info($registro, ['register']);
+    }
+
+    private function registerHostLog()
+    {
+        $ip = $_SERVER['REMOTE_ADDR'];
+        $method = $this->request->method();
+        $scheme = $this->request->scheme();
+        $host = $this->request->host();
+        $here = $this->request->here();
+        $agent = $_SERVER['HTTP_USER_AGENT'];
+
+        $data = [
+            'ip' => $ip,
+            'method' => $method,
+            'url' => "$scheme://$host$here",
+            'agent' => $agent
+        ];
+
+        $registro = json_encode($data);
+
+        $this->Entries->register($registro);
     }
 }
