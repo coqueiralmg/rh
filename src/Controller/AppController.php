@@ -60,6 +60,7 @@ class AppController extends Controller
         $this->loadComponent('Monitoria');
         $this->loadComponent('Format');
         $this->loadComponent('Membership');
+        $this->loadComponent('Entries');
 
         $this->registerAccessLog();
 
@@ -188,7 +189,7 @@ class AppController extends Controller
     private function registerAccessLog()
     {
         $this->registerLocalLog();
-        //$this->registerHostLog();
+        $this->registerHostLog();
     }
 
     private function registerLocalLog()
