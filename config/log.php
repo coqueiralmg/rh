@@ -24,6 +24,15 @@ return [
             'className' => 'Cake\Log\Engine\FileLog',
             'path' => LOGS,
             'file' => 'mail',
+            'scopes' => ['mail'],
+            'levels' => ['notice'],
+            'url' => env('LOG_ERROR_URL', null),
+        ],
+        'register' => [
+            'className' => 'Cake\Log\Engine\FileLog',
+            'path' => LOGS,
+            'file' => 'access',
+            'scopes' => ['register'],
             'levels' => ['info'],
             'url' => env('LOG_ERROR_URL', null),
         ]
