@@ -20,6 +20,10 @@ $(function () {
         this.value = this.value.toUpperCase();
     });
 
+    $('#data_retorno').blur(function (e) {
+        calcularDiasAfastados();
+    });
+
     $('#nome_funcionario').autocomplete({
         source: function (request, response) {
             $.ajax({
@@ -202,3 +206,19 @@ function validar() {
         return false;
     }
 }
+
+function calcularDiasAfastados() {
+    var dataAfastamento = $('#data_afastamento').val();
+    var dataRetorno = $('#data_retorno').val();
+
+    if(dataAfastamento !== "" && dataRetorno !== "") {
+        var afastamento = new Date(formatarData(dataAfastamento));
+        var retorno = new Date(formatarData(dataRetorno));
+
+        var timeDiff = retorno.getTime() - afastamento.getTime();
+        var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+
+        $('#quantidade_dias').val(diffDays);
+    }
+}
+
