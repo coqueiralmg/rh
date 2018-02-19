@@ -70,3 +70,8 @@ function validarPIS(pis) {
 function removerMascara(texto) {
     return texto.replace(/[^0-9]+/g, '');
 }
+
+function formatarData(data) {
+    var pivot = data.split("/");
+    return pivot[1] + "/" + pivot[0] + "/" + pivot[2];
+}
