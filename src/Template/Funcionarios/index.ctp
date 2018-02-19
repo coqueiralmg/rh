@@ -85,7 +85,7 @@
                 <div class="card">
                     <div class="card-content table-responsive">
                         <?php if (count($funcionarios) > 0) :?>
-                            <h4 class="card-title">Lista de Usuários</h4>
+                            <h4 class="card-title">Lista de Funcionários</h4>
                             <table class="table">
                                 <thead class="text-primary">
                                     <tr>
