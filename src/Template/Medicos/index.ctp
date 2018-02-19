@@ -93,7 +93,7 @@
                      <div class="card-content">
                         <div class="material-datatables">
                             <div class="row">
-                                <?=$this->element('pagination') ?>
+                                <?=$this->element('pagination', $opcao_paginacao) ?>
                             </div>
                         </div>
                     </div>
