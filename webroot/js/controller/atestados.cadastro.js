@@ -38,14 +38,14 @@ $(function () {
             });
         },
         select: function (event, ui) {
-            $('#nome_funcionario').val(ui.item.nome);
+            $('#nome_funcionario').val(ui.item.nome.trim());
             $('#id_funcionario').val(ui.item.id);
 
             return false;
         }
     }).autocomplete("instance")._renderItem = function (ul, item) {
         return $("<li>")
-            .append('<span>' + item.nome + '</span>')
+            .append('<span>' + item.nome.trim() + '</span>')
             .appendTo(ul);
     };
 
@@ -63,14 +63,14 @@ $(function () {
             });
         },
         select: function (event, ui) {
-            $('#nome_medico').val(ui.item.nome);
+            $('#nome_medico').val(ui.item.nome.trim());
             $('#id_medico').val(ui.item.id);
 
             return false;
         }
     }).autocomplete("instance")._renderItem = function (ul, item) {
         return $("<li>")
-            .append('<span><b>' + item.nome + '</b><span><br/><small>' + item.especialidade + ' CRM:' + item.crm + '</small>')
+            .append('<span><b>' + item.nome.trim() + '</b><span><br/><small>' + item.especialidade + ' CRM:' + item.crm + '</small>')
             .appendTo(ul);
     };;
 });
