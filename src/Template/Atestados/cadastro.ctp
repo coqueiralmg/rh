@@ -55,7 +55,7 @@
                                 <div class="col-md-2">
                                     <div class="form-group label-control">
                                         <?= $this->Form->label("quantidade_dias", "Quantidade de Dias") ?>
-                                        <?= $this->Form->number("quantidade_dias", ["id" => "quantidade_dias", "class" => "form-control", "maxlength" => 3]) ?>
+                                        <?= $this->Form->number("quantidade_dias", ["id" => "quantidade_dias", "class" => "form-control", "min" => 0, "maxlength" => 3]) ?>
                                         <span class="material-input"></span>
                                     </div>
                                 </div>  
