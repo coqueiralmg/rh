@@ -26,21 +26,21 @@
                                 <div class="col-md-2">
                                     <div class="form-group label-control">
                                         <?= $this->Form->label("codigo", "Código") ?>
-                                        <?= $this->Form->text("codigo", ["id" => "codigo", "class" => "form-control", "maxlength" => 80]) ?>
+                                        <?= $this->Form->text("codigo", ["id" => "codigo", "class" => "form-control", "maxlength" => 3]) ?>
                                         <span class="material-input"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-2">
                                     <div class="form-group label-control">
                                         <?= $this->Form->label("detalhamento", "Detalhamento") ?>
-                                        <?= $this->Form->text("detalhamento", ["id" => "detalhamento", "class" => "form-control", "maxlength" => 8]) ?>
+                                        <?= $this->Form->text("detalhamento", ["id" => "detalhamento", "class" => "form-control", "maxlength" => 1]) ?>
                                         <span class="material-input"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-8">
                                     <div class="form-group label-control">
                                         <?= $this->Form->label("nome", "Nome") ?>
-                                        <?= $this->Form->text("nome", ["id" => "nome", "class" => "form-control", "maxlength" => 8]) ?>
+                                        <?= $this->Form->text("nome", ["id" => "nome", "class" => "form-control", "maxlength" => 150]) ?>
                                         <span class="material-input"></span>
                                     </div>
                                 </div>
@@ -49,7 +49,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group label-control">
                                         <?= $this->Form->label("descricao", "Descrição") ?>
-                                        <?= $this->Form->textarea("descricao", ["id" => "descricao", "class" => "form-control", "maxlength" => 50]) ?>
+                                        <?= $this->Form->textarea("descricao", ["id" => "descricao", "class" => "form-control"]) ?>
                                         <span class="material-input"></span>
                                     </div>
                                 </div>
