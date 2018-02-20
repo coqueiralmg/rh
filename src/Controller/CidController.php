@@ -48,7 +48,8 @@ class CidController extends AppController
             'limit' => $limite_paginacao,
             'conditions' => $condicoes,
             'order' => [
-                'nome' => 'ASC'
+                'codigo' => 'ASC',
+                'detalhamento' => 'ASC'
             ]
         ];
 
@@ -70,7 +71,7 @@ class CidController extends AppController
         $this->redirect(['action' => 'cadastro', 0]);
     }
 
-    public function insert()
+    public function addc()
     {
         $this->redirect(['action' => 'insercao', 0]);
     }
@@ -104,5 +105,138 @@ class CidController extends AppController
         $this->set('title', $title);
         $this->set('icon', 'grid_on');
         $this->set('id', $id);
+    }
+
+    public function save(int $id)
+    {
+        if ($this->request->is('post'))
+        {
+            $this->insert();
+        }
+        else if($this->request->is('put'))
+        {
+            $this->update($id);
+        }        
+    }
+
+    protected function insert()
+    {
+        try 
+        {
+            $t_cid = TableRegistry::get('Cid');
+            $entity = $t_cid->newEntity($this->request->data());
+            
+            if($entity->detalhamento == "")
+            {
+                $entity->detalhamento = null;
+            }
+           
+            $qcid = $t_cid->find('all', [
+                'conditions' => [
+                    'codigo' => $entity->codigo,
+                    'detalhamento' => $entity->detalhamento
+                ]
+            ])->count();
+           
+            
+            if($qcid > 0)
+            {
+                throw new Exception("Existe um CID com o código informado e detalhamento cadastrado.");
+            }
+
+            $t_cid->save($entity);
+            
+            $this->Flash->greatSuccess('O CID foi salvo com sucesso');
+            
+            $propriedades = $entity->getOriginalValues();
+            
+            $auditoria = [
+                'ocorrencia' => 35,
+                'descricao' => 'O usuário fez o cadastro simples de CID.',
+                'dado_adicional' => json_encode(['id_novo_cid' => $entity->id, 'campos' => $propriedades]),
+                'usuario' => $this->request->session()->read('UsuarioID')
+            ];
+
+            $this->Auditoria->registrar($auditoria);
+
+            if ($this->request->session()->read('UsuarioSuspeito')) 
+            {
+                $this->Monitoria->monitorar($auditoria);
+            }
+
+            $this->redirect(['action' => 'cadastro', $entity->id]);
+        } 
+        catch (Exception $ex) 
+        {
+            $this->Flash->exception('Ocorreu um erro no sistema ao salvar o CID', [
+                'params' => [
+                    'details' => $ex->getMessage()
+                ]
+            ]);
+
+            $this->redirect(['action' => 'cadastro', 0]);
+        }
+    }
+
+    protected function update(int $id)
+    {
+        try 
+        {
+            $t_cid = TableRegistry::get('Cid');
+            $entity = $t_cid->get($id);
+
+            $t_cid->patchEntity($entity, $this->request->data());
+
+            if($entity->detalhamento === "")
+            {
+                $entity->detalhamento = null;
+            }
+            
+            $qcid = $t_cid->find('all', [
+                'conditions' => [
+                    'codigo' => $entity->codigo,
+                    'detalhamento' => $entity->detalhamento
+                ]
+            ])->count();
+           
+            
+            if($qcid > 0)
+            {
+                throw new Exception("Existe um CID com o código informado e detalhamento cadastrado.");
+            }
+
+            $propriedades = $this->Auditoria->changedOriginalFields($entity);
+            $modificadas = $this->Auditoria->changedFields($entity, $propriedades);
+
+            $t_cid->save($entity);
+
+            $this->Flash->greatSuccess('O CID foi salvo com sucesso');
+
+            $auditoria = [
+                'ocorrencia' => 37,
+                'descricao' => 'O usuário modificou os dados de um determinado CID.',
+                'dado_adicional' => json_encode(['cid_modificado' => $id, 'valores_originais' => $propriedades, 'valores_modificados' => $modificadas]),
+                'usuario' => $this->request->session()->read('UsuarioID')
+            ];
+
+            $this->Auditoria->registrar($auditoria);
+
+            if ($this->request->session()->read('UsuarioSuspeito')) 
+            {
+                $this->Monitoria->monitorar($auditoria);
+            }
+
+            $this->redirect(['action' => 'cadastro', $id]);
+        } 
+        catch (Exception $ex) 
+        {
+            $this->Flash->exception('Ocorreu um erro no sistema ao salvar o CID', [
+                'params' => [
+                    'details' => $ex->getMessage()
+                ]
+            ]);
+
+            $this->redirect(['action' => 'cadastro', $id]);
+        }
     }
 }
