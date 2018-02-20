@@ -202,6 +202,7 @@ class MembershipHelper extends Helper
             ['chave' => 'funcionarios', 'active' => $this->handleRole('listar_funcionarios')],
             ['chave' => 'atestados', 'active' => $this->handleRole('listar_atestados')],
             ['chave' => 'medicos', 'active' => $this->handleRole('listar_medicos')],
+            ['chave' => 'cid', 'active' => $this->handleRole('listar_cid')],
             ['chave' => 'auditoria', 'active' => $this->handleRole('listar_auditoria')]
         ];
     }
