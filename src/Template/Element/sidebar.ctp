@@ -85,6 +85,14 @@
                     </a>
                 </li>
             <?php endif; ?>
+            <?php if ($this->Membership->handleMenu("cid")) : ?>
+                 <li class="<?= $this->Menu->activeMenu(['controller' => 'cid']) ?>">
+                    <a href="<?= $this->Url->build('/cid') ?>">
+                        <i class="material-icons">grid_on</i>
+                        <p>CID</p>
+                    </a>
+                </li>
+            <?php endif; ?>
             <?php if ($this->Membership->handleMenu("auditoria")): ?>
                 <li class="<?= $this->Menu->activeMenu(['controller' => 'auditoria']) ?>">
                     <a href="<?= $this->Url->build('/auditoria') ?>">
