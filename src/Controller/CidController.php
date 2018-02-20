@@ -218,7 +218,7 @@ class CidController extends AppController
             $t_cid = TableRegistry::get('Cid');
             $entity = $t_cid->newEntity($this->request->data());
             
-            if($entity->detalhamento == "")
+            if($entity->detalhamento === "")
             {
                 $entity->detalhamento = null;
             }
