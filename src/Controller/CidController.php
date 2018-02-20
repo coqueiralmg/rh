@@ -156,6 +156,19 @@ class CidController extends AppController
         $this->set('id', $id);
     }
 
+    public function consulta(int $id)
+    {
+        $title = 'Consulta de Dados do CID';
+
+        $t_cid = TableRegistry::get('Cid');
+        $cid = $t_cid->get($id);
+
+        $this->set('title', $title);
+        $this->set('icon', 'grid_on');
+        $this->set('id', $id);
+        $this->set('cid', $cid);
+    }
+
     public function save(int $id)
     {
         if ($this->request->is('post'))
