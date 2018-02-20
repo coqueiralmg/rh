@@ -1,3 +1,4 @@
+<?= $this->Html->script('controller/cid.lista.js', ['block' => 'scriptBottom']) ?>
 <div class="content">
     <div class="container-fluid">
         <div class="row">
@@ -82,7 +83,7 @@
                                                     </a>
                                                 <?php endif; ?>
                                                 <?php if ($this->Membership->handleRole("excluir_cid")) : ?>
-                                                    <button type="button" onclick="excluirCID(<?= $item->id ?>, '<?= $item->nome ?>')" class="btn btn-danger btn-round"><i class="material-icons">close</i></button>
+                                                    <button type="button" onclick="excluirCID(<?= $item->id ?>, '<?= $item->cid ?>', '<?= $item->nome ?>')" class="btn btn-danger btn-round"><i class="material-icons">close</i></button>
                                                 <?php endif; ?>
                                             </td>
                                         </tr>

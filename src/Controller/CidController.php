@@ -125,6 +125,49 @@ class CidController extends AppController
         }        
     }
 
+    public function delete(int $id)
+    {
+        try
+        {
+            $t_cid = TableRegistry::get('Cid');
+
+            $marcado = $t_cid->get($id);
+            $codigo = $marcado->cid;
+
+            $propriedades = $marcado->getOriginalValues();
+
+            $t_cid->delete($marcado);
+
+            $this->Flash->greatSuccess('O CID ' . $codigo . ' foi excluído com sucesso!');
+
+            $auditoria = [
+                'ocorrencia' => 38,
+                'descricao' => 'O usuário excluiu um determinado CID do sistema.',
+                'dado_adicional' => json_encode(['cid_excluido' => $id, 'dados_cid_excluido' => $propriedades]),
+                'usuario' => $this->request->session()->read('UsuarioID')
+            ];
+
+            $this->Auditoria->registrar($auditoria);
+
+            if ($this->request->session()->read('UsuarioSuspeito')) 
+            {
+                $this->Monitoria->monitorar($auditoria);
+            }
+
+            $this->redirect(['action' => 'index']);
+        }
+        catch(Exception $ex)
+        {
+            $this->Flash->exception('Ocorreu um erro no sistema ao excluir o CID.', [
+                'params' => [
+                    'details' => $ex->getMessage()
+                ]
+            ]);
+
+            $this->redirect(['action' => 'index']);
+        }
+    }
+
     protected function insert()
     {
         try 
