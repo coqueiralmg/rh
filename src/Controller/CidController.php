@@ -64,4 +64,45 @@ class CidController extends AppController
         $this->set('qtd_total', $qtd_total);
         $this->set('data', $data);
     }
+
+    public function add()
+    {
+        $this->redirect(['action' => 'cadastro', 0]);
+    }
+
+    public function insert()
+    {
+        $this->redirect(['action' => 'insercao', 0]);
+    }
+
+    public function edit(int $id)
+    {
+        $this->redirect(['action' => 'cadastro', $id]);
+    }
+
+    public function view(int $id)
+    {
+        $this->redirect(['action' => 'consulta', $id]);
+    }
+
+    public function cadastro(int $id)
+    {
+        $title = ($id > 0) ? 'Edição de CID' : 'Novo CID';
+
+        $t_cid = TableRegistry::get('Cid');
+
+        if ($id > 0) 
+        {
+            $cid = $t_cid->get($id);
+            $this->set('cid', $cid);
+        }
+        else
+        {
+            $this->set('cid', null);
+        }
+
+        $this->set('title', $title);
+        $this->set('icon', 'grid_on');
+        $this->set('id', $id);
+    }
 }
