@@ -25,11 +25,17 @@ class CidController extends AppController
         if (count($this->request->getQueryParams()) > 1)
         {
             $codigo = $this->request->query('codigo');
+            $detalhamento = $this->request->query('detalhamento');
             $nome = $this->request->query('nome');
 
             if($codigo != "")
             {
                 $condicoes['codigo'] = $codigo;
+
+                if($detalhamento != "")
+                {
+                    $condicoes['detalhamento'] = $detalhamento;
+                }
             }
 
             if($nome != "")

@@ -16,14 +16,21 @@
                             "role" => "form"]);
                         ?>
                             <div class="row">
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <div class="form-group form-group-min">
                                         <?= $this->Form->label("codigo", "Código") ?>
                                         <?= $this->Form->text("codigo", ["class" => "form-control"]) ?>
                                         <span class="material-input"></span></div>
                                 </div>
+
+                                <div class="col-md-2">
+                                    <div class="form-group form-group-min">
+                                        <?= $this->Form->label("detalhamento", "Detalhamento") ?>
+                                        <?= $this->Form->text("detalhamento", ["class" => "form-control"]) ?>
+                                        <span class="material-input"></span></div>
+                                </div>
                                 
-                                <div class="col-md-9">
+                                <div class="col-md-8">
                                     <div class="form-group form-group-min">
                                         <?= $this->Form->label("nome", "Nome") ?>
                                         <?= $this->Form->text("nome", ["class" => "form-control"]) ?>
