@@ -44,6 +44,7 @@
                                 <?php if ($this->Membership->handleRole("adicionar_cid")) : ?>
                                     <a href="<?= $this->Url->build(['controller' => 'Cid', 'action' => 'add']) ?>" class="btn btn-warning btn-default pull-right">Novo<div class="ripple-container"></div></a>
                                     <a href="<?= $this->Url->build(['controller' => 'Cid', 'action' => 'addc']) ?>" class="btn btn-warning btn-default pull-right">Cadastro em Massa<div class="ripple-container"></div></a>
+                                    <a href="<?= $this->Url->build(['controller' => 'Cid', 'action' => 'importar']) ?>" class="btn btn-rose btn-default pull-right">Importar<div class="ripple-container"></div></a>
                                 <?php endif; ?>
                                 <?php if ($this->Membership->handleRole("imprimir_cid")) : ?>
                                     <a href="<?= $this->Url->build(['controller' => 'Cid', 'action' => 'imprimir', '?' => $data]) ?>" target="_blank" class="btn btn-fill btn-default pull-right">Imprimir<div class="ripple-container"></div></a>
