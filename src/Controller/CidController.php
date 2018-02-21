@@ -224,6 +224,12 @@ class CidController extends AppController
         }
     }
 
+    public function insercao()
+    {
+        $this->set('title', 'Cadastro em Massa de CID');
+        $this->set('icon', 'grid_on');
+    }
+
     protected function insert()
     {
         try 
