@@ -311,6 +311,12 @@ class CidController extends AppController
         $this->set('relatorio', $relatorio);
     }
 
+    public function importar()
+    {
+        $this->set('title', 'Importação de CID via Arquivo');
+        $this->set('icon', 'grid_on');
+    }
+
     protected function insert()
     {
         try 
