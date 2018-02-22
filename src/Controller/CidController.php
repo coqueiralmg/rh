@@ -317,6 +317,29 @@ class CidController extends AppController
         $this->set('icon', 'grid_on');
     }
 
+    public function importacao()
+    {
+        $tipo_arquivo = [
+            'CSV' => 'CSV',
+            'TXT' => 'TXT'
+        ];
+
+        $separador = [
+            'PV' => 'Ponto e vírgula (;)',
+            'VG' => 'Vírgula (,)',
+            'PP' => 'Ponto (.)',
+            'TR' => 'Traço (-)',
+            'TB' => 'TAB',
+            'SP' => 'Espaço'
+        ];
+
+
+        $this->set('title', 'Importação de CID via Arquivo Padrão');
+        $this->set('icon', 'grid_on');
+        $this->set('tipo_arquivo', $tipo_arquivo);
+        $this->set('separador', $separador);
+    }
+
     protected function insert()
     {
         try 
