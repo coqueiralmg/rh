@@ -122,7 +122,7 @@ class CidController extends AppController
 
     public function addc()
     {
-        $this->redirect(['action' => 'insercao', 0]);
+        $this->redirect(['action' => 'insercao']);
     }
 
     public function edit(int $id)
@@ -228,6 +228,87 @@ class CidController extends AppController
     {
         $this->set('title', 'Cadastro em Massa de CID');
         $this->set('icon', 'grid_on');
+    }
+
+    public function push()
+    {
+        if ($this->request->is('post'))
+        {
+            $t_cid = TableRegistry::get('Cid');
+            $codigos = $this->request->getData("codigo");
+            $detalhamentos = $this->request->getData("detalhamento");
+            $nomes = $this->request->getData("nome");
+            $total = count($codigos);
+            $relatorio = array();
+
+            for($i = 0; $i < $total; $i++)
+            {
+                $codigo = $codigos[$i];
+                $detalhamento = $detalhamentos[$i];
+                $nome = $nomes[$i];
+
+                if($detalhamento === "")
+                {
+                    $detalhamento = null;
+                }
+
+                $dado['item'] = $i;
+                $dado['codigo'] = $codigo;
+                $dado['detalhamento'] = $detalhamento;
+                $dado['nome'] = $nome;
+
+                $qtd = $t_cid->find('all', [
+                    'conditions' => [
+                        'codigo' => $codigo,
+                        'detalhamento' => $detalhamento
+                    ]
+                ])->count();
+
+                if($qtd > 0)
+                {
+                    $dado['sucesso'] = false;
+                    $dado['mensagem'] = 'O CID informado existe no sistema';
+                }
+                else
+                {
+                    $entity = $t_cid->newEntity();
+                    
+                    $entity->codigo = $codigo;
+                    $entity->detalhamento = $detalhamento;
+                    $entity->nome = $nome;
+                    $entity->subitem = ($detalhamento != null);
+
+                    $t_cid->save($entity);
+
+                    $dado['sucesso'] = true;
+                    $dado['mensagem'] = '';
+                }
+
+                array_push($relatorio, $dado);
+            }
+
+            $this->request->session()->write('Relatorios.Importacao.CID', $relatorio);
+            $this->redirect(['action' => 'resultado']);
+        }
+    }
+
+    public function resultado()
+    {
+        $relatorio = $this->request->session()->read('Relatorios.Importacao.CID');
+        
+        $this->set('title', 'Relatório de Cadastro de CID');
+        $this->set('icon', 'grid_on');
+        $this->set('relatorio', $relatorio);
+    }
+
+    public function relatorio()
+    {
+        $relatorio = $this->request->session()->read('Relatorios.Importacao.CID');
+
+        $this->viewBuilder()->layout('print');
+        
+        $this->set('title', 'Relatório de Cadastro de CID');
+        $this->set('relatorio', $relatorio);
     }
 
     protected function insert()

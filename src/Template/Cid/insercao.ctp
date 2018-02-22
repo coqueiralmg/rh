@@ -8,7 +8,7 @@
                         echo $this->Form->create(null, [
                             "url" => [
                                 "controller" => "cid",
-                                "action" => "append"
+                                "action" => "push"
                             ],
                             "role" => "form"]);
                         ?>
@@ -32,13 +32,13 @@
                             <tbody>
                                 <tr class="tr_clone">
                                     <td>
-                                        <?=$this->Form->text("codigo", ["id" => "codigo", "onblur" => "uppercaseCID(this)",  "class" => "form-control", "maxlength" => 3])?>
+                                        <?=$this->Form->text("codigo[]", ["id" => "codigo", "onblur" => "uppercaseCID(this)",  "class" => "form-control", "maxlength" => 3])?>
                                     </td>
                                     <td>
-                                        <?=$this->Form->text("detalhamento", ["id" => "detalhamento", "class" => "form-control", "maxlength" => 1])?>
+                                        <?=$this->Form->text("detalhamento[]", ["id" => "detalhamento", "class" => "form-control", "maxlength" => 1])?>
                                     </td>
                                     <td>
-                                        <?=$this->Form->text("nome", ["id" => "nome", "class" => "form-control", "onkeydown" => "finalizarLinha(this, event)", "maxlength" => 150])?>
+                                        <?=$this->Form->text("nome[]", ["id" => "nome", "class" => "form-control", "onkeydown" => "finalizarLinha(this, event)", "maxlength" => 150])?>
                                     </td>
                                     <td class="td-actions text-right">
                                         <button type="button" tabindex="10000" onclick="adicionarLinha(this)" class="btn btn-info btn-round btn-add"><i class="material-icons">add</i></button>    
