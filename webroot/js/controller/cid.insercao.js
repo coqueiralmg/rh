@@ -139,15 +139,3 @@ function montarLinhasTabela(tabela, erros){
         i++;
     } while(i < tabela.rows.length);
 }
-
-function obterCampo(campos, id){
-    var i = 0;
-    
-    do {
-        if(campos[i].id = id) {
-            return campos[i];
-        }
-
-        i++;
-    } while(i < campos.length);
-}
