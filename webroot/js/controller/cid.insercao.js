@@ -61,48 +61,46 @@ function removerLinha(o) {
 
 function validar() {
     var tabela = document.getElementById("tblCadastro");
+    var erros = Array();
     var mensagem = "";
     var i = 1;
 
     while(i < tabela.rows.length){
         var linha = tabela.rows[i];
-        var campos = tabela.getElementsByTagName("input");
-        
-        var codigo = obterCampo(campos, "codigo");
-        var nome = obterCampo(campos, "nome");
+        var campos = linha.getElementsByTagName("input");
+        var erro = false;
 
-        if(codigo.value == "") {
+        if(campos.codigo.value == "") {
             mensagem += "<li>[Linha " + i + "] É obrigatório informar o código do CID.</li>";
-            codigo.style.color = "red";
-        } else {
-            codigo.style.color = "#555";
-        }
+            erro = true;
+        } 
 
-        if(nome.value == "") {
+        if(campos.nome.value == "") {
             mensagem += "<li>[Linha " + i + "] É obrigatório informar o nome da doença ou problema relacionado ao CID.</li>";
-            nome.style.color = "red";
-        } else {
-            nome.style.color = "#555";
+            erro = true;
         }   
+
+        if(erro) {
+            erros.push(i);
+        }
 
         i++;
     }
 
-
     if (mensagem == "") {
         return true;
     } else {
-        montarLinhasTabela(tabela);
+        montarLinhasTabela(tabela, erros);
         $("#cadastro_erro").show('shake');
         $("#details").html("<ol>" + mensagem + "</ol>");
         return false;
     }
 }
 
-function montarLinhasTabela(tabela){
+function montarLinhasTabela(tabela, erros){
     var i = 0;
 
-    do{
+    do {
         var linha = tabela.rows[i];
         var celula = null;
 
@@ -110,6 +108,14 @@ function montarLinhasTabela(tabela){
             if(i > 0) {
                 celula = linha.cells[0];
                 celula.innerHTML = i;
+
+                if(erros.indexOf(i) >= 0) {
+                    celula.style.color = "red";
+                    celula.style.fontWeight = "bold";
+                } else {
+                    celula.style.color = "black";
+                    celula.style.fontWeight = "normal";
+                }
             }
         } else {
             if(i == 0) {
@@ -122,16 +128,21 @@ function montarLinhasTabela(tabela){
             } else {
                 celula = linha.insertCell(0);
                 celula.innerHTML = i;
+
+                if(erros.indexOf(i) >= 0) {
+                    celula.style.color = "red";
+                    celula.style.fontWeight = "bold";
+                }
             }    
         }
         
         i++;
-    }while(i < tabela.rows.length);
+    } while(i < tabela.rows.length);
 }
 
 function obterCampo(campos, id){
     var i = 0;
-
+    
     do {
         if(campos[i].id = id) {
             return campos[i];
