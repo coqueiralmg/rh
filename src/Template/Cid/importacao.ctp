@@ -7,6 +7,7 @@
                     "controller" => "cid",
                     "action" => "file"
                 ],
+                'enctype' => 'multipart/form-data',
                 "role" => "form"]);
         ?>
         <div class="row">

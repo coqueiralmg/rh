@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Cake\Core\Configure;
+use Cake\Filesystem\File;
 use Cake\Network\Session;
 use Cake\ORM\TableRegistry;
 use \Exception;
@@ -235,7 +236,7 @@ class CidController extends AppController
         if ($this->request->is('post'))
         {
             $t_cid = TableRegistry::get('Cid');
-            $codigos = $this->request->getData("codigo");
+            $campos = $this->request->getData("campos");
             $detalhamentos = $this->request->getData("detalhamento");
             $nomes = $this->request->getData("nome");
             $total = count($codigos);
@@ -338,6 +339,180 @@ class CidController extends AppController
         $this->set('icon', 'grid_on');
         $this->set('tipo_arquivo', $tipo_arquivo);
         $this->set('separador', $separador);
+    }
+
+    public function file()
+    {
+        try
+        {
+            if ($this->request->is('post'))
+            {
+                $dados = [];
+                
+                $campos = $this->request->getData("campos");
+                $tipo = $this->request->getData("tipo");
+                $separador = $this->request->getData("separador");
+                $arquivo = $this->request->getData("arquivo");
+                $ignorar = $this->request->getData("ignorar");
+                $junto = $this->request->getData("junto");
+                $separado = $this->request->getData("separado");
+
+                $file_temp = $arquivo['tmp_name'];
+                $nome_arquivo = $arquivo['name'];
+
+                $file = new File($file_temp);
+                $pivot = new File($nome_arquivo);
+
+                if(strtolower($pivot->ext()) != strtolower($tipo))
+                {
+                    throw new Exception("O arquivo de importação é inválido. Verifique se você selecionou o tipo de arquivo corretamente.");
+                }
+
+                $conteudo = $file->read();
+                $linhas = explode("\n", $conteudo);
+
+                $file->close();
+
+                for($i = 0; $i < count($linhas); $i++)
+                {
+                    $linha = $linhas[$i];
+                    $char = $this->obterSeparador($separador);
+                    $data = explode($char, $linha);
+
+                    if($i == 0 && $ignorar)
+                    {
+                        continue;
+                    }
+
+                    if(count($data < 2))
+                    {
+                        throw new Exception("O arquivo de importação é inválido. Verifique se você selecionou o caractere separador corretamente.");
+                    }
+
+                    if(count($data != count($campos)))
+                    {
+                        if(count($data) > count($campos))
+                        {
+                            throw new Exception("O arquivo de importação é inválido. A quantidade de campos informados no arquivo é maior que os campos aceitos pelo sistema. Verifique também se você selecionou o código e o detalhamento no mesmo campo, quando na verdade, os mesmos encontram-se separados.");
+                        }
+
+                        if(count($data) < count($campos) - 1)
+                        {
+                            throw new Exception("O arquivo de importação é inválido. Existem um ou mais campos obrigatórios que não foram informados no arquivo.");
+                        }
+
+                        if(count($data) < count($campos))
+                        {
+                            if(end($campos) != "descricao")
+                            {
+                                throw new Exception("O arquivo de importação é inválido. O campo de descrição detalhada do CID, que é opcional deve ser posto como último, caso não tiver o mesmo informado no arquivo.");
+                            }
+                        }
+                    }
+
+                    for($j = 0; j < count($data); $j++)
+                    {
+                        $info = [];
+                        $campo = $campos[$j];
+
+                        if(campo == "detalhamento")
+                        {
+                            $detalhamento = $data[$j];
+
+                            if($detalhamento === "")
+                            {
+                                $detalhamento = null;
+                            }
+                            else
+                            {
+                                if(!is_numeric($detalhamento))
+                                {
+                                    throw new Exception("Existe um dado de detalhamento de cid que não é numérico.");
+                                }
+                            }
+
+                            $info['detalhamento'] = $detalhamento;
+                        }
+                        elseif(campo == "codigo_detalhamento")
+                        {
+                            $valor = $data[$j];
+                                
+                            if($separado)
+                            {
+                                $pivot = explode('.', $valor);
+
+                                $codigo = $pivot[0];
+                                $detalhamento = $pivot[1];
+
+                                if($detalhamento === "")
+                                {
+                                    $detalhamento = null;
+                                }   
+                                else
+                                {
+                                    if(!is_numeric($detalhamento))
+                                    {
+                                        throw new Exception("Foi detectado um código CID inválido e não aceito pelo sistema.");
+                                    }
+                                }
+
+                                $info['codigo'] = $codigo;
+                                $info['detalhamento'] = $detalhamento;
+                            }
+                            else
+                            {
+                                $codigo = substr($valor, 0, -1);
+                                $detalhamento = substr($valor, -1);
+
+                                if($detalhamento === "")
+                                {
+                                    $detalhamento = null;
+                                }  
+                                else
+                                {
+                                    if(!is_numeric($detalhamento))
+                                    {
+                                        throw new Exception("Foi detectado um código CID inválido e não aceito pelo sistema.");
+                                    }
+                                }
+
+                                $info['codigo'] = $codigo;
+                                $info['detalhamento'] = $detalhamento;
+                            }
+                        }
+                        elseif(campo == "nome")
+                        {
+                            $nome = $valor[j];
+
+                            if(strlen($nome) > 150)
+                            {
+                                throw new Exception("Foi detectado o nome da doença ou problema com mais de 150 caracteres. Sugerimos que faça abreviação do termo. Caso isso persistir, entre em contato com o suporte.");
+                            }
+
+                            $info['nome'] = $nome;
+                        }
+                        else
+                        {
+                            $info[$campo[$j]] = $valor[j];
+                        }
+
+                        $dados[] = $info;
+                    }
+
+                    $this->import($dados);
+                }
+            }
+        }
+        catch (Exception $ex) 
+        {
+            $this->Flash->exception('Ocorreu um erro no sistema ao efetuar a importação do CID', [
+                'params' => [
+                    'details' => $ex->getMessage()
+                ]
+            ]);
+
+            $this->redirect(['action' => 'importacao']);
+        }
     }
 
     protected function insert()
@@ -459,5 +634,93 @@ class CidController extends AppController
 
             $this->redirect(['action' => 'cadastro', $id]);
         }
+    }
+
+    protected function import(array $data)
+    {
+        $t_cid = TableRegistry::get('Cid');
+        $total = count($data);
+        $relatorio = array();
+
+        for($i = 0; $i < $total; $i++)
+        {
+            $info = $data[$i];
+            
+            $codigo = $info['codigo'];
+            $detalhamento = $info['detalhamento'];
+            $nome = $info['nome'];
+            $descricao = $info['descricao'];
+
+            $dado['item'] = $i;
+            $dado['codigo'] = $codigo;
+            $dado['detalhamento'] = $detalhamento;
+            $dado['nome'] = $nome;
+
+            $qtd = $t_cid->find('all', [
+                'conditions' => [
+                    'codigo' => $codigo,
+                    'detalhamento' => $detalhamento
+                ]
+            ])->count();
+
+            if($qtd > 0)
+            {
+                $dado['sucesso'] = false;
+                $dado['mensagem'] = 'O CID informado existe no sistema';
+            }
+            else
+            {
+                $entity = $t_cid->newEntity();
+                
+                $entity->codigo = $codigo;
+                $entity->detalhamento = $detalhamento;
+                $entity->nome = $nome;
+                $entity->subitem = ($detalhamento != null);
+                $entity->descricao = $descricao;
+
+                $t_cid->save($entity);
+
+                $dado['sucesso'] = true;
+                $dado['mensagem'] = '';
+            }
+
+            array_push($relatorio, $dado);
+        }
+
+        $this->request->session()->write('Relatorios.Importacao.CID', $relatorio);
+        $this->redirect(['action' => 'resultado']);
+    }
+
+    private function obterSeparador($separador)
+    {
+        $caractere = '';
+        
+        switch ($separador) {
+            case 'PV':
+                $caractere = ';';
+                break;
+
+            case 'VG':
+                $caractere = ',';
+                break;
+            
+            case 'PP':
+                $caractere = '.';
+                break;
+            
+            case 'TR':
+                $caractere = '-';
+                break;
+            
+            case 'TB':
+                $caractere = '\t';
+                break;
+            
+            case 'SP':
+                $caractere = ' ';
+                break;
+        }
+
+        return $caractere;
     }
 }
