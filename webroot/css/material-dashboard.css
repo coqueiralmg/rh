@@ -3050,6 +3050,7 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
 }
 .navbar .btn-link {
   color: inherit;
+  box-shadow: none;
 }
 .navbar .btn-link:hover, .navbar .btn-link:focus {
   color: inherit;
@@ -5645,6 +5646,51 @@ table.dataTable > tbody > tr.child span.dtr-title {
   background-color: #f44336;
   border-color: #f44336;
   box-shadow: 0 4px 5px 0 rgba(244, 67, 54, 0.14), 0 1px 10px 0 rgba(244, 67, 54, 0.12), 0 2px 4px -1px rgba(244, 67, 54, 0.2);
+}
+
+.badge {
+  display: block;
+  width: 75%;
+  padding: 10px;
+  margin: 5px;
+}
+
+.badge-primary {
+  color: #fff;
+  background-color: #2196f3
+}
+
+.badge-primary[href]:focus,
+.badge-primary[href]:hover {
+  color: #fff;
+  text-decoration: none;
+  background-color: #0c7cd5
+}
+
+.badge-info {
+  color: #fff;
+  background-color: #00bcd4
+}
+
+.badge-info[href]:focus,
+.badge-info[href]:hover {
+  color: #fff;
+  text-decoration: none;
+  background-color: #008fa1
+}
+
+.sort-placeholder{
+  border-radius: 2px;
+  line-height: 1.5em;
+  list-style-type: none;
+  display: block;
+  background-color: khaki;
+  height: 1.5em; 
+  width: 75%
+}
+
+#sortable li{
+  cursor: all-scroll
 }
 
 .detalhes{
