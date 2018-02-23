@@ -5,7 +5,7 @@
             echo $this->Form->create(null, [
                 "url" => [
                     "controller" => "cid",
-                    "action" => "import"
+                    "action" => "file"
                 ],
                 "role" => "form"]);
         ?>
@@ -16,7 +16,7 @@
                         <?=$this->element('message', [
                             'name' => 'cadastro_erro',
                             'type' => 'error',
-                            'message' => 'Ocorreu um erro ao salvar o CID.',
+                            'message' => 'Ocorreu um erro ao efetuar a importação do CID.',
                             'details' => ''
                         ]) ?>
                             <?= $this->Flash->render() ?>

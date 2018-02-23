@@ -86,3 +86,22 @@ function separarOrdemDetalhamento(){
     reset = $("#sortable").html();
     salvarOrdemCampos();
 }
+
+function validar() {
+    var mensagem = "";
+
+    if (document.getElementById("arquivo").files.length == 0) {
+        mensagem += "<li>É obrigatório informa o arquivo de importação, para que a mesma seja efetuada.</li>";
+        $("label[for='codigo']").css("color", "red");
+    } else {
+        $("label[for='codigo']").css("color", "#aaa");
+    }
+
+    if (mensagem == "") {
+        return true;
+    } else {
+        $("#cadastro_erro").show('shake');
+        $("#details").html("<ol>" + mensagem + "</ol>");
+        return false;
+    }
+}
