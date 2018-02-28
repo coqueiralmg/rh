@@ -19,11 +19,6 @@
                             'message' => 'Ocorreu um erro ao efetuar a importação do CID.',
                             'details' => ''
                         ]) ?>
-                            <div class="alert alert-info alert-with-icon text-left" data-notify="container">
-                                <button type="button" aria-hidden="true" class="close" onclick="$(this).parent().hide()">×</button>
-                                <i data-notify="icon" class="material-icons">info</i>
-                                <span data-notify="message">Para baixar o arquivo do Datasus, para importação, <a href="http://www.datasus.gov.br/cid10/V2008/descrcsv.htm" target="_blank">clique aqui</a>. Feito isso, basta apenas enviar o arquivo compactado. Não é necessário descompactar o arquivo.</span>
-                            </div>
                             <?= $this->Flash->render() ?>
                             <legend>Importação de Dados via Datasus</legend>
                             <div class="row">
