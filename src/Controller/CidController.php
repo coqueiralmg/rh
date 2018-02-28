@@ -321,8 +321,8 @@ class CidController extends AppController
     public function importacao()
     {
         $tipo_arquivo = [
-            'CSV' => 'CSV',
-            'TXT' => 'TXT'
+            'CSV' => 'Arquivo CSV',
+            'TXT' => 'Arquivo TXT'
         ];
 
         $separador = [
@@ -339,6 +339,17 @@ class CidController extends AppController
         $this->set('icon', 'grid_on');
         $this->set('tipo_arquivo', $tipo_arquivo);
         $this->set('separador', $separador);
+    }
+
+    public function datasus()
+    {
+        $tipo_arquivo = [
+            'ZIP' => 'Arquivo ZIP com CSVs'
+        ];
+        
+        $this->set('title', 'Importação de CID via Arquivo do Datasus');
+        $this->set('icon', 'grid_on');
+        $this->set('tipo_arquivo', $tipo_arquivo);
     }
 
     public function file()
