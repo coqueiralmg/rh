@@ -7,6 +7,7 @@ use Cake\Filesystem\File;
 use Cake\Network\Session;
 use Cake\ORM\TableRegistry;
 use \Exception;
+use \ZipArchive;
 
 class CidController extends AppController
 {
@@ -344,7 +345,7 @@ class CidController extends AppController
     public function datasus()
     {
         $tipo_arquivo = [
-            'ZIP' => 'Arquivo ZIP com CSVs'
+            'CSV' => 'Arquivo ZIP com CSVs'
         ];
         
         $this->set('title', 'Importação de CID via Arquivo do Datasus');
@@ -561,6 +562,57 @@ class CidController extends AppController
         }
     }
 
+    public function fsus()
+    {
+        try
+        {
+            $tipo = $this->request->getData("tipo");
+            $separador = $this->request->getData("separador");
+            $arquivo = $this->request->getData("arquivo");
+
+            $file_temp = $arquivo['tmp_name'];
+            $nome_arquivo = $arquivo['name'];
+            
+            $pivot = new File($nome_arquivo);
+
+            if(strtolower($pivot->ext()) != 'zip')
+            {
+                throw new Exception("O arquivo de importação é inválido. Verifique se você selecionou o tipo de arquivo corretamente.");
+            }
+
+            $zip = new ZipArchive();
+            $zip->open($file_temp);
+            
+            $conteudo_categorias = $zip->getFromName('CID-10-CATEGORIAS.CSV');
+            $conteudo_subcategorias = $zip->getFromName('CID-10-SUBCATEGORIAS.CSV');
+
+            $lscat = explode("\n", $conteudo_categorias);
+            $lssub = explode("\n", $conteudo_subcategorias);
+
+            $zip->close();
+            
+            switch ($tipo) {
+                case 'CSV':
+                    $this->fsuscsv($lscat, $lssub);
+                    break;
+                
+                case 'XML':
+                    $this->fsusxml($lscat, $lssub);
+                    break;
+            }
+        }
+        catch (Exception $ex) 
+        {
+            $this->Flash->exception('Ocorreu um erro no sistema ao efetuar a importação do CID', [
+                'params' => [
+                    'details' => $ex->getMessage()
+                ]
+            ]);
+
+            $this->redirect(['action' => 'importacao']);
+        }
+    }
+
     protected function insert()
     {
         try 
@@ -680,6 +732,54 @@ class CidController extends AppController
 
             $this->redirect(['action' => 'cadastro', $id]);
         }
+    }
+
+    protected function fsuscsv($fcat, $fsub)
+    {
+        $dados = [];
+        $categorias = [];
+        $subcategorias = [];
+
+        for($i = 1; $i < count($fcat); $i++)
+        {
+            $linha = $fcat[$i];
+            $data = explode(';', $linha);
+
+            if(trim($linha) == "")
+            {
+                continue;
+            }
+
+            $info = [];
+
+            for($j = 0; $j < count($data); $j++)
+            {
+                $valor = $data[$j];
+                
+                switch ($j) {
+                    case 0:
+                        $info['codigo'] = $valor;
+                        break;
+                    
+                    case 2:
+                        $info['nome'] = $valor;
+                        break;
+
+                }
+
+                $info['detalhamento'] = null;
+                $info['descricao'] = null;
+
+                $categorias[] = $info;
+            }
+        }
+    }
+
+    protected function fsusxml($fcat, $fsub)
+    {
+        $dados = [];
+        $categorias = [];
+        $subcategorias = [];
     }
 
     protected function import(array $data)
