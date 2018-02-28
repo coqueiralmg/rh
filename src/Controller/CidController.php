@@ -363,6 +363,8 @@ class CidController extends AppController
                 $file = new File($file_temp);
                 $pivot = new File($nome_arquivo);
 
+                $campos = json_decode($campos);
+
                 if(strtolower($pivot->ext()) != strtolower($tipo))
                 {
                     throw new Exception("O arquivo de importação é inválido. Verifique se você selecionou o tipo de arquivo corretamente.");
@@ -384,12 +386,17 @@ class CidController extends AppController
                         continue;
                     }
 
-                    if(count($data < 2))
+                    if(trim($linha) == "")
+                    {
+                        continue;
+                    }
+
+                    if(count($data) < 2)
                     {
                         throw new Exception("O arquivo de importação é inválido. Verifique se você selecionou o caractere separador corretamente.");
                     }
 
-                    if(count($data != count($campos)))
+                    if(count($data) != count($campos))
                     {
                         if(count($data) > count($campos))
                         {
@@ -410,12 +417,13 @@ class CidController extends AppController
                         }
                     }
 
-                    for($j = 0; j < count($data); $j++)
+                    $info = [];
+                    
+                    for($j = 0; $j < count($data); $j++)
                     {
-                        $info = [];
                         $campo = $campos[$j];
 
-                        if(campo == "detalhamento")
+                        if($campo == "detalhamento")
                         {
                             $detalhamento = $data[$j];
 
@@ -433,26 +441,37 @@ class CidController extends AppController
 
                             $info['detalhamento'] = $detalhamento;
                         }
-                        elseif(campo == "codigo_detalhamento")
+                        elseif($campo == "codigo_detalhamento")
                         {
                             $valor = $data[$j];
                                 
                             if($separado)
                             {
-                                $pivot = explode('.', $valor);
-
-                                $codigo = $pivot[0];
-                                $detalhamento = $pivot[1];
-
-                                if($detalhamento === "")
+                                $codigo = '';
+                                $detalhamento = '';
+                                
+                                if(strlen($valor) == 3)
                                 {
+                                    $codigo = $valor;
                                     $detalhamento = null;
-                                }   
+                                }
                                 else
                                 {
-                                    if(!is_numeric($detalhamento))
+                                    $pivot = explode('.', $valor);
+
+                                    $codigo = $pivot[0];
+                                    $detalhamento = $pivot[1];
+
+                                    if($detalhamento === "")
                                     {
-                                        throw new Exception("Foi detectado um código CID inválido e não aceito pelo sistema.");
+                                        $detalhamento = null;
+                                    }   
+                                    else
+                                    {
+                                        if(!is_numeric($detalhamento))
+                                        {
+                                            throw new Exception("Foi detectado um código CID inválido e não aceito pelo sistema.");
+                                        }
                                     }
                                 }
 
@@ -461,18 +480,34 @@ class CidController extends AppController
                             }
                             else
                             {
-                                $codigo = substr($valor, 0, -1);
-                                $detalhamento = substr($valor, -1);
-
-                                if($detalhamento === "")
+                                $codigo = '';
+                                $detalhamento = '';
+                                
+                                if(strpos($valor, '.') >= 0)
                                 {
+                                    throw new Exception("Arquivo de importação inválido. Os códigos e os detalhamentos estão realmente separados por ponto?");
+                                }
+                                
+                                if(strlen($valor) == 3)
+                                {
+                                    $codigo = $valor;
                                     $detalhamento = null;
-                                }  
+                                }
                                 else
                                 {
-                                    if(!is_numeric($detalhamento))
+                                    $codigo = substr($valor, 0, -1);
+                                    $detalhamento = substr($valor, -1); 
+
+                                    if($detalhamento === "")
                                     {
-                                        throw new Exception("Foi detectado um código CID inválido e não aceito pelo sistema.");
+                                        $detalhamento = null;
+                                    }  
+                                    else
+                                    {
+                                        if(!is_numeric($detalhamento))
+                                        {
+                                            throw new Exception("Foi detectado um código CID inválido e não aceito pelo sistema.");
+                                        }
                                     }
                                 }
 
@@ -480,9 +515,9 @@ class CidController extends AppController
                                 $info['detalhamento'] = $detalhamento;
                             }
                         }
-                        elseif(campo == "nome")
+                        elseif($campo == "nome")
                         {
-                            $nome = $valor[j];
+                            $nome = $data[$j];
 
                             if(strlen($nome) > 150)
                             {
@@ -493,14 +528,14 @@ class CidController extends AppController
                         }
                         else
                         {
-                            $info[$campo[$j]] = $valor[j];
-                        }
-
-                        $dados[] = $info;
+                            $info[$campo] = $data[$j];
+                        } 
                     }
 
-                    $this->import($dados);
+                    $dados[] = $info;
                 }
+
+                $this->import($dados);
             }
         }
         catch (Exception $ex) 
@@ -670,18 +705,26 @@ class CidController extends AppController
             }
             else
             {
-                $entity = $t_cid->newEntity();
+                try
+                {
+                    $entity = $t_cid->newEntity();
                 
-                $entity->codigo = $codigo;
-                $entity->detalhamento = $detalhamento;
-                $entity->nome = $nome;
-                $entity->subitem = ($detalhamento != null);
-                $entity->descricao = $descricao;
+                    $entity->codigo = $codigo;
+                    $entity->detalhamento = $detalhamento;
+                    $entity->nome = $nome;
+                    $entity->subitem = ($detalhamento != null);
+                    $entity->descricao = $descricao;
 
-                $t_cid->save($entity);
+                    $t_cid->save($entity);
 
-                $dado['sucesso'] = true;
-                $dado['mensagem'] = '';
+                    $dado['sucesso'] = true;
+                    $dado['mensagem'] = '';
+                }
+                catch (Exception $ex) 
+                {
+                    $dado['sucesso'] = false;
+                    $dado['mensagem'] = $ex->getMessage();
+                }
             }
 
             array_push($relatorio, $dado);
