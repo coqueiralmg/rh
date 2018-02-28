@@ -16,7 +16,7 @@
                             'action' => 'importacao'
                         ])?>">
                             <span>
-                                <i class="material-icons" style="font-size: 110px">description</i>
+                                <i class="material-icons" style="font-size: 116px">description</i>
                             </span>
                             <p><b>Padrão</b></p>
                         </a>
