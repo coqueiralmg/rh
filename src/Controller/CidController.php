@@ -408,6 +408,12 @@ class CidController extends AppController
                 }
 
                 $conteudo = $file->read();
+
+                if(mb_detect_encoding($conteudo) != 'UTF-8')
+                {
+                    $conteudo = utf8_encode($conteudo);
+                }
+
                 $linhas = explode("\n", $conteudo);
 
                 $file->close();
@@ -459,6 +465,7 @@ class CidController extends AppController
                     for($j = 0; $j < count($data); $j++)
                     {
                         $campo = $campos[$j];
+                        $data[$j] = trim($data[$j]);
 
                         if($campo == "detalhamento")
                         {
