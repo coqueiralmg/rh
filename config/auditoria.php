@@ -40,7 +40,8 @@ return [
             35 => 'Inclusão do CID',
             36 => 'Inclusão em massa do CID',
             37 => 'Alteração do CID',
-            38 => 'Exclusão do CID'
+            38 => 'Exclusão do CID',
+            39 => 'Importação do CID'
         ]
     ]
 ];
