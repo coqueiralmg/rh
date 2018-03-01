@@ -7,6 +7,7 @@ use Cake\Filesystem\File;
 use Cake\Log\Log;
 use Cake\Network\Session;
 use Cake\ORM\TableRegistry;
+use Cake\Utility\Xml;
 use \Exception;
 use \ZipArchive;
 
@@ -368,7 +369,8 @@ class CidController extends AppController
     public function datasus()
     {
         $tipo_arquivo = [
-            'CSV' => 'Arquivo ZIP com CSVs'
+            'CSV' => 'Arquivo ZIP com CSVs',
+            'XML' => 'Arquivo ZIP com XMLs'
         ];
         
         $this->set('title', 'Importação de CID via Arquivo do Datasus');
@@ -596,7 +598,7 @@ class CidController extends AppController
 
     public function fsus()
     {
-        set_time_limit(600);
+        set_time_limit(1200);
         
         try
         {
@@ -616,15 +618,26 @@ class CidController extends AppController
 
             $zip = new ZipArchive();
             $zip->open($file_temp);
-            
-            $conteudo_categorias = $zip->getFromName('CID-10-CATEGORIAS.CSV');
-            $conteudo_subcategorias = $zip->getFromName('CID-10-SUBCATEGORIAS.CSV');
+            $lscat = array();
+            $lssub = array();
+            $xml = null;
 
-            $conteudo_categorias = utf8_encode($conteudo_categorias);
-            $conteudo_subcategorias = utf8_encode($conteudo_subcategorias);
+            if($tipo == 'CSV')
+            {
+                $conteudo_categorias = $zip->getFromName('CID-10-CATEGORIAS.CSV');
+                $conteudo_subcategorias = $zip->getFromName('CID-10-SUBCATEGORIAS.CSV');
 
-            $lscat = explode("\n", $conteudo_categorias);
-            $lssub = explode("\n", $conteudo_subcategorias);
+                $conteudo_categorias = utf8_encode($conteudo_categorias);
+                $conteudo_subcategorias = utf8_encode($conteudo_subcategorias);
+
+                $lscat = explode("\n", $conteudo_categorias);
+                $lssub = explode("\n", $conteudo_subcategorias);
+            }
+            elseif($tipo == 'XML')
+            {
+                $conteudo = $zip->getFromName('CID10.XML');
+                $xml = Xml::build($conteudo);
+            }
 
             $zip->close();
             
@@ -634,7 +647,7 @@ class CidController extends AppController
                     break;
                 
                 case 'XML':
-                    $this->fsusxml($lscat, $lssub);
+                    $this->fsusxml($xml);
                     break;
             }
         }
@@ -646,7 +659,7 @@ class CidController extends AppController
                 ]
             ]);
 
-            $this->redirect(['action' => 'importacao']);
+            $this->redirect(['action' => 'datasus']);
         }
     }
 
@@ -797,7 +810,7 @@ class CidController extends AppController
         }
     }
 
-    protected function fsuscsv($fcat, $fsub)
+    protected function fsuscsv(array $fcat, array $fsub)
     {
         $categorias = [];
         $subcategorias = [];
@@ -886,11 +899,51 @@ class CidController extends AppController
         $this->import($dados);
     }
 
-    protected function fsusxml($fcat, $fsub)
+    protected function fsusxml($xml)
     {
         $dados = [];
-        $categorias = [];
-        $subcategorias = [];
+        $data = Xml::toArray($xml);
+
+        Log::debug(json_encode($data));
+
+        $pivot = $data['cid10']['capitulo']['grupo']['categoria'];
+
+        for($i = 0; $i < count($pivot); $i++)
+        {
+            $item = $pivot[$i];
+            $info = [];
+
+            $info['codigo'] = $item['@codcat'];
+            $info['detalhamento'] = null;
+            $info['nome'] = $item['nome'];
+            $descricao = null;
+
+            Log::debug(json_encode($info));
+
+            $dados[] = $info;
+
+            if(array_key_exists('subcategoria', $item))
+            {
+                $subitem = $item['subcategoria'];
+
+                for($j = 0; $j < count($subitem); $j++)
+                {
+                    $valores = $subitem[$i];
+                    $info = [];
+
+                    $valor = $valores['@codsubcat'];
+
+                    $info['codigo'] = substr($valor, 0, -1);
+                    $info['detalhamento'] = substr($valor, -1);
+                    $info['nome'] = $valores['nome'];
+                    $descricao = null;
+
+                    $dados = $info;
+                }
+            }
+        }
+
+        $this->import($dados);
     }
 
     protected function import(array $data)
