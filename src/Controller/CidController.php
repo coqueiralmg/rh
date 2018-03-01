@@ -370,7 +370,7 @@ class CidController extends AppController
     {
         $tipo_arquivo = [
             'CSV' => 'Arquivo ZIP com CSVs',
-            'XML' => 'Arquivo ZIP com XMLs'
+            //'XML' => 'Arquivo ZIP com XMLs'
         ];
         
         $this->set('title', 'Importação de CID via Arquivo do Datasus');
@@ -581,6 +581,20 @@ class CidController extends AppController
                     $dados[] = $info;
                 }
 
+                $auditoria = [
+                    'ocorrencia' => 39,
+                    'descricao' => 'O usuário fez a importação de dados de CID em um aquivo padrão.',
+                    'dado_adicional' => json_encode(['metodo' => 'Padrão', 'arquivo' => $nome_arquivo, 'itens_importados' => count($dados)]),
+                    'usuario' => $this->request->session()->read('UsuarioID')
+                ];
+    
+                $this->Auditoria->registrar($auditoria);
+    
+                if ($this->request->session()->read('UsuarioSuspeito')) 
+                {
+                    $this->Monitoria->monitorar($auditoria);
+                }
+
                 $this->import($dados);
             }
         }
@@ -632,6 +646,20 @@ class CidController extends AppController
 
                 $lscat = explode("\n", $conteudo_categorias);
                 $lssub = explode("\n", $conteudo_subcategorias);
+
+                $auditoria = [
+                    'ocorrencia' => 39,
+                    'descricao' => 'O usuário fez a importação de dados de CID, por meio do arquivo fornecido pelo Datasus.',
+                    'dado_adicional' => json_encode(['metodo' => 'Datasus', 'arquivo' => $nome_arquivo, 'itens_importados' => count($lscat) + count($lssub)]),
+                    'usuario' => $this->request->session()->read('UsuarioID')
+                ];
+    
+                $this->Auditoria->registrar($auditoria);
+    
+                if ($this->request->session()->read('UsuarioSuspeito')) 
+                {
+                    $this->Monitoria->monitorar($auditoria);
+                }
             }
             elseif($tipo == 'XML')
             {
@@ -640,6 +668,8 @@ class CidController extends AppController
             }
 
             $zip->close();
+
+            
             
             switch ($tipo) {
                 case 'CSV':
@@ -904,8 +934,6 @@ class CidController extends AppController
         $dados = [];
         $data = Xml::toArray($xml);
 
-        Log::debug(json_encode($data));
-
         $pivot = $data['cid10']['capitulo']['grupo']['categoria'];
 
         for($i = 0; $i < count($pivot); $i++)
@@ -917,8 +945,6 @@ class CidController extends AppController
             $info['detalhamento'] = null;
             $info['nome'] = $item['nome'];
             $descricao = null;
-
-            Log::debug(json_encode($info));
 
             $dados[] = $info;
 
