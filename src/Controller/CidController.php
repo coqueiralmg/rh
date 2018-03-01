@@ -259,12 +259,26 @@ class CidController extends AppController
                 $dado['detalhamento'] = $detalhamento;
                 $dado['nome'] = $nome;
 
-                $qtd = $t_cid->find('all', [
-                    'conditions' => [
-                        'codigo' => $codigo,
-                        'detalhamento' => $detalhamento
-                    ]
-                ])->count();
+                $qtd = 0;
+
+                if($detalhamento == null)
+                {
+                    $qtd = $t_cid->find('all', [
+                        'conditions' => [
+                            'codigo' => $codigo,
+                            'detalhamento IS' => null
+                        ]
+                    ])->count();
+                }
+                else
+                {
+                    $qtd = $t_cid->find('all', [
+                        'conditions' => [
+                            'codigo' => $codigo,
+                            'detalhamento' => $detalhamento
+                        ]
+                    ])->count();
+                }
 
                 if($qtd > 0)
                 {
@@ -624,14 +638,27 @@ class CidController extends AppController
             {
                 $entity->detalhamento = null;
             }
-           
-            $qcid = $t_cid->find('all', [
-                'conditions' => [
-                    'codigo' => $entity->codigo,
-                    'detalhamento' => $entity->detalhamento
-                ]
-            ])->count();
-           
+
+            $qcid = 0;
+
+            if($detalhamento == null)
+            {
+                $qcid = $t_cid->find('all', [
+                    'conditions' => [
+                        'codigo' => $entity->codigo,
+                        'detalhamento IS' => null
+                    ]
+                ])->count();
+            }
+            else
+            {
+                $qcid = $t_cid->find('all', [
+                    'conditions' => [
+                        'codigo' => $entity->codigo,
+                        'detalhamento' => $entity->detalhamento
+                    ]
+                ])->count();
+            }
             
             if($qcid > 0)
             {
@@ -686,13 +713,26 @@ class CidController extends AppController
                 $entity->detalhamento = null;
             }
             
-            $qcid = $t_cid->find('all', [
-                'conditions' => [
-                    'codigo' => $entity->codigo,
-                    'detalhamento' => $entity->detalhamento
-                ]
-            ])->count();
-           
+            $qcid = 0;
+
+            if($detalhamento == null)
+            {
+                $qcid = $t_cid->find('all', [
+                    'conditions' => [
+                        'codigo' => $entity->codigo,
+                        'detalhamento IS' => null
+                    ]
+                ])->count();
+            }
+            else
+            {
+                $qcid = $t_cid->find('all', [
+                    'conditions' => [
+                        'codigo' => $entity->codigo,
+                        'detalhamento' => $entity->detalhamento
+                    ]
+                ])->count();
+            }
             
             if($qcid > 0)
             {
@@ -814,6 +854,7 @@ class CidController extends AppController
                 $qtd = $t_cid->find('all', [
                     'conditions' => [
                         'codigo' => $codigo,
+                        'detalhamento IS' => null
                     ]
                 ])->count();
             }
