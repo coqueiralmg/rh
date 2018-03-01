@@ -198,9 +198,19 @@ class MedicosController extends AppController
         try
         {
             $t_medicos = TableRegistry::get('Medico');
+            $t_atestado = TableRegistry::get('Atestado');
 
             $marcado = $t_medicos->get($id);
             $nome = $marcado->nome;
+
+            $qtd = $t_atestado->find('all', [
+                'medico' => $id
+            ])->count();
+
+            if($qtd > 0)
+            {
+                throw new Exception("Existem atestados cadastrados para este médico. Será preciso fazer exclusão dos atestados primeiramente, antes de excluir este médico.");
+            }
 
             $propriedades = $marcado->getOriginalValues();
 
