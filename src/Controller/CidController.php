@@ -773,6 +773,11 @@ class CidController extends AppController
                 $categorias[] = $info;
             }
         }
+
+        for($i = 1; $i < count($fsub); $i++)
+        {
+
+        }
     }
 
     protected function fsusxml($fcat, $fsub)
@@ -802,12 +807,25 @@ class CidController extends AppController
             $dado['detalhamento'] = $detalhamento;
             $dado['nome'] = $nome;
 
-            $qtd = $t_cid->find('all', [
-                'conditions' => [
-                    'codigo' => $codigo,
-                    'detalhamento' => $detalhamento
-                ]
-            ])->count();
+            $qtd = 0;
+
+            if($detalhamento == null)
+            {
+                $qtd = $t_cid->find('all', [
+                    'conditions' => [
+                        'codigo' => $codigo,
+                    ]
+                ])->count();
+            }
+            else
+            {
+                $qtd = $t_cid->find('all', [
+                    'conditions' => [
+                        'codigo' => $codigo,
+                        'detalhamento' => $detalhamento
+                    ]
+                ])->count();
+            }
 
             if($qtd > 0)
             {
