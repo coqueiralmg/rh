@@ -287,17 +287,25 @@ class CidController extends AppController
                 }
                 else
                 {
-                    $entity = $t_cid->newEntity();
+                    try
+                    {
+                        $entity = $t_cid->newEntity();
                     
-                    $entity->codigo = $codigo;
-                    $entity->detalhamento = $detalhamento;
-                    $entity->nome = $nome;
-                    $entity->subitem = ($detalhamento != null);
+                        $entity->codigo = $codigo;
+                        $entity->detalhamento = $detalhamento;
+                        $entity->nome = $nome;
+                        $entity->subitem = ($detalhamento != null);
 
-                    $t_cid->save($entity);
+                        $t_cid->save($entity);
 
-                    $dado['sucesso'] = true;
-                    $dado['mensagem'] = '';
+                        $dado['sucesso'] = true;
+                        $dado['mensagem'] = '';
+                    }
+                    catch (Exception $ex) 
+                    {
+                        $dado['sucesso'] = false;
+                        $dado['mensagem'] = $ex->getMessage();
+                    }
                 }
 
                 array_push($relatorio, $dado);
