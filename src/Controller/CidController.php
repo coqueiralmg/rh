@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Cake\Core\Configure;
 use Cake\Filesystem\File;
+use Cake\Log\Log;
 use Cake\Network\Session;
 use Cake\ORM\TableRegistry;
 use \Exception;
@@ -377,6 +378,8 @@ class CidController extends AppController
 
     public function file()
     {
+        set_time_limit(600);
+
         try
         {
             if ($this->request->is('post'))
@@ -586,6 +589,8 @@ class CidController extends AppController
 
     public function fsus()
     {
+        set_time_limit(600);
+        
         try
         {
             $tipo = $this->request->getData("tipo");
@@ -607,6 +612,9 @@ class CidController extends AppController
             
             $conteudo_categorias = $zip->getFromName('CID-10-CATEGORIAS.CSV');
             $conteudo_subcategorias = $zip->getFromName('CID-10-SUBCATEGORIAS.CSV');
+
+            $conteudo_categorias = utf8_encode($conteudo_categorias);
+            $conteudo_subcategorias = utf8_encode($conteudo_subcategorias);
 
             $lscat = explode("\n", $conteudo_categorias);
             $lssub = explode("\n", $conteudo_subcategorias);
@@ -784,7 +792,6 @@ class CidController extends AppController
 
     protected function fsuscsv($fcat, $fsub)
     {
-        $dados = [];
         $categorias = [];
         $subcategorias = [];
 
@@ -817,15 +824,59 @@ class CidController extends AppController
 
                 $info['detalhamento'] = null;
                 $info['descricao'] = null;
-
-                $categorias[] = $info;
             }
+
+            $categorias[] = $info;
         }
 
         for($i = 1; $i < count($fsub); $i++)
         {
+            $linha = $fsub[$i];
+            $data = explode(';', $linha);
 
+            if(trim($linha) == "")
+            {
+                continue;
+            }
+
+            $info = [];
+
+            for($j = 0; $j < count($data); $j++)
+            {
+                $valor = $data[$j];
+
+                if($j == 0)
+                {
+                    $codigo = substr($valor, 0, -1);
+                    $detalhamento = substr($valor, -1);
+
+                    if($detalhamento == 0)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        $info['codigo'] = $codigo;
+                        $info['detalhamento'] = $detalhamento;
+                    }
+                }
+                elseif($j == 4)
+                {
+                    $info['nome'] = $valor;
+                }
+
+                $info['descricao'] = null;
+            }
+
+            if(count($info) > 0)
+            {
+                $subcategorias[] = $info;
+            }
         }
+
+        $dados = array_merge($categorias, $subcategorias);
+
+        $this->import($dados);
     }
 
     protected function fsusxml($fcat, $fsub)
