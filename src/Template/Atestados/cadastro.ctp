@@ -202,14 +202,14 @@
                     <div class="col-md-2">
                         <div class="form-group label-control">
                             <?= $this->Form->label("codigo", "Código") ?>
-                            <?= $this->Form->text("codigo", ["id" => "codigo", "class" => "form-control", "maxlength" => 5]) ?>
+                            <?= $this->Form->text("codigo", ["id" => "codigo_cid", "class" => "form-control", "maxlength" => 5]) ?>
                             <span class="material-input"></span>
                         </div>
                     </div>
                     <div class="col-md-10">
                         <div class="form-group label-control">
                             <?= $this->Form->label("nome", "Nome") ?>
-                            <?= $this->Form->text("nome", ["id" => "nome", "class" => "form-control", "maxlength" => 150]) ?>
+                            <?= $this->Form->text("nome", ["id" => "nome_cid", "class" => "form-control", "maxlength" => 150]) ?>
                             <span class="material-input"></span>
                         </div>
                     </div>
@@ -217,15 +217,34 @@
                 <div class="row">
                     <div class="card">
                         <div class="card-content table-responsive">
-                            <h4 class="card-title">Tabela de CID</h4>
+                            <h4 class="card-title">Digite os campos acima para buscar</h4>
+                            <table class="table">
+                                <thead class="text-primary">
+                                    <tr>
+                                        <th>Código</th>
+                                        <th>Nome</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($cids as $item) : ?>
+                                        <tr>
+                                            <td><?=$item->cid?></td>
+                                            <td><?=$item->nome?></td>
+                                            <td class="td-actions text-right" style="width: 12%">
+                                                <button type="button" class="btn btn-success btn-round"><i class="material-icons">done</i></button>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
                 
             </div>
             <div class="modal-footer">
-                <button id="btnFechaModalMedico" type="button" class="btn btn-danger btn-simple"  onclick="fecharModalMedico()" data-dismiss="modal">Fechar<div class="ripple-container"><div class="ripple ripple-on ripple-out" style="left: 50.5833px; top: 23px; background-color: rgb(244, 67, 54); transform: scale(8.51042);"></div></div></button>
-                <button id="btnSalvaMedico" type="button" class="btn btn-success btn-simple" onclick="return salvarMedico()">Salvar<div class="ripple-container"></div></button>
+                <button id="btnFechaModalMedico" type="button" class="btn btn-danger btn-simple"  data-dismiss="modal">Fechar<div class="ripple-container"><div class="ripple ripple-on ripple-out" style="left: 50.5833px; top: 23px; background-color: rgb(244, 67, 54); transform: scale(8.51042);"></div></div></button>
             </div>
         </div>
     </div>
