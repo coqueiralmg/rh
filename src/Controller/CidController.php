@@ -693,6 +693,89 @@ class CidController extends AppController
         }
     }
 
+    public function listar() 
+    {
+        if ($this->request->is('ajax'))
+        {
+            $t_cid = TableRegistry::get('Cid');
+
+            $this->autoRender = false;
+
+            $codigo = null;
+            $detalhamento = null;
+            $condicoes = array();
+
+            $pcodigo = $this->request->query("codigo"); 
+            $nome = $this->request->query("nome");
+
+            if(strlen($pcodigo) == 3)
+            {
+                $codigo = $pcodigo;
+            }
+            elseif(strlen($pcodigo) == 4)
+            {
+                if(strpos($pcodigo, '.') === false)
+                {
+                    $codigo = substr($pcodigo, 0, -1);
+                    $detalhamento = substr($pcodigo, -1);
+                }
+            }
+            elseif(strlen($pcodigo) == 5)
+            {
+                if(strpos($pcodigo, '.') > 0)
+                {
+                    $pivot = explode('.', $pcodigo);
+
+                    $codigo = $pivot[0];
+                    $detalhamento = $pivot[1];
+                }
+            }
+
+            if($codigo != null && $codigo != "")
+            {
+                $condicoes['codigo'] = $codigo;
+
+                if($detalhamento != null)
+                {
+                    $condicoes['detalhamento'] = $detalhamento;
+                }
+            }
+
+            if($nome != "")
+            {
+                $condicoes['nome LIKE'] = '%' . $nome . '%';
+            }
+
+            if(count($condicoes) > 0)
+            {
+                $cids = $t_cid->find('all', [
+                    'conditions' => $condicoes,
+                    'order' => [
+                        'codigo' => 'ASC',
+                        'detalhamento' => 'ASC'
+                    ]
+                ]);
+            }
+            else
+            {
+                $limite_paginacao = Configure::read('Pagination.short.limit');
+
+                $this->paginate = [
+                    'limit' => $limite_paginacao,
+                    'conditions' => $condicoes,
+                    'order' => [
+                        'codigo' => 'ASC',
+                        'detalhamento' => 'ASC'
+                    ]
+                ];
+        
+                $cids = $this->paginate($t_cid);
+            }
+
+            echo json_encode($cids);
+        }
+    }
+
     protected function insert()
     {
         try 
