@@ -31,7 +31,7 @@ if (!isset($singular))
     <center>
         <?php if ($qtd_total > 0): ?>
             <div class="col-sm-5">
-                <div class="dataTables_paginate paging_full_numbers text-left" id="datatables_info"><?= $qtd_total . " " . (($qtd_total == 1) ? $name_singular : $name) . " " . (($qtd_total == 1) ? $singular : $predicate) ?></div>
+                <div class="dataTables_paginate paging_full_numbers text-left" id="datatables_info"><?= number_format($qtd_total, 0, ',', '.') . " " . (($qtd_total == 1) ? $name_singular : $name) . " " . (($qtd_total == 1) ? $singular : $predicate) ?></div>
             </div>
             
             <?php if ($qtd_total > $limit_pagination): ?>
