@@ -258,6 +258,9 @@ class AtestadosController extends AppController
         $icon = 'local_hospital';
 
         $t_atestado = TableRegistry::get('Atestado');
+        $t_cid = TableRegistry::get('Cid');
+
+        $limite_paginacao = Configure::read('Pagination.short.limit');
 
         if ($id > 0) 
         {
@@ -279,9 +282,20 @@ class AtestadosController extends AppController
             $this->set('atestado', null);
         }
 
+        $this->paginate = [
+            'limit' => $limite_paginacao,
+            'order' => [
+                'codigo' => 'ASC',
+                'detalhamento' => 'ASC'
+            ]
+        ];
+
+        $cids = $this->paginate($t_cid);
+
         $this->set('title', $title);
         $this->set('icon', $icon);
         $this->set('id', $id);
+        $this->set('cids', $cids);
     }
 
     public function consulta(int $id)

@@ -20,6 +20,14 @@ $(function () {
         this.value = this.value.toUpperCase();
     });
 
+    $('#codigo_cid').blur(function (e) {
+        this.value = this.value.toUpperCase();
+    });
+
+    $('#codigo_cid').change(function (e) {
+        
+    });
+
     $('#data_retorno').blur(function (e) {
         calcularDiasAfastados();
     });
