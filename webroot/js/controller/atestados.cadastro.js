@@ -334,7 +334,7 @@ function notificarUsuario(mensagem, tipo) {
     }, 
     {
         type: tipo,
-        timer: 4000,
+        timer: 5000,
         placement: {
             from: 'bottom',
             align: 'right'
