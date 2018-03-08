@@ -237,7 +237,7 @@
                                     </tr>
                                     <tr colspan="3">
                                         <td>
-                                            <p>Dados não enconrtados.</p>
+                                            <p>Dados não encontrados. Verifique se o CID realmente existe ou está cadastrado no sistema.</p>
                                         </td>
                                     </tr>
                                 </tbody>
