@@ -218,7 +218,8 @@
                     <div class="card">
                         <div class="card-content table-responsive">
                             <h4 class="card-title">Digite os campos acima para buscar</h4>
-                            <table class="table">
+                            <p class="category"><?=$qtdcids?> itens encontrados</p>
+                            <table id="tabelaCID" class="table">
                                 <thead class="text-primary">
                                     <tr>
                                         <th>Código</th>
@@ -226,7 +227,21 @@
                                         <th></th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="pivot" style="display: none">
+                                    <tr id="">
+                                        <td id="codigo"></td>
+                                        <td id="nome"></td>
+                                        <td id="botoes" class="td-actions text-right" style="width: 12%">
+                                            <button type="button" class="btn btn-success btn-round"><i class="material-icons">done</i></button>
+                                        </td>
+                                    </tr>
+                                    <tr colspan="3">
+                                        <td>
+                                            <p>Dados não enconrtados.</p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tbody id="data">
                                     <?php foreach ($cids as $item) : ?>
                                         <tr>
                                             <td><?=$item->cid?></td>

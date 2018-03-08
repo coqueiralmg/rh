@@ -291,11 +291,13 @@ class AtestadosController extends AppController
         ];
 
         $cids = $this->paginate($t_cid);
+        $qtdcids = $limite_paginacao;
 
         $this->set('title', $title);
         $this->set('icon', $icon);
         $this->set('id', $id);
         $this->set('cids', $cids);
+        $this->set('qtdcids', $qtdcids);
     }
 
     public function consulta(int $id)

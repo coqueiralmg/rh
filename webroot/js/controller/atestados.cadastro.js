@@ -25,7 +25,11 @@ $(function () {
     });
 
     $('#codigo_cid').change(function (e) {
-        
+        buscarCID();
+    });
+
+    $('#nome_cid').change(function (e) {
+        buscarCID();
     });
 
     $('#data_retorno').blur(function (e) {
@@ -230,3 +234,51 @@ function calcularDiasAfastados() {
     }
 }
 
+function buscarCID() {
+    var cid = $("#codigo_cid").val();
+    var nome = $("#nome_cid").val();
+
+    $.ajax({
+        url: '/rh/cid/listar',
+        dataType: 'json',
+        data: {
+            codigo: cid,
+            nome: nome
+        },
+        beforeSend: function() {
+            $(".category").empty();
+            $(".category").html("Efetuando busca. Aguarde!");
+        },
+        success: function (data) {
+            atualizarTabelaCID(data);
+        }
+    });
+}
+
+function atualizarTabelaCID(data) {
+    var tabela = $("#tabelaCID");
+    var pivot = $("#tabelaCID tbody#pivot tr:first");
+    var vazio = $("#tabelaCID tbody#pivot tr:last");
+    var dados = $("#tabelaCID tbody#data");
+    
+    dados.empty();
+    $(".category").empty();
+
+    if(data.length > 0) {
+        for(var i = 0; i < data.length; i++) {
+            var linha = pivot.clone();
+            var dado = data[i];
+            var cid = (dado.subitem) ? dado.codigo + "." + dado.detalhamento : dado.codigo;
+    
+            linha.find("#codigo").html(cid);
+            linha.find("#nome").html(dado.nome);
+    
+            dados.append(linha);
+        }
+
+        $(".category").html(data.length + " itens encontrados");
+    } else {
+        dados.append(vazio);
+        $(".category").html("Nenhum item encontrado.");
+    }
+}
