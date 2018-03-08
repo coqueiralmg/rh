@@ -20,6 +20,15 @@ $(function () {
         this.value = this.value.toUpperCase();
     });
 
+    $('#cid').change(function (e) {
+        var cid = $("#cid").val();
+        var motivo = $("#motivo").val();
+        
+        if(motivo === "" && cid.length == 3) {
+            pesquisarCID(cid);
+        }
+    });
+
     $('#codigo_cid').blur(function (e) {
         this.value = this.value.toUpperCase();
     });
@@ -32,6 +41,10 @@ $(function () {
         buscarCID();
     });
 
+    $("#buscar_cid").click(function () {
+        antebuscaCID();
+    });
+
     $('#data_retorno').blur(function (e) {
         calcularDiasAfastados();
     });
@@ -39,7 +52,7 @@ $(function () {
     $('#nome_funcionario').autocomplete({
         source: function (request, response) {
             $.ajax({
-                url: '/rh/funcionarios/listar',
+                url: '/rh/funcionarios/listar.json',
                 dataType: 'json',
                 data: {
                     nome: request.term
@@ -234,6 +247,15 @@ function calcularDiasAfastados() {
     }
 }
 
+function antebuscaCID() {
+    var cid = $("#cid").val();
+
+    if(cid != "" && cid.length == 3) {
+        $("#codigo_cid").val(cid);
+        buscarCID();
+    }
+}
+
 function buscarCID() {
     var cid = $("#codigo_cid").val();
     var nome = $("#nome_cid").val();
@@ -251,6 +273,19 @@ function buscarCID() {
         },
         success: function (data) {
             atualizarTabelaCID(data);
+        }
+    });
+}
+
+function pesquisarCID(cid){
+    $.ajax({
+        url: '/rh/cid/get',
+        dataType: 'json',
+        data: {
+            codigo: cid
+        },
+        success: function (data) {
+            preencherMotivo(data);
         }
     });
 }
@@ -281,4 +316,28 @@ function atualizarTabelaCID(data) {
         dados.append(vazio);
         $(".category").html("Nenhum item encontrado.");
     }
+}
+
+function preencherMotivo(data) {
+    if(data == null) {
+        notificarUsuario("O sistema não encontrou o CID com o código informado. Verifique se o código existe no sistema ou a doença realmente existe no cadastro oficial de CID.", "danger");
+    } else {
+        $("#motivo").val(data.nome);
+        notificarUsuario("O sistema encontrou com sucesso o CID informado, e preencheu o seu nome no campo Motivo.", "success");
+    }
+}
+
+function notificarUsuario(mensagem, tipo) {
+    $.notify({
+        icon: "notifications",
+        message: mensagem
+    }, 
+    {
+        type: tipo,
+        timer: 4000,
+        placement: {
+            from: 'bottom',
+            align: 'right'
+        }
+    });
 }

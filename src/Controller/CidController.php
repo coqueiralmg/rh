@@ -700,6 +700,7 @@ class CidController extends AppController
             $t_cid = TableRegistry::get('Cid');
 
             $this->autoRender = false;
+            $this->validationRole = false;
 
             $codigo = null;
             $detalhamento = null;
@@ -772,7 +773,43 @@ class CidController extends AppController
                 $cids = $this->paginate($t_cid);
             }
 
+            $this->response->header('Content-Type', 'application/json');
             echo json_encode($cids);
+        }
+    }
+
+    public function get()
+    {
+        $this->validationRole = false;
+        $this->autoRender = false;
+        
+        if ($this->request->is('ajax'))
+        {
+            $t_cid = TableRegistry::get('Cid');
+
+            $codigo = $this->request->query("codigo"); 
+            
+            $cid = $t_cid->find('all', [
+                'conditions' => [
+                    'codigo' => $codigo
+                ],
+                'order' => [
+                    'codigo' => 'ASC',
+                    'detalhamento' => 'ASC'
+                ]
+            ])->first();
+            
+            $this->response->header('Content-Type', 'application/json');
+
+            if(count($cid) > 0)
+            {
+                echo json_encode($cid);
+            }
+            else
+            {
+                $cid = null;
+                echo json_encode($cid);
+            }
         }
     }
 

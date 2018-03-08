@@ -76,7 +76,7 @@
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <?= $this->Form->label("cid", "CID") ?>
-                                        [<a class="link_build_form" href="#" data-toggle="modal" data-target="#modal_cid">Buscar</a>]
+                                        [<a class="link_build_form" href="#" id="buscar_cid" data-toggle="modal" data-target="#modal_cid">Buscar</a>]
                                         <?= $this->Form->text("cid", ["id" => "cid", "class" => "form-control", "maxlength" => 3]) ?>
                                         <span class="material-input"></span>
                                     </div>
