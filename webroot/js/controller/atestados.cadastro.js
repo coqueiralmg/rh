@@ -311,6 +311,10 @@ function atualizarTabelaCID(data) {
     
             linha.find("#codigo").html(cid);
             linha.find("#nome").html(dado.nome);
+
+            linha.attr("id", dado.id);
+            linha.attr("codigo", dado.codigo);
+            linha.attr("nome", dado.nome);
     
             dados.append(linha);
         }
@@ -329,6 +333,15 @@ function preencherMotivo(data) {
         $("#motivo").val(data.nome);
         notificarUsuario("O sistema encontrou com sucesso o CID informado, e preencheu o seu nome no campo Motivo.", "success");
     }
+}
+
+function selecionarCID(o) {
+    var linha = o.parentNode.parentNode;
+    var codigo = linha.getAttribute("codigo");
+    var nome = linha.getAttribute("nome");
+
+    $("#cid").val(codigo);
+    $("#motivo").val(nome);
 }
 
 function notificarUsuario(mensagem, tipo) {

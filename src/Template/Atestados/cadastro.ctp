@@ -228,11 +228,11 @@
                                     </tr>
                                 </thead>
                                 <tbody id="pivot" style="display: none">
-                                    <tr id="">
+                                    <tr id="" codigo="" nome="">
                                         <td id="codigo"></td>
                                         <td id="nome"></td>
                                         <td id="botoes" class="td-actions text-right" style="width: 12%">
-                                            <button type="button" class="btn btn-success btn-round"><i class="material-icons">done</i></button>
+                                            <button type="button" class="btn btn-success btn-round" onclick="selecionarCID(this)" data-dismiss="modal"><i class="material-icons">done</i></button>
                                         </td>
                                     </tr>
                                     <tr colspan="3">
@@ -243,11 +243,11 @@
                                 </tbody>
                                 <tbody id="data">
                                     <?php foreach ($cids as $item) : ?>
-                                        <tr>
+                                        <tr id="<?=$item->id?>" codigo="<?=$item->codigo?>" nome="<?=$item->nome?>">
                                             <td><?=$item->cid?></td>
                                             <td><?=$item->nome?></td>
                                             <td class="td-actions text-right" style="width: 12%">
-                                                <button type="button" class="btn btn-success btn-round"><i class="material-icons">done</i></button>
+                                                <button type="button" class="btn btn-success btn-round" onclick="selecionarCID(this)" data-dismiss="modal"><i class="material-icons">done</i></button>
                                             </td>
                                         </tr>
                                     <?php endforeach; ?>
