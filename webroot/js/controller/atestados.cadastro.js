@@ -284,7 +284,11 @@ function pesquisarCID(cid){
         data: {
             codigo: cid
         },
+        beforeSend: function() {
+            $("#motivo").attr('disabled','disabled');
+        },
         success: function (data) {
+            $("#motivo").removeAttr('disabled');
             preencherMotivo(data);
         }
     });
