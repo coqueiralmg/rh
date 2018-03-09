@@ -386,6 +386,7 @@ class UsuariosController extends AppController
                 $this->Monitoria->monitorar($auditoria);
             }
 
+            $this->request->session()->delete('USER_FUNCTIONS');
             $this->redirect(['controller' => 'usuarios', 'action' => 'cadastro', $id]);
         } 
         catch (Exception $ex) 
