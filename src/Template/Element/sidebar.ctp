@@ -93,6 +93,14 @@
                     </a>
                 </li>
             <?php endif; ?>
+            <?php if ($this->Membership->handleMenu("relatorios")) : ?>
+                 <li class="<?= $this->Menu->activeMenu(['controller' => 'relatorios']) ?>">
+                    <a href="<?= $this->Url->build('/relatorios') ?>">
+                        <i class="material-icons">library_books</i>
+                        <p>Relatorios</p>
+                    </a>
+                </li>
+            <?php endif; ?>
             <?php if ($this->Membership->handleMenu("auditoria")): ?>
                 <li class="<?= $this->Menu->activeMenu(['controller' => 'auditoria']) ?>">
                     <a href="<?= $this->Url->build('/auditoria') ?>">
