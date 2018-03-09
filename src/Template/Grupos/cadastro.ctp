@@ -39,7 +39,7 @@
                                             <div class="form-group form-group-min">
                                                 <label><?=$grupo->nome?></label> <br/>
                                                 <?php foreach ($funcoes as $funcao) : ?>
-                                                    <?php if ($funcao->grupo == $grupo->id) :?>
+                                                    <?php if (($funcao->grupo == $grupo->id) && $funcao->ativo) :?>
                                                         <div class="togglebutton">
                                                             <label>
                                                                 <?= $this->Form->checkbox('chk_' . $funcao->chave, [
