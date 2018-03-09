@@ -89,6 +89,9 @@
                                 </div>
                             </div>
                             <button type="submit" onclick="return validar()" class="btn btn-success pull-right">Salvar</button>
+                            <?php if ($id > 0) :?>
+                                <button type="button" onclick="window.location='<?= $this->Url->build('/usuarios/add') ?>'" class="btn btn-warning pull-right">Novo</button>
+                            <?php endif; ?>
                             <?php if ($usuario != null && $usuario->suspenso) : ?>
                                 <a href="<?= $this->Url->build(['controller' => 'Usuarios', 'action' => 'liberar', $id]) ?>" class="btn btn-default pull-right">Liberar<div class="ripple-container"></div></a>
                             <?php endif; ?>
