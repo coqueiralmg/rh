@@ -44,6 +44,27 @@ class MembershipHelper extends Helper
     }
 
     /**
+     * Faz tratamento de um conjunto de permissões de tela para usuário.
+     * @param array $menu Coleção de chaves de itens do menu.
+     * @param string $chave Chave de busca de itens de menu.
+     * @return boolean Se o usuário possui a permissão de acessar um conjunto de componentes.
+     * @throws InternalErrorException O método de validação de componentes, está chamando uma função inválida.
+     */
+    public function handleRoles()
+    {
+        $qtd_args = func_num_args();
+        $args = func_get_args();
+        $autorizado = false;
+
+        for ($i = 0; $i < $qtd_args && !$autorizado; $i++) {
+            $chave = $args[$i];
+            $autorizado = $this->handleRole($chave);
+        }
+
+        return $autorizado;
+    }
+
+    /**
      * Executa todo o processo de validação de menu, verificando se o mesmo usuário tem ou não a permissão de acessar o item do menu.
      * @param string $chave Chave do menu do sistema.
      * @return boolean Se o usuário possui ou não a permissão de acessar o sistema.
