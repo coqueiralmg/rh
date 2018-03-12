@@ -68,7 +68,7 @@
                             <div class="card-content">
                                 <a href="<?=$this->Url->build([
                                     'controller' => 'relatorios',
-                                    'action' => 'funcionariosAtestados'
+                                    'action' => 'funcionariosatestados'
                                 ])?>">
                                     <span>
                                         <i class="material-icons" style="font-size: 100px">assignment_ind</i>
