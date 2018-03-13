@@ -198,6 +198,65 @@ class RelatoriosController extends AppController
         $this->set('icon', 'assignment_ind');
         $this->set('funcionario', $funcionario);
         $this->set('atestados', $atestados);
+        $this->set('mostrar', $mostrar);
+    }
+
+    public function imprimiratestadosfuncionario()
+    {
+        $t_atestados = TableRegistry::get('Atestado');
+        $t_funcionarios = TableRegistry::get('Funcionario');
+        
+        $idFuncionario = $this->request->query('idFuncionario');
+        $mostrar = $this->request->query('periodo');
+
+        $funcionario = $t_funcionarios->get($idFuncionario);
+        $atestados = null;
+
+        $opcoes_subtitulos = [
+            'T' => 'Atestados emitidos para o funcionário ' . $funcionario->nome, 
+            '1' => 'Atestados emitidos para o funcionário ' . $funcionario->nome . ' nos últimos 30 dias',  
+            '3' => 'Atestados emitidos para o funcionário ' . $funcionario->nome . ' nos últimos 3 meses',  
+            '6' => 'Atestados emitidos para o funcionário ' . $funcionario->nome . ' nos últimos 6 meses',
+            '12' => 'Atestados emitidos para o funcionário ' . $funcionario->nome . ' no último ano',
+        ];
+
+        if($mostrar == 'T')
+        {
+            $atestados = $t_atestados->find('all', [
+                'contain' => ['Medico'],
+                'conditions' => [
+                    'funcionario' => $idFuncionario
+                ],
+                'order' => [
+                    'afastamento' => 'DESC'
+                ]
+            ]);
+        }
+        else
+        {
+            $data_final = new DateTime();
+            $data_inicial = $this->calcularDataInicial($mostrar);
+
+            $atestados = $t_atestados->find('all', [
+                'contain' => ['Medico'],
+                'conditions' => [
+                    'funcionario' => $idFuncionario,
+                    'emissao >=' => $data_inicial->format("Y-m-d"),
+                    'emissao <=' => $data_final->format("Y-m-d")
+                ],
+                'order' => [
+                    'afastamento' => 'DESC'
+                ]
+            ]);
+        }
+
+        $this->viewBuilder()->layout('print');
+
+        $this->set('title', 'Relatório de Funcionários por Atestado');
+        $this->set('subtitle', $opcoes_subtitulos[$mostrar]);
+        $this->set('icon', 'assignment_ind');
+        $this->set('funcionario', $funcionario);
+        $this->set('atestados', $atestados);
     }
 
     public function atestadodetalhe(int $id)

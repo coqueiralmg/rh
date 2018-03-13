@@ -4,7 +4,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-content">
-                        <a href="<?= $this->Url->build(['controller' => 'Grupos', 'action' => 'imprimir']) ?>" target="_blank" class="btn btn-fill btn-default pull-right">Imprimir<div class="ripple-container"></div></a>
+                        <a href="<?= $this->Url->build(['controller' => 'Relatorios', 'action' => 'imprimiratestadosfuncionario', '?' => ['idFuncionario' => $funcionario->id, 'periodo' => $mostrar]]) ?>" target="_blank" class="btn btn-fill btn-default pull-right">Imprimir<div class="ripple-container"></div></a>
                         <button type="button" onclick="window.history.back()" class="btn btn-info pull-right">Voltar</button>
                     </div>
                 </div>
