@@ -3,12 +3,15 @@
 namespace App\Controller;
 
 use Cake\Core\Configure;
+use Cake\Datasource\ConnectionInterface;
 use Cake\Datasource\ConnectionManager;
 use Cake\Filesystem\File;
 use Cake\Log\Log;
 use Cake\Network\Session;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Xml;
+use \DateInterval;
+use \DateTime;
 use \Exception;
 use \PDO;
 
@@ -41,7 +44,9 @@ class RelatoriosController extends AppController
 
     public function funcionariosatestados()
     {
-        $connection = $this->conectarBanco();
+        $datasource = Configure::read('Database.datasource');
+        $connection = ConnectionManager::get($datasource);
+        $link = $this->abrirBanco($connection);
 
         $t_tipo_funcionario = TableRegistry::get('TipoFuncionario');
         $t_empresas = TableRegistry::get('Empresa');
@@ -58,32 +63,13 @@ class RelatoriosController extends AppController
 
             $data['empresa'] = $empresa;
             $data['tipo_funcionario'] = $tipo_funcionario;
-
-            $this->request->data = $data;
+            $data['exibir'] = $exibir;
+            $data['mostrar'] = $mostrar;
         }
-        else
-        {
-            $query = "select f.id,
-                            f.matricula matricula,
-                            f.nome nome,
-                            f.cargo cargo,
-                            tf.descricao tipo,
-                            e.nome empresa,
-                            f.probatorio probatorio,
-                            (select count(*)
-                            from atestado a
-                            where a.funcionario = f.id) quantidade
-                    from funcionario f
-                    inner join empresa e
-                        on f.empresa = e.id
-                    inner join tipo_funcionario tf
-                        on f.tipo = tf.id
-                    where f.ativo = 1
-                    order by quantidade desc;";
 
-            $relatorio = $connection->prepare($query);
-            $relatorio->execute();
-        }
+        $query = $this->montarRelatorioFuncionariosAtestado($data);
+        $relatorio = $link->query($query);
+        $this->request->data = $data;
 
         $tipos_funcionarios = $t_tipo_funcionario->find('list', [
             'keyField' => 'id',
@@ -97,6 +83,7 @@ class RelatoriosController extends AppController
 
         $combo_exibir = [
             'T' => 'Todos',
+            'A' => 'Somente os funcionários que solicitatam o atestado',
             'E' => 'Somente funcionários em estágio probatório'
         ];
 
@@ -118,21 +105,168 @@ class RelatoriosController extends AppController
         $this->set('relatorio', $relatorio);
     }
 
-    private function conectarBanco() {
+    public function imprimirfuncionariosatestados()
+    {
         $datasource = Configure::read('Database.datasource');
-        
+        $connection = ConnectionManager::get($datasource);
+        $link = $this->abrirBanco($connection);
 
-        
-        
-        $dsn = "mysql:host=" . $host . "; dbname=" . $dbname;
+        $relatorio = array();
+        $data = array();
+
+        if (count($this->request->getQueryParams()) > 3)
+        {
+            $empresa = $this->request->query('empresa');
+            $tipo_funcionario = $this->request->query('tipo_funcionario');
+            $exibir = $this->request->query('exibir');
+            $mostrar = $this->request->query('mostrar');
+
+            $data['empresa'] = $empresa;
+            $data['tipo_funcionario'] = $tipo_funcionario;
+            $data['exibir'] = $exibir;
+            $data['mostrar'] = $mostrar;
+        }
+
+        $query = $this->montarRelatorioFuncionariosAtestado($data);
+        $relatorio = $link->query($query);
+
+        $this->viewBuilder()->layout('print');
+
+        $this->set('title', 'Relatório de Funcionários por Atestado');
+        $this->set('relatorio', $relatorio);
+    }
+
+    protected function montarRelatorioFuncionariosAtestado(array $data)
+    {
+        $query = "";
+
+        if (count($data) > 0)
+        {
+            $empresa = $data['empresa'];
+            $tipo_funcionario = $data['tipo_funcionario'];
+            $exibir = $data['exibir'];
+            $mostrar = $data['mostrar'];
+
+            if($mostrar == 'T')
+            {
+                $query = "select f.id,
+                            f.matricula matricula,
+                            f.nome nome,
+                            f.cargo cargo,
+                            tf.descricao tipo,
+                            e.nome empresa,
+                            f.probatorio probatorio,
+                            (select count(*)
+                            from atestado a
+                            where a.funcionario = f.id) quantidade
+                    from funcionario f
+                    inner join empresa e
+                        on f.empresa = e.id
+                    inner join tipo_funcionario tf
+                        on f.tipo = tf.id
+                    where f.ativo = 1 ";
+            }
+            else
+            {
+                $key_sub = null;
+                
+                switch($mostrar)
+                {
+                    case "1":
+                        $key_sub = "P30D";
+                        break;
+
+                    case "3":
+                        $key_sub = "P3M";
+                        break;
+                    
+                    case "6":
+                        $key_sub = "P6M";
+                        break;
+                    
+                    case "12":
+                        $key_sub = "P1Y";
+                        break;
+                }
+                
+                $data_final = new DateTime();
+                $data_inicial = new DateTime();
+                $data_inicial->sub(new DateInterval($key_sub));
+
+                $query = "select f.id,
+                            f.matricula matricula,
+                            f.nome nome,
+                            f.cargo cargo,
+                            tf.descricao tipo,
+                            e.nome empresa,
+                            f.probatorio probatorio,
+                            (select count(*)
+                            from atestado a
+                            where a.funcionario = f.id
+                                and a.emissao between " . $data_inicial->format("Y-m-d") . " and " . $data_final->format("Y-m-d") . ") quantidade
+                    from funcionario f
+                    inner join empresa e
+                        on f.empresa = e.id
+                    inner join tipo_funcionario tf
+                        on f.tipo = tf.id
+                    where f.ativo = 1 ";
+            }
+            
+            if($empresa != "")
+            {
+                $query = $query . "and e.id = " . $empresa . " ";
+            }
+            
+            if($tipo_funcionario != "")
+            {
+                $query = $query . "and tf.id = " . $tipo_funcionario . " ";
+            }
+
+            if($exibir == 'A')
+            {
+                $query = $query . "having quantidade > 0 ";
+            }
+            elseif($exibir == 'E')
+            {
+                $query = $query . "and f.probatorio = 1 ";
+            }
+            
+            $query = $query . "order by quantidade desc, f.nome asc;";
+        }
+        else
+        {
+            $query = "select f.id,
+                            f.matricula matricula,
+                            f.nome nome,
+                            f.cargo cargo,
+                            tf.descricao tipo,
+                            e.nome empresa,
+                            f.probatorio probatorio,
+                            (select count(*)
+                            from atestado a
+                            where a.funcionario = f.id) quantidade
+                    from funcionario f
+                    inner join empresa e
+                        on f.empresa = e.id
+                    inner join tipo_funcionario tf
+                        on f.tipo = tf.id
+                    where f.ativo = 1
+                    order by quantidade desc, f.nome asc;";
+        }
+
+        return $query;
+    }
+
+    private function abrirBanco(ConnectionInterface $connection) 
+    {
+        $config = $connection->config();
+        $username = $config['username'];
+        $password = $config['password'];
+
+        $dsn = "mysql:host=" . $config['host'] . "; dbname=" . $config['database'];
         $link = new PDO($dsn, $username, $password);
         $link->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
         return $link;
-    }
-
-    private function getDSN(string $datasource)
-    {
-        
-    }
+    }    
 }
