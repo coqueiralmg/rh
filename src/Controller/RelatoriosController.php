@@ -65,11 +65,17 @@ class RelatoriosController extends AppController
             $data['tipo_funcionario'] = $tipo_funcionario;
             $data['exibir'] = $exibir;
             $data['mostrar'] = $mostrar;
+
+            $this->request->data = $data;
         }
 
         $query = $this->montarRelatorioFuncionariosAtestado($data);
         $relatorio = $link->query($query);
-        $this->request->data = $data;
+
+        if(count($data) == 0)
+        {
+            $data['mostrar'] = 'T';
+        }
 
         $tipos_funcionarios = $t_tipo_funcionario->find('list', [
             'keyField' => 'id',
@@ -136,6 +142,64 @@ class RelatoriosController extends AppController
         $this->set('relatorio', $relatorio);
     }
 
+    public function atestadosfuncionario()
+    {
+        $t_atestados = TableRegistry::get('Atestado');
+        $t_funcionarios = TableRegistry::get('Funcionario');
+        
+        $idFuncionario = $this->request->query('idFuncionario');
+        $mostrar = $this->request->query('periodo');
+
+        $funcionario = $t_funcionarios->get($idFuncionario);
+        $atestados = null;
+
+        $opcoes_subtitulos = [
+            'T' => 'Atestados emitidos para o funcionário ' . $funcionario->nome, 
+            '1' => 'Atestados emitidos para o funcionário ' . $funcionario->nome . ' nos últimos 30 dias',  
+            '3' => 'Atestados emitidos para o funcionário ' . $funcionario->nome . ' nos últimos 3 meses',  
+            '6' => 'Atestados emitidos para o funcionário ' . $funcionario->nome . ' nos últimos 6 meses',
+            '12' => 'Atestados emitidos para o funcionário ' . $funcionario->nome . ' no último ano',
+        ];
+
+        if($mostrar == 'T')
+        {
+            $atestados = $t_atestados->find('all', [
+                'contain' => ['Medico'],
+                'conditions' => [
+                    'funcionario' => $idFuncionario
+                ],
+                'order' => [
+                    'afastamento' => 'DESC'
+                ]
+            ]);
+        }
+        else
+        {
+            $data_final = new DateTime();
+            $data_inicial = $this->calcularDataInicial($mostrar);
+
+            $atestados = $t_atestados->find('all', [
+                'contain' => ['Medico'],
+                'conditions' => [
+                    'funcionario' => $idFuncionario,
+                    'emissao >=' => $data_inicial->format("Y-m-d"),
+                    'emissao <=' => $data_final->format("Y-m-d")
+                ],
+                'order' => [
+                    'afastamento' => 'DESC'
+                ]
+            ]);
+        }
+
+        $quantidade = $atestados->count();
+
+        $this->set('title', 'Relatório de Funcionários por Atestado');
+        $this->set('subtitle', $opcoes_subtitulos[$mostrar]);
+        $this->set('icon', 'assignment_ind');
+        $this->set('funcionario', $funcionario);
+        $this->set('atestados', $atestados);
+    }
+
     protected function montarRelatorioFuncionariosAtestado(array $data)
     {
         $query = "";
@@ -168,30 +232,8 @@ class RelatoriosController extends AppController
             }
             else
             {
-                $key_sub = null;
-                
-                switch($mostrar)
-                {
-                    case "1":
-                        $key_sub = "P30D";
-                        break;
-
-                    case "3":
-                        $key_sub = "P3M";
-                        break;
-                    
-                    case "6":
-                        $key_sub = "P6M";
-                        break;
-                    
-                    case "12":
-                        $key_sub = "P1Y";
-                        break;
-                }
-                
                 $data_final = new DateTime();
-                $data_inicial = new DateTime();
-                $data_inicial->sub(new DateInterval($key_sub));
+                $data_inicial = $this->calcularDataInicial($mostrar);
 
                 $query = "select f.id,
                             f.matricula matricula,
@@ -268,5 +310,32 @@ class RelatoriosController extends AppController
         $link->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
         return $link;
-    }    
+    } 
+    
+    private function calcularDataInicial(string $mostrar)
+    {
+        switch($mostrar)
+        {
+            case "1":
+                $key_sub = "P30D";
+                break;
+
+            case "3":
+                $key_sub = "P3M";
+                break;
+            
+            case "6":
+                $key_sub = "P6M";
+                break;
+            
+            case "12":
+                $key_sub = "P1Y";
+                break;
+        }
+        
+        $data_inicial = new DateTime();
+        $data_inicial->sub(new DateInterval($key_sub));
+
+        return $data_inicial;
+    }
 }

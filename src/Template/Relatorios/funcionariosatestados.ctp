@@ -1,7 +1,3 @@
-
-<?
-    var_dump($relatorio)
- ?>
 <div class="content">
     <div class="container-fluid">
         <div class="row">
@@ -86,13 +82,10 @@
                                         <td><?=$item->tipo?></td>
                                         <td><?=$item->empresa?></td>
                                         <td><?=$item->quantidade?></td>
-                                        <td class="td-actions text-right" style="width: 12%">
-                                                <a href="<?= $this->Url->build(['controller' => 'Cid', 'action' => 'view', $item->id]) ?>" class="btn btn-info btn-round">
-                                                    <i class="material-icons">pageview</i>
-                                                </a>
-                                                <a href="<?= $this->Url->build(['controller' => 'Cid', 'action' => 'edit', $item->id]) ?>" class="btn btn-primary btn-round">
-                                                    <i class="material-icons">edit</i>
-                                                </a>
+                                        <td class="td-actions text-right" style="width: 6%">
+                                            <a href="<?= $this->Url->build(['controller' => 'Relatorios', 'action' => 'atestadosfuncionario', '?' => ['idFuncionario' => $item->id, 'periodo' => $data['mostrar']]]) ?>" title="Ver Atestados" class="btn btn-info btn-round">
+                                                <i class="material-icons">content_paste</i>
+                                            </a>
                                         </td>
                                     </tr>
                                 <?php endwhile; ?>
