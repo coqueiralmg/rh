@@ -35,8 +35,8 @@
                                         <td><?=$this->Format->date($atestado->retorno)?></td>
                                         <td><?=$atestado->afastado?></td>
                                         <td class="td-actions text-right" style="width: 6%">
-                                            <a href="<?= $this->Url->build(['controller' => 'Relatorios', 'action' => 'atestadodetalhe', $atestado->id]) ?>" title="Ver Atestados" class="btn btn-info btn-round">
-                                                <i class="material-icons">content_paste</i>
+                                            <a href="<?= $this->Url->build(['controller' => 'Relatorios', 'action' => 'atestadodetalhe', $atestado->id]) ?>" title="Ver Atestado" class="btn btn-info btn-round">
+                                                <i class="material-icons">receipt</i>
                                             </a>
                                         </td>
                                     </tr>

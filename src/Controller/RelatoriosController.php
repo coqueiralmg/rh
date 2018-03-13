@@ -200,6 +200,21 @@ class RelatoriosController extends AppController
         $this->set('atestados', $atestados);
     }
 
+    public function atestadodetalhe(int $id)
+    {
+        $title = 'Consulta de Dados do Atestado';
+        $icon = 'local_hospital';
+
+        $t_atestado = TableRegistry::get('Atestado');
+        
+        $atestado = $t_atestado->get($id, ['contain' => ['Funcionario', 'Medico']]);
+
+        $this->set('title', $title);
+        $this->set('icon', $icon);
+        $this->set('id', $id);
+        $this->set('atestado', $atestado);
+    }
+
     protected function montarRelatorioFuncionariosAtestado(array $data)
     {
         $query = "";
