@@ -95,8 +95,8 @@
                         <div class="card">
                             <div class="card-content">
                                 <a href="<?=$this->Url->build([
-                                    'controller' => 'cid',
-                                    'action' => 'importacao'
+                                    'controller' => 'relatorios',
+                                    'action' => 'empresassatestados'
                                 ])?>">
                                     <span>
                                         <i class="material-icons" style="font-size: 100px">business</i>

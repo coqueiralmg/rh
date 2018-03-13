@@ -274,6 +274,122 @@ class RelatoriosController extends AppController
         $this->set('atestado', $atestado);
     }
 
+    public function empresassatestados()
+    {
+        $datasource = Configure::read('Database.datasource');
+        $connection = ConnectionManager::get($datasource);
+        $link = $this->abrirBanco($connection);
+
+        $relatorio = array();
+        $data = array();
+
+        if (count($this->request->getQueryParams()) > 0)
+        {
+            $mostrar = $this->request->query('mostrar');
+            $data['mostrar'] = $mostrar;
+
+            $this->request->data = $data;
+        }
+        else
+        {
+            $data['mostrar'] = 'T';
+        }
+
+        $query = $this->montarRelatorioEmpresasAtestado($data);
+        $relatorio = $link->query($query);
+
+        $combo_mostra = [
+            'T' => 'Todos os atestados cadastrados', 
+            '1' => 'Atestados cadastrados no último mês', 
+            '3' => 'Atestados cadastrados nos últimos 3 meses',
+            '6' => 'Atestados cadastrados nos últimos 6 meses',
+            '12' => 'Atestados cadastrados no último ano'
+        ];
+
+        $this->set('title', 'Relatório de Empresas por Atestado');
+        $this->set('icon', 'business');
+        $this->set('combo_mostra', $combo_mostra);
+        $this->set('data', $data);
+        $this->set('relatorio', $relatorio);
+    }
+
+    public function imprimirempresassatestados()
+    {
+        $datasource = Configure::read('Database.datasource');
+        $connection = ConnectionManager::get($datasource);
+        $link = $this->abrirBanco($connection);
+
+        $relatorio = array();
+        $data = array();
+
+        if (count($this->request->getQueryParams()) > 0)
+        {
+            $mostrar = $this->request->query('mostrar');
+            $data['mostrar'] = $mostrar;
+
+            $this->request->data = $data;
+        }
+        else
+        {
+            $data['mostrar'] = 'T';
+        }
+
+        $query = $this->montarRelatorioEmpresasAtestado($data);
+        $relatorio = $link->query($query);
+
+        $this->set('title', 'Relatório de Empresas por Atestado');
+        $this->set('icon', 'business');
+        $this->set('relatorio', $relatorio);
+    }
+
+    protected function montarRelatorioEmpresasAtestado(array $data)
+    {
+        $query = "";
+        $mostrar = $data['mostrar'];
+        
+        if($mostrar == 'T')
+        {
+            $query = "select distinct
+                        e.id,
+                        e.nome,
+                        (select count(d.id)
+                        from funcionario d
+                        where d.empresa = e.id) funcionarios,
+                        count(a.id) atestados
+                    from empresa e
+                        inner join funcionario f
+                            on f.empresa = e.id
+                        left join atestado a
+                            on a.funcionario = f.id
+                    group by e.id
+                    order by atestados desc";
+        }
+        else
+        {
+            $data_final = new DateTime();
+            $data_inicial = $this->calcularDataInicial($mostrar);
+
+            $query = "select distinct
+                        e.id,
+                        e.nome,
+                        (select count(d.id)
+                            from funcionario d
+                            where d.empresa = e.id) funcionarios,
+                        count(a.id) atestados
+                        from empresa e
+                            inner join funcionario f
+                                on f.empresa = e.id
+                            left join atestado a
+                                on a.funcionario = f.id
+                        where a.emissao between '" . $data_inicial->format("Y-m-d") . "' and '" . $data_final->format("Y-m-d") . "'
+                           or a.emissao is null
+                        group by e.id
+                        order by atestados desc";
+        }
+
+        return $query;
+    }
+
     protected function montarRelatorioFuncionariosAtestado(array $data)
     {
         $query = "";
@@ -319,7 +435,7 @@ class RelatoriosController extends AppController
                             (select count(*)
                             from atestado a
                             where a.funcionario = f.id
-                                and a.emissao between " . $data_inicial->format("Y-m-d") . " and " . $data_final->format("Y-m-d") . ") quantidade
+                                and a.emissao between '" . $data_inicial->format("Y-m-d") . "' and '" . $data_final->format("Y-m-d") . "') quantidade
                     from funcionario f
                     inner join empresa e
                         on f.empresa = e.id
