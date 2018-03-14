@@ -344,6 +344,43 @@ class RelatoriosController extends AppController
         $this->set('relatorio', $relatorio);
     }
 
+    public function funcionariosempresa()
+    {
+        $datasource = Configure::read('Database.datasource');
+        $connection = ConnectionManager::get($datasource);
+        $link = $this->abrirBanco($connection);
+
+        $t_empresas = TableRegistry::get('Empresa');
+        
+        $idEmpresa = $this->request->query('idEmpresa');
+        $mostrar = $this->request->query('periodo');
+
+        $relatorio = array();
+        $data = array();
+        
+        $data['empresa'] = $idEmpresa;
+        $data['mostrar'] = $mostrar;
+
+        $query = $this->montarRelatorioFuncionariosAtestado($data);
+        $relatorio = $link->query($query);
+
+        $empresa = $t_empresas->get($idEmpresa);
+
+        $opcoes_subtitulos = [
+            'T' => 'Atestados emitidos para os funcionários da empresa ' . $empresa->nome, 
+            '1' => 'Atestados emitidos para os funcionários da empresa ' . $empresa->nome . ' nos últimos 30 dias',  
+            '3' => 'Atestados emitidos para os funcionários da empresa ' . $empresa->nome . ' nos últimos 3 meses',  
+            '6' => 'Atestados emitidos para os funcionários da empresa ' . $empresa->nome . ' nos últimos 6 meses',
+            '12' => 'Atestados emitidos para os funcionários da empresa ' . $empresa->nome . ' no último ano',
+        ];
+
+        $this->set('title', 'Relatório de Funcionários da Empresa por Atestado');
+        $this->set('subtitle', $opcoes_subtitulos[$mostrar]);
+        $this->set('icon', 'assignment_ind');
+        $this->set('relatorio', $relatorio);
+        $this->set('data', $data);
+    }
+
     protected function montarRelatorioEmpresasAtestado(array $data)
     {
         $query = "";
@@ -399,9 +436,25 @@ class RelatoriosController extends AppController
         if (count($data) > 0)
         {
             $empresa = $data['empresa'];
-            $tipo_funcionario = $data['tipo_funcionario'];
-            $exibir = $data['exibir'];
             $mostrar = $data['mostrar'];
+
+            if(array_key_exists('tipo_funcionario', $data))
+            {
+                $tipo_funcionario = $data['tipo_funcionario'];    
+            }
+            else
+            {
+                $tipo_funcionario = "";    
+            }
+
+            if(array_key_exists('exibir', $data))
+            {
+                $exibir = $data['exibir'];    
+            }
+            else
+            {
+                $exibir = "";
+            }
 
             if($mostrar == 'T')
             {

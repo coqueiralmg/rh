@@ -4,31 +4,19 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-content">
-                        <?= $this->Flash->render() ?>
-                        <h4 class="card-title">Buscar</h4>
-                        <?php
-                        echo $this->Form->create("CID", [
-                            "url" => [
-                                "controller" => "relatorios",
-                                "action" => "funcionariosatestados"
-                            ],
-                            'type' => 'get',
-                            "role" => "form"]);
-                        ?>
-                            <div class="row">
-                            
+                        <div class="row">
                             <div class="form-group form-button">
-                                <button type="submit" onclick="return validar()" class="btn btn-fill btn-success pull-right">Buscar<div class="ripple-container"></div></button>
                                 <a href="<?= $this->Url->build(['controller' => 'Relatorios', 'action' => 'imprimirfuncionariosatestados', '?' => $data]) ?>" target="_blank" class="btn btn-fill btn-default pull-right">Imprimir<div class="ripple-container"></div></a>
+                                <button type="button" onclick="window.history.back()" class="btn btn-info pull-right">Voltar</button>
                             </div>
-                            <?php echo $this->Form->end(); ?>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-content table-responsive">
-                        <h4 class="card-title">Relatório</h4>
+                        <h4 class="card-title"><?=$subtitle?></h4>
                         <table class="table">
                             <thead class="text-primary">
                                 <tr>
