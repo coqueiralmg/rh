@@ -416,6 +416,70 @@ class RelatoriosController extends AppController
         $this->set('title', 'Relatório de Funcionários da Empresa por Atestado');
         $this->set('subtitle', $opcoes_subtitulos[$mostrar]);
         $this->set('relatorio', $relatorio);
+        $this->set('data', $data);
+    }
+
+    public function atestadosempresa()
+    {
+        $t_atestados = TableRegistry::get('Atestado');
+        $t_empresas = TableRegistry::get('Empresa');
+        
+        $idEmpresa = $this->request->query('idEmpresa');
+        $mostrar = $this->request->query('periodo');
+
+        $relatorio = array();
+        $data = array();
+        
+        $data['empresa'] = $idEmpresa;
+        $data['mostrar'] = $mostrar;
+
+        $empresa = $t_empresas->get($idEmpresa);
+
+        if($mostrar == 'T')
+        {
+            $atestados = $t_atestados->find('all', [
+                'contain' => ['Medico', 'Funcionario'],
+                'conditions' => [
+                    'empresa' => $idEmpresa
+                ],
+                'order' => [
+                    'afastamento' => 'DESC'
+                ]
+            ]);
+        }
+        else
+        {
+            $data_final = new DateTime();
+            $data_inicial = $this->calcularDataInicial($mostrar);
+
+            $atestados = $t_atestados->find('all', [
+                'contain' => ['Medico', 'Funcionario'],
+                'conditions' => [
+                    'empresa' => $idEmpresa,
+                    'emissao >=' => $data_inicial->format("Y-m-d"),
+                    'emissao <=' => $data_final->format("Y-m-d")
+                ],
+                'order' => [
+                    'afastamento' => 'DESC'
+                ]
+            ]);
+        }
+
+        $opcoes_subtitulos = [
+            'T' => 'Atestados emitidos para os funcionários da empresa ' . $empresa->nome, 
+            '1' => 'Atestados emitidos para os funcionários da empresa ' . $empresa->nome . ' nos últimos 30 dias',  
+            '3' => 'Atestados emitidos para os funcionários da empresa ' . $empresa->nome . ' nos últimos 3 meses',  
+            '6' => 'Atestados emitidos para os funcionários da empresa ' . $empresa->nome . ' nos últimos 6 meses',
+            '12' => 'Atestados emitidos para os funcionários da empresa ' . $empresa->nome . ' no último ano',
+        ];
+
+        $this->set('title', 'Relatório de Atestados da Empresa');
+        $this->set('subtitle', $opcoes_subtitulos[$mostrar]);
+        $this->set('icon', 'business');
+        $this->set('atestados', $atestados);
+        $this->set('empresa', $empresa);
+        $this->set('data', $data);
+        $this->set('mostrar', $mostrar);
     }
 
     protected function montarRelatorioEmpresasAtestado(array $data)
