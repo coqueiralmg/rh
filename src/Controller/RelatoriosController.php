@@ -337,6 +337,8 @@ class RelatoriosController extends AppController
         $query = $this->montarRelatorioEmpresasAtestado($data);
         $relatorio = $link->query($query);
 
+        $this->viewBuilder()->layout('print');
+
         $this->set('title', 'Relatório de Empresas por Atestado');
         $this->set('icon', 'business');
         $this->set('relatorio', $relatorio);

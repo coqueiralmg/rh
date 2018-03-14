@@ -27,7 +27,7 @@
                             
                             <div class="form-group form-button">
                                 <button type="submit" onclick="return validar()" class="btn btn-fill btn-success pull-right">Buscar<div class="ripple-container"></div></button>
-                                <a href="<?= $this->Url->build(['controller' => 'Relatorios', 'action' => 'imprimirfuncionariosatestados', '?' => $data]) ?>" target="_blank" class="btn btn-fill btn-default pull-right">Imprimir<div class="ripple-container"></div></a>
+                                <a href="<?= $this->Url->build(['controller' => 'Relatorios', 'action' => 'imprimirempresassatestados', '?' => $data]) ?>" target="_blank" class="btn btn-fill btn-default pull-right">Imprimir<div class="ripple-container"></div></a>
                             </div>
                             <?php echo $this->Form->end(); ?>
                     </div>
