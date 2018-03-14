@@ -6,7 +6,7 @@
                     <div class="card-content">
                         <div class="row">
                             <div class="form-group form-button">
-                                <a href="<?= $this->Url->build(['controller' => 'Relatorios', 'action' => 'imprimirfuncionariosatestados', '?' => $data]) ?>" target="_blank" class="btn btn-fill btn-default pull-right">Imprimir<div class="ripple-container"></div></a>
+                                <a href="<?= $this->Url->build(['controller' => 'Relatorios', 'action' => 'imprimirfuncionariosempresa', '?' => $data]) ?>" target="_blank" class="btn btn-fill btn-default pull-right">Imprimir<div class="ripple-container"></div></a>
                                 <button type="button" onclick="window.history.back()" class="btn btn-info pull-right">Voltar</button>
                             </div>
                         </div>

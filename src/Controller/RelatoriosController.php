@@ -381,6 +381,43 @@ class RelatoriosController extends AppController
         $this->set('data', $data);
     }
 
+    public function imprimirfuncionariosempresa()
+    {
+        $datasource = Configure::read('Database.datasource');
+        $connection = ConnectionManager::get($datasource);
+        $link = $this->abrirBanco($connection);
+
+        $t_empresas = TableRegistry::get('Empresa');
+        
+        $idEmpresa = $this->request->query('empresa');
+        $mostrar = $this->request->query('mostrar');
+
+        $relatorio = array();
+        $data = array();
+        
+        $data['empresa'] = $idEmpresa;
+        $data['mostrar'] = $mostrar;
+
+        $query = $this->montarRelatorioFuncionariosAtestado($data);
+        $relatorio = $link->query($query);
+
+        $empresa = $t_empresas->get($idEmpresa);
+
+        $opcoes_subtitulos = [
+            'T' => 'Atestados emitidos para os funcionários da empresa ' . $empresa->nome, 
+            '1' => 'Atestados emitidos para os funcionários da empresa ' . $empresa->nome . ' nos últimos 30 dias',  
+            '3' => 'Atestados emitidos para os funcionários da empresa ' . $empresa->nome . ' nos últimos 3 meses',  
+            '6' => 'Atestados emitidos para os funcionários da empresa ' . $empresa->nome . ' nos últimos 6 meses',
+            '12' => 'Atestados emitidos para os funcionários da empresa ' . $empresa->nome . ' no último ano',
+        ];
+
+        $this->viewBuilder()->layout('print');
+
+        $this->set('title', 'Relatório de Funcionários da Empresa por Atestado');
+        $this->set('subtitle', $opcoes_subtitulos[$mostrar]);
+        $this->set('relatorio', $relatorio);
+    }
+
     protected function montarRelatorioEmpresasAtestado(array $data)
     {
         $query = "";
