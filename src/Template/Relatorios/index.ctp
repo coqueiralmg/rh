@@ -53,7 +53,7 @@
                 </div>
             </div>
 
-            <?php if ($this->Membership->handleRoles("relatorio_funcionario_atestado", "relatorio_empresas_atestado", "relatorio_tipo_funcionario_atestado", "relatorio_cid", "relatorios_medicos_atestados", "listar_auditoria")): ?>
+            <?php if ($this->Membership->handleRoles("relatorio_funcionario_atestado", "relatorio_empresas_atestado", "relatorio_cid", "relatorios_medicos_atestados")): ?>
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-content">
@@ -118,34 +118,6 @@
                     </div>
                 <?php endif; ?>
 
-                <?php if ($this->Membership->handleRole("relatorio_tipo_funcionario_atestado")) : ?>
-                    <div class="col-lg-6 col-md-12">
-                        <div class="card">
-                            <div class="card-content">
-                                <a href="<?=$this->Url->build([
-                                    'controller' => 'cid',
-                                    'action' => 'importacao'
-                                ])?>">
-                                    <span>
-                                        <i class="material-icons" style="font-size: 100px">assignment</i>
-                                    </span>
-                                    <h4 style="display: inline">Tipos de Funcionários por Atestados</h4>
-                                </a>
-                            </div>
-                            <div class="card-footer">
-                                <div class="stats">
-                                    <div class="col-md-1">
-                                        <i class="material-icons">class</i>
-                                    </div>
-                                    <div class="col-md-11">
-                                        Exibe uma lista de tipo de funcionário, podendo ainda mostrar a quantidade de atestados emitidos para seu tipo.
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                <?php endif; ?>
-
                 <?php if ($this->Membership->handleRole("relatorio_cid")) : ?>
                     <div class="col-lg-6 col-md-12">
                         <div class="card">
@@ -201,34 +173,7 @@
                         </div>
                     </div>
                 <?php endif; ?>
-
-                <?php if ($this->Membership->handleRole("listar_auditoria")) : ?>
-                    <div class="col-lg-6 col-md-12">
-                        <div class="card">
-                            <div class="card-content">
-                                <a href="<?=$this->Url->build([
-                                    'controller' => 'auditoria',
-                                    'action' => 'index'
-                                ])?>">
-                                    <span>
-                                        <i class="material-icons" style="font-size: 100px">fingerprint</i>
-                                    </span>
-                                    <h4 style="display: inline">Trilha de Auditoria</h4>
-                                </a>
-                            </div>
-                            <div class="card-footer">
-                                <div class="stats">
-                                    <div class="col-md-1">
-                                        <i class="material-icons">class</i>
-                                    </div>
-                                    <div class="col-md-11">
-                                        Exibe uma lista de todas as atividades registradas no sistema, mostrando as operações de cada usuário deste sistema.
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                <?php endif; ?>
+                
             <?php endif; ?>
         </div>
     </div>
