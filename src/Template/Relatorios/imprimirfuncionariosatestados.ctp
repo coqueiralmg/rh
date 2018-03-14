@@ -1,4 +1,4 @@
-<h4 class="card-title">Tabela de CID</h4>
+<h4 class="card-title">Relatório</h4>
 <table class="table  table-striped">
     <thead class="text-primary">
         <tr>
