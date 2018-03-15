@@ -123,8 +123,8 @@
                         <div class="card">
                             <div class="card-content">
                                 <a href="<?=$this->Url->build([
-                                    'controller' => 'cid',
-                                    'action' => 'importacao'
+                                    'controller' => 'relatorios',
+                                    'action' => 'atestadoscid'
                                 ])?>">
                                     <span>
                                         <i class="material-icons" style="font-size: 100px">grid_on</i>
