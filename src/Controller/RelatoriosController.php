@@ -648,6 +648,83 @@ class RelatoriosController extends AppController
         $this->set('relatorio', $relatorio);
     }
 
+    public function cidatestados($cid)
+    {
+        $t_atestados = TableRegistry::get('Atestado');
+        $t_cid = TableRegistry::get('Cid');   
+
+        $data = array();
+        $condicoes= array();
+
+        if (count($this->request->getQueryParams()) > 3)
+        {
+            $funcionario = $this->request->query('funcionario');
+            $empresa = $this->request->query('empresa');
+            $tipo_funcionario = $this->request->query('tipo_funcionario');
+            $exibir = $this->request->query('exibir');
+            $mostrar = $this->request->query('mostrar');
+
+            $data['funcionario'] = $funcionario;
+            $data['empresa'] = $empresa;
+            $data['tipo_funcionario'] = $tipo_funcionario;
+            $data['exibir'] = $exibir;
+            $data['mostrar'] = $mostrar;
+
+            if($funcionario != "")
+            {
+                $condicoes['Atestado.funcionario'] = $funcionario;
+            }
+
+            if($empresa != "")
+            {
+                $condicoes['Funcionario.empresa'] = $empresa;
+            }
+
+            if($tipo_funcionario != "")
+            {
+                $condicoes['Funcionario.tipo'] = $tipo_funcionario;
+            }
+
+            if($exibir == "E")
+            {
+                $condicoes['Funcionario.probatorio'] = $exibir;
+            }
+
+            if($mostrar != "T")
+            {
+                $data_final = new DateTime();
+                $data_inicial = $this->calcularDataInicial($mostrar);   
+
+                $condicoes['Atestado.emissao >='] = $data_inicial->format("Y-m-d");
+                $condicoes['Atestado.emissao <='] = $data_final->format("Y-m-d");
+            }
+        }
+
+        $pivot = $t_cid->find('all', [
+            'conditions' => [
+                'codigo' => $cid,
+                'detalhamento IS' => null
+            ]
+        ])->first();
+
+        $condicoes['Atestado.cid'] = $cid;
+
+        $atestados = $t_atestados->find('all', [
+            'contain' => ['Funcionario', 'Medico'],
+            'conditions' => $condicoes,
+            'order' => [
+                'afastamento' => 'DESC'
+            ]
+        ]);
+
+        $this->set('title', 'Relatório de Atestados Por CID');
+        $this->set('icon', 'grid_on');
+        $this->set('subtitle', 'Atestados emitidos com o CID ' . $cid . ': ' . $pivot->nome);
+        $this->set('cid', $cid);
+        $this->set('atestados', $atestados);
+        $this->set('data', $data);
+    }
+
     protected function montarRelatorioCIDATestado(array $data)
     {
         $query = "select a.cid,
