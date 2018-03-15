@@ -610,11 +610,49 @@ class RelatoriosController extends AppController
         $this->set('data', $data);
     }
 
+    public function imprimiratestadoscid()
+    {
+        $datasource = Configure::read('Database.datasource');
+        $connection = ConnectionManager::get($datasource);
+        $link = $this->abrirBanco($connection);
+
+        $t_tipo_funcionario = TableRegistry::get('TipoFuncionario');
+        $t_empresas = TableRegistry::get('Empresa');
+
+        $relatorio = array();
+        $data = array();
+
+        if (count($this->request->getQueryParams()) > 3)
+        {
+            $funcionario = $this->request->query('funcionario');
+            $nome_funcionario = $this->request->query('nome_funcionario');
+            $empresa = $this->request->query('empresa');
+            $tipo_funcionario = $this->request->query('tipo_funcionario');
+            $exibir = $this->request->query('exibir');
+            $mostrar = $this->request->query('mostrar');
+
+            $data['funcionario'] = $funcionario;
+            $data['nome_funcionario'] = $nome_funcionario;
+            $data['empresa'] = $empresa;
+            $data['tipo_funcionario'] = $tipo_funcionario;
+            $data['exibir'] = $exibir;
+            $data['mostrar'] = $mostrar;
+        }
+
+        $query = $this->montarRelatorioCIDATestado($data);
+        $relatorio = $link->query($query);
+
+        $this->viewBuilder()->layout('print');
+
+        $this->set('title', 'Relatório de Atestados Por CID');
+        $this->set('relatorio', $relatorio);
+    }
+
     protected function montarRelatorioCIDATestado(array $data)
     {
         $query = "select a.cid,
                         c.nome,
-                        ifnull(c.nome, 'CID Desconhecido ou Inválido') descricao,
+                        ifnull(c.nome, 'CID Desconhecido ou inválido') descricao,
                         count(a.id) atestados
                     from atestado a
                     inner join funcionario f

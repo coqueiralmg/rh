@@ -60,7 +60,7 @@
                             
                             <div class="form-group form-button">
                                 <button type="submit" onclick="return validar()" class="btn btn-fill btn-success pull-right">Buscar<div class="ripple-container"></div></button>
-                                <a href="<?= $this->Url->build(['controller' => 'Relatorios', 'action' => 'imprimirempresassatestados', '?' => $data]) ?>" target="_blank" class="btn btn-fill btn-default pull-right">Imprimir<div class="ripple-container"></div></a>
+                                <a href="<?= $this->Url->build(['controller' => 'Relatorios', 'action' => 'imprimiratestadoscid', '?' => $data]) ?>" target="_blank" class="btn btn-fill btn-default pull-right">Imprimir<div class="ripple-container"></div></a>
                             </div>
                             <?php echo $this->Form->end(); ?>
                     </div>
@@ -82,11 +82,23 @@
                             <tbody>
                                 <?php while ($item = $relatorio->fetch(PDO::FETCH_OBJ)) : ?>
                                     <tr>
-                                        <td><?=$item->cid?></td>
-                                        <td><?=$item->descricao?></td>
+                                        <td>
+                                            <?php if($item->nome == null): ?>
+                                                <i><?=$item->cid?></i>
+                                            <?php else: ?>
+                                                <?=$item->cid?>
+                                            <?php endif; ?>
+                                        </td>
+                                        <td>
+                                            <?php if($item->nome == null): ?>
+                                                <i><?=$item->descricao?></i>
+                                            <?php else: ?>
+                                                <?=$item->descricao?>
+                                            <?php endif; ?>
+                                        </td>
                                         <td><?=$item->atestados?></td>
                                         <td class="td-actions text-right" style="width: 12%">
-                                            <a href="<?= $this->Url->build(['controller' => 'Relatorios', 'action' => 'funcionariosempresa']) ?>" title="Detalhes Sobre o CID" class="btn btn-rose btn-round">
+                                            <a href="#" title="Detalhes Sobre o CID" class="btn btn-rose btn-round">
                                                 <i class="material-icons">info</i>
                                             </a>
                                             <a href="<?= $this->Url->build(['controller' => 'Relatorios', 'action' => 'atestadosfuncionario', $item->cid, '?' => $data]) ?>" title="Ver Atestados" class="btn btn-info btn-round">
