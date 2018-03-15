@@ -70,7 +70,7 @@
                 <div class="card">
                     <div class="card-content table-responsive">
                         <h4 class="card-title">Relatório</h4>
-                        <table class="table">
+                        <table id="relatorio" class="table">
                             <thead class="text-primary">
                                 <tr>
                                     <th>CID</th>
@@ -79,9 +79,37 @@
                                     <th></th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="pivot" style="display: none">
+                                <tr id="caregando">
+                                    <td colspan="4"><h4>Carregando...</h4></td>
+                                </tr>
+                                <tr id="detalhe">
+                                    <td colspan="4">
+                                        <h4 id="titulo"></h4>
+                                        <p id="descricao"></p>
+                                        <div class="card-content table-responsive">
+                                            <h4 class="card-title">Subtipos do CID</h4>
+                                            <table  id="subtipos" class="table">
+                                                <thead class="text-primary">
+                                                    <tr>
+                                                        <th>CID</th>
+                                                        <th>Nome</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th></th>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tbody id="content">
                                 <?php while ($item = $relatorio->fetch(PDO::FETCH_OBJ)) : ?>
-                                    <tr>
+                                    <tr id="<?=$item->cid?>">
                                         <td>
                                             <?php if($item->nome == null): ?>
                                                 <i><?=$item->cid?></i>
@@ -97,11 +125,20 @@
                                             <?php endif; ?>
                                         </td>
                                         <td><?=$item->atestados?></td>
-                                        <td class="td-actions text-right" style="width: 12%">
-                                            <a href="#" title="Detalhes Sobre o CID" class="btn btn-rose btn-round">
-                                                <i class="material-icons">info</i>
-                                            </a>
-                                            <a href="<?= $this->Url->build(['controller' => 'Relatorios', 'action' => 'atestadosfuncionario', $item->cid, '?' => $data]) ?>" title="Ver Atestados" class="btn btn-info btn-round">
+                                        <td class="td-actions text-right" style="width: 6%">
+                                            <!--
+                                            <?php if($item->nome == null): ?>
+                                                <button type="button" onclick="exibirAlerta('<?=$item->cid?>', '<?=$item->atestados?>')" title="O CID não existe no banco de dados, ou o mesmo é inválido." class="btn btn-warning btn-round">
+                                                    <i class="material-icons">warning</i>
+                                                </button>
+                                            <?php else: ?>
+                                                <button type="button" onclick="exibirInformacaoCID(this, '<?=$item->cid?>')" title="Detalhes Sobre o CID" class="btn btn-rose btn-round">
+                                                    <i class="material-icons">info</i>
+                                                </button>
+                                            <?php endif; ?>
+                                            -->
+                                            
+                                            <a href="<?= $this->Url->build(['controller' => 'Relatorios', 'action' => 'cidatestados', $item->cid, '?' => $data]) ?>" title="Ver Atestados" class="btn btn-info btn-round">
                                                 <i class="material-icons">content_paste</i>
                                             </a>
                                         </td>
