@@ -99,7 +99,7 @@ $(function () {
         return $("<li>")
             .append('<span><b>' + item.nome.trim() + '</b><span><br/><small>' + item.especialidade + ' CRM:' + item.crm + '</small>')
             .appendTo(ul);
-    };;
+    };
 });
 
 function salvarMedico() {
