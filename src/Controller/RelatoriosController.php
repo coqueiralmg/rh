@@ -920,7 +920,7 @@ class RelatoriosController extends AppController
         }
 
         $query = $query . "group by a.medico 
-                           order by quantidade desc";
+                           order by quantidade desc, m.nome asc";
 
         return $query;
     }
@@ -971,7 +971,7 @@ class RelatoriosController extends AppController
         }
 
         $query = $query . "group by a.cid
-                    order by atestados desc";
+                    order by atestados desc, a.cid asc, c.detalhamento asc";
 
         return $query;
     }
