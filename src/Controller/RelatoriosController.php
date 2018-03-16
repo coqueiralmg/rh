@@ -807,6 +807,124 @@ class RelatoriosController extends AppController
         $this->set('atestados', $atestados);
     }
 
+    public function medicoatestado()
+    {
+        $datasource = Configure::read('Database.datasource');
+        $connection = ConnectionManager::get($datasource);
+        $link = $this->abrirBanco($connection);
+
+        $t_tipo_funcionario = TableRegistry::get('TipoFuncionario');
+        $t_empresas = TableRegistry::get('Empresa');
+
+        $relatorio = array();
+        $data = array();
+
+        if (count($this->request->getQueryParams()) > 3)
+        {
+            $funcionario = $this->request->query('funcionario');
+            $nome_funcionario = $this->request->query('nome_funcionario');
+            $empresa = $this->request->query('empresa');
+            $tipo_funcionario = $this->request->query('tipo_funcionario');
+            $exibir = $this->request->query('exibir');
+            $mostrar = $this->request->query('mostrar');
+
+            $data['funcionario'] = $funcionario;
+            $data['nome_funcionario'] = $nome_funcionario;
+            $data['empresa'] = $empresa;
+            $data['tipo_funcionario'] = $tipo_funcionario;
+            $data['exibir'] = $exibir;
+            $data['mostrar'] = $mostrar;
+
+            $this->request->data = $data;
+        }
+
+        $query = $this->montarRelatorioMedicoAtestado($data);
+        $relatorio = $link->query($query);
+
+        $tipos_funcionarios = $t_tipo_funcionario->find('list', [
+            'keyField' => 'id',
+            'valueField' => 'descricao'
+        ]);
+
+        $empresas = $t_empresas->find('list', [
+            'keyField' => 'id',
+            'valueField' => 'nome'
+        ]);
+
+        $combo_exibir = [
+            'T' => 'Todos',
+            'E' => 'Somente funcionários em estágio probatório'
+        ];
+
+        $combo_mostra = [
+            'T' => 'Todos os atestados cadastrados', 
+            '1' => 'Atestados cadastrados no último mês', 
+            '3' => 'Atestados cadastrados nos últimos 3 meses',
+            '6' => 'Atestados cadastrados nos últimos 6 meses',
+            '12' => 'Atestados cadastrados no último ano'
+        ];
+
+        $this->set('title', 'Relatório de Atestados por Médico');
+        $this->set('icon', 'grid_on');
+        $this->set('relatorio', $relatorio);
+        $this->set('tipos_funcionarios', $tipos_funcionarios);
+        $this->set('empresas', $empresas);
+        $this->set('combo_exibir', $combo_exibir);
+        $this->set('combo_mostra', $combo_mostra);
+        $this->set('data', $data);
+    }
+
+    protected function montarRelatorioMedicoAtestado(array $data)
+    {
+        $query = "select a.medico,
+                        m.nome,
+                        m.crm,
+                        m.especialidade,
+                        count(a.medico) quantidade
+                from atestado a
+                inner join medico m
+                    on a.medico = m.id
+                inner join funcionario f
+                    on a.funcionario = f.id ";
+
+        if(count($data) > 0)
+        {
+            if($data['funcionario'] != "")
+            {
+                $query = $query . "and a.funcionario = " . $data['funcionario'] . " ";
+            }
+
+            if($data['empresa'] != "")
+            {
+                $query = $query . "and f.empresa = " . $data['empresa'] . " ";
+            }
+
+            if($data['tipo_funcionario'] != "")
+            {
+                $query = $query . "and f.tipo = " . $data['tipo_funcionario'] . " ";
+            }
+
+            if($data['exibir'] == "E")
+            {
+                $query = $query . "and f.probatorio = 1 ";
+            }
+
+            if($data['mostrar'] != "T")
+            {
+                $mostrar = $data['mostrar'];
+                $data_final = new DateTime();
+                $data_inicial = $this->calcularDataInicial($mostrar);   
+
+                $query = $query . "and a.emissao between '" . $data_inicial->format("Y-m-d") . "' and '" . $data_final->format("Y-m-d") . "' ";
+            }
+        }
+
+        $query = $query . "group by a.medico 
+                           order by quantidade desc";
+
+        return $query;
+    }
+
     protected function montarRelatorioCIDATestado(array $data)
     {
         $query = "select a.cid,

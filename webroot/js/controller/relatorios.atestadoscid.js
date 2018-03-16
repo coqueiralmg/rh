@@ -23,6 +23,12 @@ $(function () {
             .append('<span>' + item.nome.trim() + '</span>')
             .appendTo(ul);
     };
+
+    $('#nome_funcionario').change(function(){
+        if(this.value == ""){
+            $('#id_funcionario').val("");
+        }
+    });
 });
 
 function exibirAlerta(cid, quantidade) {

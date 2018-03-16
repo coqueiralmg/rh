@@ -151,8 +151,8 @@
                         <div class="card">
                             <div class="card-content">
                                 <a href="<?=$this->Url->build([
-                                    'controller' => 'cid',
-                                    'action' => 'importacao'
+                                    'controller' => 'relatorios',
+                                    'action' => 'medicoatestado'
                                 ])?>">
                                     <span>
                                         <i class="material-icons" style="font-size: 100px">face</i>
