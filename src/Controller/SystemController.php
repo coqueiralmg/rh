@@ -6,6 +6,8 @@ use Cake\Cache\Cache;
 use Cake\Core\Configure;
 use Cake\Network\Session;
 use Cake\ORM\TableRegistry;
+use \DateInterval;
+use \DateTime;
 
 class SystemController extends AppController
 {
@@ -140,8 +142,69 @@ class SystemController extends AppController
         $this->controlAuth();
         $this->carregarDadosSistema();
 
+        $data_inicial = new DateTime();
+        $data_inicial->sub(new DateInterval("P1Y"));
+
+        $data_final = new DateTime();
+
+        $t_funcionarios = TableRegistry::get('Funcionario');
+        $t_atestados = TableRegistry::get('Atestado');
+        $t_medicos = TableRegistry::get('Medico');
+
+        $funcionarios = $t_funcionarios->find('all')->count();
+        
+        $medicos = $t_medicos->find('all')->count();
+
+        $atestados = $t_atestados->find('all', [
+            'conditions' => [
+                'emissao >=' => $data_inicial->format("Y-m-d"),
+                'emissao <=' => $data_final->format("Y-m-d"),
+            ]
+        ])->count();
+
+        $inss = $t_atestados->find('all', [
+            'conditions' => [
+                'emissao >=' => $data_inicial->format("Y-m-d"),
+                'emissao <=' => $data_final->format("Y-m-d"),
+                'inss' => true
+            ]
+        ])->count();
+
+        $relatorio_funcionarios = $t_funcionarios->find('all', [
+            'contain' => ['Empresa']
+        ]);
+
+        $relatorio_funcionarios->select([
+            'Empresa.id',
+            'Empresa.nome',
+            'quantidade' => $relatorio_funcionarios->func()->count('*')
+        ])->group('Empresa.id')->order([
+            'quantidade' => 'DESC'
+        ]);
+
+        $relatorio_atestados = $t_atestados->find('all', [
+            'contain' => ['Funcionario' => ['Empresa']],
+            'conditions' => [
+                'emissao >=' => $data_inicial->format("Y-m-d"),
+                'emissao <=' => $data_final->format("Y-m-d"),
+            ]
+        ]);
+
+        $relatorio_atestados->select([
+            'nome' => 'Empresa.nome',
+            'quantidade' => $relatorio_atestados->func()->count('*')
+        ])->group('Empresa.id')->order([
+            'quantidade' => 'DESC'
+        ]);
+
         $this->set('title', 'Painel Principal');
         $this->set('icon', 'dashboard');
+        $this->set('funcionarios', $funcionarios);
+        $this->set('atestados', $atestados);
+        $this->set('inss', $inss);
+        $this->set('medicos', $medicos);
+        $this->set('relatorio_funcionarios', $relatorio_funcionarios);
+        $this->set('relatorio_atestados', $relatorio_atestados);
     }
 
     public function fail(string $mensagem)
