@@ -5,6 +5,8 @@ namespace App\Controller;
 use Cake\Core\Configure;
 use Cake\Network\Session;
 use Cake\ORM\TableRegistry;
+use \DateInterval;
+use \DateTime;
 use \Exception;
 
 class AtestadosController extends AppController
@@ -393,9 +395,80 @@ class AtestadosController extends AppController
         }
     }
 
-    protected function evolution()
+    public function evolution()
     {
         $t_atestado = TableRegistry::get('Atestado');
+
+        $meses = [
+            1 => 'Janeiro',
+            2 => 'Fevereiro',
+            3 => 'Março',
+            4 => 'Abril',
+            5 => 'Maio',
+            6 => 'Junho',
+            7 => 'Julho',
+            8 => 'Agosto',
+            9 => 'Setembro',
+            10 => 'Outubro',
+            11 => 'Novembro',
+            12 => 'Dezembro'
+        ];
+        
+        $limite = new DateTime();
+        $limite->sub(new DateInterval("P1Y"));
+
+        $pivot = new DateTime();
+        var_dump($pivot->format('m'));
+        $mes = eval($pivot->format('m'));
+        $ano = eval($pivot->format('Y'));
+
+        $mlim = eval($limite->format('m'));
+        $alim = eval($limite->format('Y'));
+
+        $data = [];
+
+        while($mlim != $mes && $alim != $ano)
+        {
+            $info = [];
+
+            $total = $t_atestado->find('all', [
+                'conditions' => [
+                    'MONTH(emissao)' => $mes,
+                    'YEAR(emissao)' => $ano,
+                ]
+            ])->count();
+
+            $inss = $t_atestado->find('all', [
+                'conditions' => [
+                    'inss' => true,
+                    'MONTH(emissao)' => $mes,
+                    'YEAR(emissao)' => $ano,
+                ]
+            ])->count();
+
+            $chave = $meses[$mes] . '/' . $ano;
+
+            $info[$chave] = [
+                'total' => $total,
+                'inss' => $inss
+            ];
+
+            if($mes > 1)
+            {
+                $mes--;
+            }
+            else
+            {
+                $mes = 12;
+                $ano--;
+            }
+        }
+
+        $this->set([
+            'sucesso' => true,
+            'data' => $data,
+            '_serialize' => ['sucesso', 'data']
+        ]);
     }
 
     protected function insert()
