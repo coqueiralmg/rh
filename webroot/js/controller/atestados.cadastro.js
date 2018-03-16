@@ -231,6 +231,7 @@ function validar() {
                 title: "Salvar o atestado com CID Inválido ou Inexistente?",
                 text: "Você deseja salvar o atestado no sistema, com o CID que não existe no sistema ou o mesmo é inválido? Isso não vai impedir de salvar o atestado, mas ficará salvo no banco de dados, podendo dificultar o trabalho gerencial. Verifique se você está salvando o CID corretamente.",
                 icon: "warning",
+                type: 'warning',
                 buttons: true,
                 dangerMode: true,
                 showCancelButton: true,
