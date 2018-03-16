@@ -24,7 +24,7 @@ $(function () {
             .appendTo(ul);
     };
 
-    $('#nome_funcionario').change(function(){
+    $('#nome_funcionario').blur(function(e){
         if(this.value == ""){
             $('#id_funcionario').val("");
         }
