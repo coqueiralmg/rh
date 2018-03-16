@@ -89,7 +89,7 @@
                                         <td><?=$item->quantidade?></td>
                                         <td class="td-actions text-right" style="width: 6%">
                                             
-                                            <a href="<?= $this->Url->build(['controller' => 'Relatorios', 'action' => 'cidatestados', $item->medico, '?' => $data]) ?>" title="Ver Atestados" class="btn btn-info btn-round">
+                                            <a href="<?= $this->Url->build(['controller' => 'Relatorios', 'action' => 'atestadosmedico', $item->medico, '?' => $data]) ?>" title="Ver Atestados" class="btn btn-info btn-round">
                                                 <i class="material-icons">content_paste</i>
                                             </a>
                                         </td>
