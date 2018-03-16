@@ -717,9 +717,11 @@ class RelatoriosController extends AppController
             ]
         ]);
 
+        $subtitle = ($pivot == null) ? 'Atestados emitidos com o CID ' . $cid : 'Atestados emitidos com o CID ' . $cid . ': ' . $pivot->nome;
+
         $this->set('title', 'Relatório de Atestados Por CID');
         $this->set('icon', 'grid_on');
-        $this->set('subtitle', 'Atestados emitidos com o CID ' . $cid . ': ' . $pivot->nome);
+        $this->set('subtitle', $subtitle);
         $this->set('cid', $cid);
         $this->set('atestados', $atestados);
         $this->set('data', $data);
