@@ -393,6 +393,11 @@ class AtestadosController extends AppController
         }
     }
 
+    protected function evolution()
+    {
+        $t_atestado = TableRegistry::get('Atestado');
+    }
+
     protected function insert()
     {
         try 
