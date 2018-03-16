@@ -1,3 +1,5 @@
+var cidinvalido = false;
+
 $(function () {
     $('#data_emissao').datepicker({
         language: 'pt-BR'
@@ -224,7 +226,30 @@ function validar() {
     }
 
     if (mensagem == "") {
-        return true;
+        if(cidinvalido){
+            swal({
+                title: "Salvar o atestado com CID Inválido ou Inexistente?",
+                text: "Você deseja salvar o atestado no sistema, com o CID que não existe no sistema ou o mesmo é inválido? Isso não vai impedir de salvar o atestado, mas ficará salvo no banco de dados, podendo dificultar o trabalho gerencial. Verifique se você está salvando o CID corretamente.",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+                showCancelButton: true,
+                confirmButtonClass: 'btn btn-success',
+                cancelButtonClass: 'btn btn-danger',
+                confirmButtonText: 'Sim',
+                cancelButtonText: 'Não'
+              })
+              .then((salvar) => {
+                if (salvar) {
+                    $("#cadastro_atestado").submit();
+                } else {
+                  return false;
+                }
+              });            
+        } else{
+            $("#cadastro_atestado").submit();
+        }
+        
     } else {
         $("#cadastro_erro").show('shake');
         $("#cadastro_erro #details").html("<ol>" + mensagem + "</ol>");
@@ -328,9 +353,11 @@ function atualizarTabelaCID(data) {
 
 function preencherMotivo(data) {
     if(data == null) {
+        cidinvalido = true;
         notificarUsuario("O sistema não encontrou o CID com o código informado. Verifique se o código existe no sistema ou a doença realmente existe no cadastro oficial de CID.", "danger");
     } else {
         $("#motivo").val(data.nome);
+        cidinvalido = false;
         notificarUsuario("O sistema encontrou com sucesso o CID informado, e preencheu o seu nome no campo Motivo.", "success");
     }
 }
