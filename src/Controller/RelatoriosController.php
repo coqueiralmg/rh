@@ -136,6 +136,18 @@ class RelatoriosController extends AppController
         $query = $this->montarRelatorioFuncionariosAtestado($data);
         $relatorio = $link->query($query);
 
+        $auditoria = [
+            'ocorrencia' => 9,
+            'descricao' => 'O usuário solicitou a impressão de Relatório de Funcionários por Atestado.',
+            'usuario' => $this->request->session()->read('UsuarioID')
+        ];
+
+        $this->Auditoria->registrar($auditoria);
+
+        if ($this->request->session()->read('UsuarioSuspeito')) {
+            $this->Monitoria->monitorar($auditoria);
+        }
+
         $this->viewBuilder()->layout('print');
 
         $this->set('title', 'Relatório de Funcionários por Atestado');
@@ -250,6 +262,18 @@ class RelatoriosController extends AppController
             ]);
         }
 
+        $auditoria = [
+            'ocorrencia' => 9,
+            'descricao' => 'O usuário solicitou a impressão de Relatório de Funcionários por Atestado.',
+            'usuario' => $this->request->session()->read('UsuarioID')
+        ];
+
+        $this->Auditoria->registrar($auditoria);
+
+        if ($this->request->session()->read('UsuarioSuspeito')) {
+            $this->Monitoria->monitorar($auditoria);
+        }
+
         $this->viewBuilder()->layout('print');
 
         $this->set('title', 'Relatório de Funcionários por Atestado');
@@ -337,6 +361,18 @@ class RelatoriosController extends AppController
         $query = $this->montarRelatorioEmpresasAtestado($data);
         $relatorio = $link->query($query);
 
+        $auditoria = [
+            'ocorrencia' => 9,
+            'descricao' => 'O usuário solicitou a impressão de Relatório de Empresas por Atestado.',
+            'usuario' => $this->request->session()->read('UsuarioID')
+        ];
+
+        $this->Auditoria->registrar($auditoria);
+
+        if ($this->request->session()->read('UsuarioSuspeito')) {
+            $this->Monitoria->monitorar($auditoria);
+        }
+
         $this->viewBuilder()->layout('print');
 
         $this->set('title', 'Relatório de Empresas por Atestado');
@@ -410,6 +446,18 @@ class RelatoriosController extends AppController
             '6' => 'Atestados emitidos para os funcionários da empresa ' . $empresa->nome . ' nos últimos 6 meses',
             '12' => 'Atestados emitidos para os funcionários da empresa ' . $empresa->nome . ' no último ano',
         ];
+
+        $auditoria = [
+            'ocorrencia' => 9,
+            'descricao' => 'O usuário solicitou a impressão de Relatório de Funcionários da Empresa por Atestado.',
+            'usuario' => $this->request->session()->read('UsuarioID')
+        ];
+
+        $this->Auditoria->registrar($auditoria);
+
+        if ($this->request->session()->read('UsuarioSuspeito')) {
+            $this->Monitoria->monitorar($auditoria);
+        }
 
         $this->viewBuilder()->layout('print');
 
@@ -536,6 +584,18 @@ class RelatoriosController extends AppController
             '12' => 'Atestados emitidos para os funcionários da empresa ' . $empresa->nome . ' no último ano',
         ];
 
+        $auditoria = [
+            'ocorrencia' => 9,
+            'descricao' => 'O usuário solicitou a impressão de Relatório de Atestados da Empresa.',
+            'usuario' => $this->request->session()->read('UsuarioID')
+        ];
+
+        $this->Auditoria->registrar($auditoria);
+
+        if ($this->request->session()->read('UsuarioSuspeito')) {
+            $this->Monitoria->monitorar($auditoria);
+        }
+
         $this->viewBuilder()->layout('print');
 
         $this->set('title', 'Relatório de Atestados da Empresa');
@@ -641,6 +701,18 @@ class RelatoriosController extends AppController
 
         $query = $this->montarRelatorioCIDATestado($data);
         $relatorio = $link->query($query);
+
+        $auditoria = [
+            'ocorrencia' => 9,
+            'descricao' => 'O usuário solicitou a impressão de Relatório de Atestados Por CID.',
+            'usuario' => $this->request->session()->read('UsuarioID')
+        ];
+
+        $this->Auditoria->registrar($auditoria);
+
+        if ($this->request->session()->read('UsuarioSuspeito')) {
+            $this->Monitoria->monitorar($auditoria);
+        }
 
         $this->viewBuilder()->layout('print');
 
@@ -796,6 +868,18 @@ class RelatoriosController extends AppController
             ]
         ]);
 
+        $auditoria = [
+            'ocorrencia' => 9,
+            'descricao' => 'O usuário solicitou a impressão de Relatório de Atestados Por CID.',
+            'usuario' => $this->request->session()->read('UsuarioID')
+        ];
+
+        $this->Auditoria->registrar($auditoria);
+
+        if ($this->request->session()->read('UsuarioSuspeito')) {
+            $this->Monitoria->monitorar($auditoria);
+        }
+
         $this->viewBuilder()->layout('print');
 
         $subtitle = ($pivot == null) ? 'Atestados emitidos com o CID ' . $cid : 'Atestados emitidos com o CID ' . $cid . ': ' . $pivot->nome;
@@ -907,6 +991,18 @@ class RelatoriosController extends AppController
 
         $query = $this->montarRelatorioMedicoAtestado($data);
         $relatorio = $link->query($query);
+
+        $auditoria = [
+            'ocorrencia' => 9,
+            'descricao' => 'O usuário solicitou a impressão de Relatório de Atestados por Médico.',
+            'usuario' => $this->request->session()->read('UsuarioID')
+        ];
+
+        $this->Auditoria->registrar($auditoria);
+
+        if ($this->request->session()->read('UsuarioSuspeito')) {
+            $this->Monitoria->monitorar($auditoria);
+        }
 
         $this->viewBuilder()->layout('print');
 
@@ -1050,9 +1146,21 @@ class RelatoriosController extends AppController
             ]
         ]);
 
+        $auditoria = [
+            'ocorrencia' => 9,
+            'descricao' => 'O usuário solicitou a impressão de Relatório de Atestados por Médico.',
+            'usuario' => $this->request->session()->read('UsuarioID')
+        ];
+
+        $this->Auditoria->registrar($auditoria);
+
+        if ($this->request->session()->read('UsuarioSuspeito')) {
+            $this->Monitoria->monitorar($auditoria);
+        }
+
         $this->viewBuilder()->layout('print');
 
-        $this->set('title', 'Relatório de Atestados Por CID');
+        $this->set('title', 'Relatório de Atestados Por Médico');
         $this->set('subtitle', 'Atestados emitidos pelo médico ' . $medico->nome);
         $this->set('atestados', $atestados);
         $this->set('medico', $medico);

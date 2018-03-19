@@ -112,6 +112,18 @@ class CidController extends AppController
 
         $qtd_total = $itens->count();
 
+        $auditoria = [
+            'ocorrencia' => 9,
+            'descricao' => 'O usuário solicitou a impressão da lista de CID.',
+            'usuario' => $this->request->session()->read('UsuarioID')
+        ];
+
+        $this->Auditoria->registrar($auditoria);
+
+        if ($this->request->session()->read('UsuarioSuspeito')) {
+            $this->Monitoria->monitorar($auditoria);
+        }
+
         $this->viewBuilder()->layout('print');
 
         $this->set('title', 'Tabela de CID');
@@ -649,7 +661,7 @@ class CidController extends AppController
 
                 $auditoria = [
                     'ocorrencia' => 39,
-                    'descricao' => 'O usuário fez a importação de dados de CID, por meio do arquivo fornecido pelo Datasus.',
+                    'descricao' => 'O usuário fez a importação de dados de CID, por meio do arquivo fornecido pelo Datasus, por meio de CSV.',
                     'dado_adicional' => json_encode(['metodo' => 'Datasus', 'arquivo' => $nome_arquivo, 'itens_importados' => count($lscat) + count($lssub)]),
                     'usuario' => $this->request->session()->read('UsuarioID')
                 ];
@@ -668,8 +680,6 @@ class CidController extends AppController
             }
 
             $zip->close();
-
-            
             
             switch ($tipo) {
                 case 'CSV':
