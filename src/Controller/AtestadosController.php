@@ -397,78 +397,89 @@ class AtestadosController extends AppController
 
     public function evolution()
     {
-        $t_atestado = TableRegistry::get('Atestado');
-
-        $meses = [
-            1 => 'Janeiro',
-            2 => 'Fevereiro',
-            3 => 'Março',
-            4 => 'Abril',
-            5 => 'Maio',
-            6 => 'Junho',
-            7 => 'Julho',
-            8 => 'Agosto',
-            9 => 'Setembro',
-            10 => 'Outubro',
-            11 => 'Novembro',
-            12 => 'Dezembro'
-        ];
-        
-        $limite = new DateTime();
-        $limite->sub(new DateInterval("P1Y"));
-
-        $pivot = new DateTime();
-        var_dump($pivot->format('m'));
-        $mes = eval($pivot->format('m'));
-        $ano = eval($pivot->format('Y'));
-
-        $mlim = eval($limite->format('m'));
-        $alim = eval($limite->format('Y'));
-
-        $data = [];
-
-        while($mlim != $mes && $alim != $ano)
+        try
         {
-            $info = [];
+            $t_atestado = TableRegistry::get('Atestado');
+            $this->validationRole = false;
 
-            $total = $t_atestado->find('all', [
-                'conditions' => [
-                    'MONTH(emissao)' => $mes,
-                    'YEAR(emissao)' => $ano,
-                ]
-            ])->count();
-
-            $inss = $t_atestado->find('all', [
-                'conditions' => [
-                    'inss' => true,
-                    'MONTH(emissao)' => $mes,
-                    'YEAR(emissao)' => $ano,
-                ]
-            ])->count();
-
-            $chave = $meses[$mes] . '/' . $ano;
-
-            $info[$chave] = [
-                'total' => $total,
-                'inss' => $inss
+            $meses = [
+                1 => 'Janeiro',
+                2 => 'Fevereiro',
+                3 => 'Março',
+                4 => 'Abril',
+                5 => 'Maio',
+                6 => 'Junho',
+                7 => 'Julho',
+                8 => 'Agosto',
+                9 => 'Setembro',
+                10 => 'Outubro',
+                11 => 'Novembro',
+                12 => 'Dezembro'
             ];
+            
+            $limite = new DateTime();
+            $limite->sub(new DateInterval("P1Y"));
+            $mlim = (int) $limite->format('n');
+            $alim = (int) $limite->format('Y');
 
-            if($mes > 1)
+            $pivot = new DateTime();
+            $mes = (int) $pivot->format('n');
+            $ano = (int) $pivot->format('Y');
+
+            $data = [];
+
+            while($mlim != $mes || $alim != $ano)
             {
-                $mes--;
+                $info = [];
+
+                $total = $t_atestado->find('all', [
+                    'conditions' => [
+                        'MONTH(emissao)' => $mes,
+                        'YEAR(emissao)' => $ano,
+                    ]
+                ])->count();
+
+                $inss = $t_atestado->find('all', [
+                    'conditions' => [
+                        'inss' => true,
+                        'MONTH(emissao)' => $mes,
+                        'YEAR(emissao)' => $ano,
+                    ]
+                ])->count();
+
+                $chave = $meses[$mes] . '/' . $ano;
+
+                $info['mes'] = $chave;
+                $info['total'] = $total;
+                $info['inss'] = $inss;
+
+                $data[] = $info;
+
+                if($mes > 1)
+                {
+                    $mes--;
+                }
+                else
+                {
+                    $mes = 12;
+                    $ano--;
+                }
             }
-            else
-            {
-                $mes = 12;
-                $ano--;
-            }
+
+            $this->set([
+                'sucesso' => true,
+                'data' => $data,
+                '_serialize' => ['sucesso', 'data']
+            ]);
         }
-
-        $this->set([
-            'sucesso' => true,
-            'data' => $data,
-            '_serialize' => ['sucesso', 'data']
-        ]);
+        catch (Exception $ex) 
+        {
+            $this->set([
+                'sucesso' => false,
+                'mensagem' => $ex->getMessage(),
+                '_serialize' => ['sucesso', 'mensagem']
+            ]);
+        }
     }
 
     protected function insert()
