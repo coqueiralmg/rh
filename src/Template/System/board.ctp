@@ -14,7 +14,11 @@
                     </div>
                     <div class="card-footer">
                         <div class="stats">
-                            <i class="material-icons text-info">content_paste</i> <a href="#pablo">Ver todos</a>
+                            <?php if ($this->Membership->handleRole("listar_funcionarios")) : ?>
+                                <i class="material-icons text-info">content_paste</i> <a href="<?= $this->Url->build(['controller' => 'Funcionarios', 'action' => 'index']) ?>">Ver todos</a>
+                            <?php else:?>
+                                <i class="material-icons text-info">business</i> Distribuídos entre <?=$empresas?> empresas
+                            <?php endif;?>
                         </div>
                     </div>
                 </div>
@@ -62,7 +66,11 @@
                     </div>
                     <div class="card-footer">
                         <div class="stats">
-                            <i class="material-icons text-info">content_paste</i> <a href="#pablo">Ver todos</a>
+                            <?php if ($this->Membership->handleRole("listar_medicos")) : ?>
+                                <i class="material-icons text-info">content_paste</i> <a href="<?= $this->Url->build(['controller' => 'Medicos', 'action' => 'index']) ?>">Ver todos</a>
+                            <?php else:?>
+                                <i class="material-icons text-info">local_hospital</i> Emitentes de  <?=$atestados?> atestados
+                            <?php endif;?>
                         </div>
                     </div>
                 </div>
@@ -131,7 +139,95 @@
                     </div>
                 </div>
             </div>
-            
+        </div>
+        <div class="row">
+            <div class="col-lg-6 col-md-12">
+                <div class="card">
+                    <div class="card-header" data-background-color="blue">
+                        <h4 class="title">Maiores Solicitantes de Atestados</h4>
+                        <p class="category">Dos últimos 12 meses</p>
+                    </div>
+                    <div class="card-content table-responsive">
+                        <table class="table table-hover">
+                            <thead class="text-warning">
+                                <th>Matrícula</th>
+                                <th>Empresa</th>
+                                <th>Quantidade</th>
+                                <th></th>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($top_funcionarios as $item): ?>
+                                    <tr>
+                                        <td><?=$item->matricula?></td>
+                                        <td><?=$item->nome?></td>
+                                        <td><?=$item->quantidade ?></td>
+                                        <td class="td-actions text-right">
+                                            <?php if ($this->Membership->handleRole("relatorio_funcionario_atestado")) : ?>
+                                                <a href="<?= $this->Url->build(['controller' => 'Relatorios', 'action' => 'atestadosfuncionario', '?' => ['idFuncionario' => $item->id, 'periodo' => 12]]) ?>" title="Ver Atestados" class="btn btn-info btn-round">
+                                                    <i class="material-icons">content_paste</i>
+                                                </a>
+                                            <?php endif;?>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="4" class="text-right">
+                                        <?php if ($this->Membership->handleRole("relatorio_funcionario_atestado")): ?>
+                                            <a href="<?= $this->Url->build(['controller' => 'Relatorios', 'action' => 'funcionariosatestados']) ?>" class="btn btn-default btn-info">Ver Lista Completa</a>
+                                        <?php endif; ?>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-12">
+                <div class="card">
+                    <div class="card-header" data-background-color="blue">
+                        <h4 class="title">CIDs mais disgnosticados</h4>
+                        <p class="category">Dos últimos 12 meses</p>
+                    </div>
+                    <div class="card-content table-responsive">
+                        <table class="table table-hover">
+                        <thead class="text-warning">
+                                <th>Código</th>
+                                <th>Nome</th>
+                                <th>Quantidade</th>
+                                <th></th>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($top_cid as $item): ?>
+                                    <tr>
+                                        <td><?=$item->codigo?></td>
+                                        <td><?=$item->nome?></td>
+                                        <td><?=$item->quantidade ?></td>
+                                        <td class="td-actions text-right">
+                                            <?php if ($this->Membership->handleRole("relatorio_cid")) : ?>
+                                                <a href="<?= $this->Url->build(['controller' => 'Relatorios', 'action' => 'cidatestados', $item->codigo, '?' => ['mostrar' => 12]]) ?>" title="Ver Atestados" class="btn btn-info btn-round">
+                                                    <i class="material-icons">content_paste</i>
+                                                </a>
+                                            <?php endif;?>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="4" class="text-right">
+                                        <?php if ($this->Membership->handleRole("relatorio_cid")): ?>
+                                            <a href="<?= $this->Url->build(['controller' => 'Relatorios', 'action' => 'atestadoscid']) ?>" class="btn btn-default btn-info">Ver Lista Completa</a>
+                                        <?php endif; ?>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

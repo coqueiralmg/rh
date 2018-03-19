@@ -148,10 +148,12 @@ class SystemController extends AppController
         $data_final = new DateTime();
 
         $t_funcionarios = TableRegistry::get('Funcionario');
+        $t_empresas = TableRegistry::get('Empresa');
         $t_atestados = TableRegistry::get('Atestado');
         $t_medicos = TableRegistry::get('Medico');
 
         $funcionarios = $t_funcionarios->find('all')->count();
+        $empresas = $t_empresas->find('all')->count();
         
         $medicos = $t_medicos->find('all')->count();
 
@@ -197,14 +199,54 @@ class SystemController extends AppController
             'quantidade' => 'DESC'
         ]);
 
-        $this->set('title', 'Painel Principal');
+        $top_funcionarios = $t_atestados->find('all', [
+            'contain' => ['Funcionario'],
+            'conditions' => [
+                'Funcionario.ativo' => true,
+                'Atestado.emissao >=' => $data_inicial->format("Y-m-d"),
+                'Atestado.emissao <=' => $data_final->format("Y-m-d")
+            ]
+        ]);
+
+        $top_funcionarios->select([
+            'id' => 'Funcionario.id',
+            'matricula' => 'Funcionario.matricula',
+            'nome' => 'Funcionario.nome',
+            'quantidade' => $top_funcionarios->func()->count('*')
+        ])->group('Funcionario.id')->order([
+            'quantidade' => 'DESC',
+            'nome' => 'ASC'
+        ])->limit(10);
+
+        $top_cid = $t_atestados->find('all', [
+            'contain' => ['Cid'],
+            'conditions' => [
+                'Cid.detalhamento IS' => null,
+                'Atestado.emissao >=' => $data_inicial->format("Y-m-d"),
+                'Atestado.emissao <=' => $data_final->format("Y-m-d")
+            ]
+        ]);
+
+        $top_cid->select([
+            'codigo' => 'Atestado.cid',
+            'nome' => 'Cid.nome',
+            'quantidade' => $top_cid->func()->count('*')
+        ])->group('Atestado.cid')->order([
+            'quantidade' => 'DESC',
+            'Atestado.cid' => 'ASC'
+        ])->limit(10);
+
+        $this->set('title', 'Sistema de Gerenciamento de Recursos Humanos');
         $this->set('icon', 'dashboard');
         $this->set('funcionarios', $funcionarios);
+        $this->set('empresas', $empresas);
         $this->set('atestados', $atestados);
         $this->set('inss', $inss);
         $this->set('medicos', $medicos);
         $this->set('relatorio_funcionarios', $relatorio_funcionarios);
         $this->set('relatorio_atestados', $relatorio_atestados);
+        $this->set('top_funcionarios', $top_funcionarios);
+        $this->set('top_cid', $top_cid);
     }
 
     public function fail(string $mensagem)
