@@ -656,7 +656,7 @@ class RelatoriosController extends AppController
         $data = array();
         $condicoes= array();
 
-        if (count($this->request->getQueryParams()) > 3)
+        if (count($this->request->getQueryParams()) > 0)
         {
             $funcionario = $this->request->query('funcionario');
             $empresa = $this->request->query('empresa');
