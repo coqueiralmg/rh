@@ -23,5 +23,12 @@ class AtestadoTable extends BaseTable
             'propertyName' => 'medico',
             'joinType' => 'INNER'
         ]);
+
+        $this->belongsTo('Cid', [
+            'className' => 'Cid',
+            'foreignKey' => 'cid',
+            'propertyName' => 'cid',
+            'joinType' => 'LEFT'
+        ]);
     }
 }
