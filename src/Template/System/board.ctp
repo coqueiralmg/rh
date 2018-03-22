@@ -173,7 +173,7 @@
                                 <tr>
                                     <td colspan="4" class="text-right">
                                         <?php if ($this->Membership->handleRole("relatorio_funcionario_atestado")): ?>
-                                            <a href="<?= $this->Url->build(['controller' => 'Relatorios', 'action' => 'funcionariosatestados']) ?>" class="btn btn-default btn-info">Ver Lista Completa</a>
+                                            <a href="<?= $this->Url->build(['controller' => 'Relatorios', 'action' => 'funcionariosatestados', '?' => ['mostrar' => 12]]) ?>" class="btn btn-default btn-info">Ver Lista Completa</a>
                                         <?php endif; ?>
                                     </td>
                                 </tr>
@@ -217,7 +217,7 @@
                                 <tr>
                                     <td colspan="4" class="text-right">
                                         <?php if ($this->Membership->handleRole("relatorio_cid")): ?>
-                                            <a href="<?= $this->Url->build(['controller' => 'Relatorios', 'action' => 'atestadoscid']) ?>" class="btn btn-default btn-info">Ver Lista Completa</a>
+                                            <a href="<?= $this->Url->build(['controller' => 'Relatorios', 'action' => 'atestadoscid', '?' => ['mostrar' => 12]]) ?>" class="btn btn-default btn-info">Ver Lista Completa</a>
                                         <?php endif; ?>
                                     </td>
                                 </tr>
