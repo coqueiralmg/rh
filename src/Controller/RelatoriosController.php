@@ -98,7 +98,7 @@ class RelatoriosController extends AppController
             '1' => 'Atestados cadastrados no último mês', 
             '3' => 'Atestados cadastrados nos últimos 3 meses',
             '6' => 'Atestados cadastrados nos últimos 6 meses',
-            '12' => 'Atestados cadastrados no último ano'
+            '12' => 'Atestados cadastrados nos últimos 12 meses'
         ];
         
         $this->set('title', 'Relatório de Funcionários por Atestado');
@@ -170,7 +170,7 @@ class RelatoriosController extends AppController
             '1' => 'Atestados emitidos para o funcionário ' . $funcionario->nome . ' nos últimos 30 dias',  
             '3' => 'Atestados emitidos para o funcionário ' . $funcionario->nome . ' nos últimos 3 meses',  
             '6' => 'Atestados emitidos para o funcionário ' . $funcionario->nome . ' nos últimos 6 meses',
-            '12' => 'Atestados emitidos para o funcionário ' . $funcionario->nome . ' no último ano',
+            '12' => 'Atestados emitidos para o funcionário ' . $funcionario->nome . ' nos últimos 12 meses',
         ];
 
         if($mostrar == 'T')
@@ -229,7 +229,7 @@ class RelatoriosController extends AppController
             '1' => 'Atestados emitidos para o funcionário ' . $funcionario->nome . ' nos últimos 30 dias',  
             '3' => 'Atestados emitidos para o funcionário ' . $funcionario->nome . ' nos últimos 3 meses',  
             '6' => 'Atestados emitidos para o funcionário ' . $funcionario->nome . ' nos últimos 6 meses',
-            '12' => 'Atestados emitidos para o funcionário ' . $funcionario->nome . ' no último ano',
+            '12' => 'Atestados emitidos para o funcionário ' . $funcionario->nome . ' nos últimos 12 meses',
         ];
 
         if($mostrar == 'T')
@@ -327,7 +327,7 @@ class RelatoriosController extends AppController
             '1' => 'Atestados cadastrados no último mês', 
             '3' => 'Atestados cadastrados nos últimos 3 meses',
             '6' => 'Atestados cadastrados nos últimos 6 meses',
-            '12' => 'Atestados cadastrados no último ano'
+            '12' => 'Atestados cadastrados nos últimos 12 meses'
         ];
 
         $this->set('title', 'Relatório de Empresas por Atestado');
@@ -407,7 +407,7 @@ class RelatoriosController extends AppController
             '1' => 'Atestados emitidos para os funcionários da empresa ' . $empresa->nome . ' nos últimos 30 dias',  
             '3' => 'Atestados emitidos para os funcionários da empresa ' . $empresa->nome . ' nos últimos 3 meses',  
             '6' => 'Atestados emitidos para os funcionários da empresa ' . $empresa->nome . ' nos últimos 6 meses',
-            '12' => 'Atestados emitidos para os funcionários da empresa ' . $empresa->nome . ' no último ano',
+            '12' => 'Atestados emitidos para os funcionários da empresa ' . $empresa->nome . ' nos últimos 12 meses',
         ];
 
         $this->set('title', 'Relatório de Funcionários da Empresa por Atestado');
@@ -444,7 +444,7 @@ class RelatoriosController extends AppController
             '1' => 'Atestados emitidos para os funcionários da empresa ' . $empresa->nome . ' nos últimos 30 dias',  
             '3' => 'Atestados emitidos para os funcionários da empresa ' . $empresa->nome . ' nos últimos 3 meses',  
             '6' => 'Atestados emitidos para os funcionários da empresa ' . $empresa->nome . ' nos últimos 6 meses',
-            '12' => 'Atestados emitidos para os funcionários da empresa ' . $empresa->nome . ' no último ano',
+            '12' => 'Atestados emitidos para os funcionários da empresa ' . $empresa->nome . ' nos últimos 12 meses',
         ];
 
         $auditoria = [
@@ -518,7 +518,7 @@ class RelatoriosController extends AppController
             '1' => 'Atestados emitidos para os funcionários da empresa ' . $empresa->nome . ' nos últimos 30 dias',  
             '3' => 'Atestados emitidos para os funcionários da empresa ' . $empresa->nome . ' nos últimos 3 meses',  
             '6' => 'Atestados emitidos para os funcionários da empresa ' . $empresa->nome . ' nos últimos 6 meses',
-            '12' => 'Atestados emitidos para os funcionários da empresa ' . $empresa->nome . ' no último ano',
+            '12' => 'Atestados emitidos para os funcionários da empresa ' . $empresa->nome . ' nos últimos 12 meses',
         ];
 
         $this->set('title', 'Relatório de Atestados da Empresa');
@@ -581,7 +581,7 @@ class RelatoriosController extends AppController
             '1' => 'Atestados emitidos para os funcionários da empresa ' . $empresa->nome . ' nos últimos 30 dias',  
             '3' => 'Atestados emitidos para os funcionários da empresa ' . $empresa->nome . ' nos últimos 3 meses',  
             '6' => 'Atestados emitidos para os funcionários da empresa ' . $empresa->nome . ' nos últimos 6 meses',
-            '12' => 'Atestados emitidos para os funcionários da empresa ' . $empresa->nome . ' no último ano',
+            '12' => 'Atestados emitidos para os funcionários da empresa ' . $empresa->nome . ' nos últimos 12 meses',
         ];
 
         $auditoria = [
@@ -657,7 +657,7 @@ class RelatoriosController extends AppController
             '1' => 'Atestados cadastrados no último mês', 
             '3' => 'Atestados cadastrados nos últimos 3 meses',
             '6' => 'Atestados cadastrados nos últimos 6 meses',
-            '12' => 'Atestados cadastrados no último ano'
+            '12' => 'Atestados cadastrados nos últimos 12 meses'
         ];
 
         $this->set('title', 'Relatório de Atestados Por CID');
@@ -945,7 +945,7 @@ class RelatoriosController extends AppController
             '1' => 'Atestados cadastrados no último mês', 
             '3' => 'Atestados cadastrados nos últimos 3 meses',
             '6' => 'Atestados cadastrados nos últimos 6 meses',
-            '12' => 'Atestados cadastrados no último ano'
+            '12' => 'Atestados cadastrados nos últimos 12 meses'
         ];
 
         $this->set('title', 'Relatório de Atestados por Médico');
