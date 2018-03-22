@@ -789,7 +789,22 @@ class RelatoriosController extends AppController
             ]
         ]);
 
-        $subtitle = ($pivot == null) ? 'Atestados emitidos com o CID ' . $cid : 'Atestados emitidos com o CID ' . $cid . ': ' . $pivot->nome;
+        if(isset($data['mostrar']))
+        {
+            $opcoes_subtitulos = [
+                'T' => '', 
+                '1' => ' nos últimos 30 dias',  
+                '3' => ' nos últimos 3 meses',  
+                '6' => ' nos últimos 6 meses',
+                '12' => ' nos últimos 12 meses',
+            ];
+    
+            $subtitle = ($pivot == null) ? 'Atestados emitidos com o CID ' . $cid : 'Atestados emitidos com o CID ' . $cid . ': ' . $pivot->nome . $opcoes_subtitulos[$data['mostrar']];
+        }
+        else
+        {
+            $subtitle = ($pivot == null) ? 'Atestados emitidos com o CID ' . $cid : 'Atestados emitidos com o CID ' . $cid . ': ' . $pivot->nome;
+        }
 
         $this->set('title', 'Relatório de Atestados Por CID');
         $this->set('icon', 'grid_on');
@@ -807,7 +822,7 @@ class RelatoriosController extends AppController
         $data = array();
         $condicoes= array();
 
-        if (count($this->request->getQueryParams()) > 3)
+        if (count($this->request->getQueryParams()) > 0)
         {
             $funcionario = $this->request->query('funcionario');
             $empresa = $this->request->query('empresa');
@@ -882,7 +897,22 @@ class RelatoriosController extends AppController
 
         $this->viewBuilder()->layout('print');
 
-        $subtitle = ($pivot == null) ? 'Atestados emitidos com o CID ' . $cid : 'Atestados emitidos com o CID ' . $cid . ': ' . $pivot->nome;
+        if(isset($data['mostrar']))
+        {
+            $opcoes_subtitulos = [
+                'T' => '', 
+                '1' => ' nos últimos 30 dias',  
+                '3' => ' nos últimos 3 meses',  
+                '6' => ' nos últimos 6 meses',
+                '12' => ' nos últimos 12 meses',
+            ];
+    
+            $subtitle = ($pivot == null) ? 'Atestados emitidos com o CID ' . $cid : 'Atestados emitidos com o CID ' . $cid . ': ' . $pivot->nome . $opcoes_subtitulos[$data['mostrar']];
+        }
+        else
+        {
+            $subtitle = ($pivot == null) ? 'Atestados emitidos com o CID ' . $cid : 'Atestados emitidos com o CID ' . $cid . ': ' . $pivot->nome;
+        }
 
         $this->set('title', 'Relatório de Atestados Por CID');
         $this->set('icon', 'grid_on');
