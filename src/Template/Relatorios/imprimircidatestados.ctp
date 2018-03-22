@@ -4,7 +4,6 @@
         <tr>
             <th>Funcionário</th>
             <th>Médico</th>
-            <th>CID</th>
             <th>Motivo</th>
             <th>Data de Emissão</th>
             <th>Data de Afastamento</th>
@@ -17,7 +16,6 @@
             <tr>
                 <td><?=$atestado->funcionario->nome?></td>
                 <td><?=$atestado->medico->nome?></td>
-                <td><?=$atestado->cid?></td>
                 <td><?=$atestado->motivo?></td>
                 <td><?=$this->Format->date($atestado->emissao)?></td>
                 <td><?=$this->Format->date($atestado->afastamento)?></td>
