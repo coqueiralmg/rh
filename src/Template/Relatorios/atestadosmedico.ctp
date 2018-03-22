@@ -29,7 +29,7 @@
                                 <?php foreach($atestados as $atestado) : ?>
                                     <tr>
                                         <td><?=$atestado->funcionario->nome?></td>
-                                        <td><?=$atestado->cid?></td>
+                                        <td><a class="text-primary" rel="tooltip" title="<?= 'MOTIVO: ' . $atestado->motivo?>"><?=$atestado->cid?></a></td>
                                         <td><?=$this->Format->date($atestado->emissao)?></td>
                                         <td><?=$this->Format->date($atestado->afastamento)?></td>
                                         <td><?=$this->Format->date($atestado->retorno)?></td>
