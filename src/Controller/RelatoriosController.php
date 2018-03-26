@@ -1470,6 +1470,8 @@ class RelatoriosController extends AppController
 
         $dsn = "mysql:host=" . $config['host'] . "; dbname=" . $config['database'];
         $link = new PDO($dsn, $username, $password);
+
+        $link->exec('SET CHARACTER SET utf8');
         $link->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
         return $link;
