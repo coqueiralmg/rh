@@ -705,7 +705,7 @@ class CidController extends AppController
 
     public function listar() 
     {
-        if ($this->request->is('ajax'))
+        if($this->request->is('ajax'))
         {
             $t_cid = TableRegistry::get('Cid');
 
@@ -761,6 +761,7 @@ class CidController extends AppController
             {
                 $cids = $t_cid->find('all', [
                     'conditions' => $condicoes,
+                    'limit' => 10,
                     'order' => [
                         'codigo' => 'ASC',
                         'detalhamento' => 'ASC'
@@ -837,7 +838,7 @@ class CidController extends AppController
 
             $qcid = 0;
 
-            if($detalhamento == null)
+            if($entity->detalhamento == null)
             {
                 $qcid = $t_cid->find('all', [
                     'conditions' => [

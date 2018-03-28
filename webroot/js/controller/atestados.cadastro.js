@@ -296,9 +296,18 @@ function buscarCID() {
         beforeSend: function() {
             $(".category").empty();
             $(".category").html("Efetuando busca. Aguarde!");
+
+            if($(".category").hasClass("text-danger")) {
+                $(".category").removeClass("text-danger");
+            }
         },
         success: function (data) {
             atualizarTabelaCID(data);
+        },
+        error: function() {
+            $(".category").empty();
+            $(".category").html("Ocorreu um erro ao efetuar a busca");
+            $(".category").addClass("text-danger");
         }
     });
 }
