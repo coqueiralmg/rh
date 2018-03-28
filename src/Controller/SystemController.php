@@ -219,9 +219,9 @@ class SystemController extends AppController
         ])->limit(10);
 
         $top_cid = $t_atestados->find('all', [
-            'contain' => ['Cid'],
+            'contain' => ['Doenca'],
             'conditions' => [
-                'Cid.detalhamento IS' => null,
+                'Doenca.detalhamento IS' => null,
                 'Atestado.emissao >=' => $data_inicial->format("Y-m-d"),
                 'Atestado.emissao <=' => $data_final->format("Y-m-d")
             ]
@@ -229,7 +229,7 @@ class SystemController extends AppController
 
         $top_cid->select([
             'codigo' => 'Atestado.cid',
-            'nome' => 'Cid.nome',
+            'nome' => 'Doenca.nome',
             'quantidade' => $top_cid->func()->count('*')
         ])->group('Atestado.cid')->order([
             'quantidade' => 'DESC',

@@ -24,8 +24,7 @@ class AtestadoTable extends BaseTable
             'joinType' => 'INNER'
         ]);
 
-        $this->belongsTo('Cid', [
-            'className' => 'Cid',
+        $this->belongsTo('Doenca', [
             'foreignKey' => 'cid',
             'propertyName' => 'cid',
             'joinType' => 'LEFT'
