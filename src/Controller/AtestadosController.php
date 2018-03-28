@@ -494,6 +494,7 @@ class AtestadosController extends AppController
             $entity->retorno = $this->Format->formatDateDB($entity->retorno);
             $entity->funcionario = $this->request->getData('funcionario');
             $entity->medico = $this->request->getData('medico');
+            $entity->cid = $this->request->getData('cid');
 
             $t_atestado->save($entity);
             $this->Flash->greatSuccess('Atestado salvo com sucesso');
@@ -542,6 +543,7 @@ class AtestadosController extends AppController
             $entity->retorno = $this->Format->formatDateDB($entity->retorno);
             $entity->funcionario = $this->request->getData('funcionario');
             $entity->medico = $this->request->getData('medico');
+            $entity->cid = $this->request->getData('cid');
 
             $propriedades = $this->Auditoria->changedOriginalFields($entity);
             $modificadas = $this->Auditoria->changedFields($entity, $propriedades);
