@@ -7,7 +7,7 @@ class CidTable extends BaseTable
     public function initialize(array $config)
     {
         $this->table('cid');
-        $this->primaryKey('codigo');
+        $this->primaryKey('id');
         $this->entityClass('Cid');
     }
 }
