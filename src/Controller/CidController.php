@@ -45,7 +45,6 @@ class CidController extends AppController
             if($nome != "")
             {
                 $condicoes['nome LIKE'] = '%' . $nome . '%';
-                
             }
 
             $data['codigo'] = $codigo;
