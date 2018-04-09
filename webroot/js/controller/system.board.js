@@ -5,7 +5,7 @@ $(function () {
 function obterDadosEvolucaoAtestados(){
     var data = null;
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', '/rh/atestados/evolution.json', true);
+    xhr.open('GET', '/atestados/evolution.json', true);
 
     xhr.onload = function (e) {
         if (xhr.readyState === 4) {
