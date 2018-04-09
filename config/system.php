@@ -5,7 +5,7 @@ return[
         'name'=> 'Recursos Humanos | Prefeitura Municipal de Coqueiral',
         'shortName' => 'RH Prefeitura de Coqueiral',
         'version' => '1.1',
-        'fullVersion' => '1.1.1',
+        'fullVersion' => '1.1.2',
         'yearRelease' => '2018',
         'yearCreation' => '2017'
     ],
